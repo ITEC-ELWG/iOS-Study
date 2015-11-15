@@ -11,6 +11,7 @@ public class NoteDB extends SQLiteOpenHelper{
 
     public static final String TABLE_NAME = "note";
     public static final String ID = "_id";
+    public static final String TITLE = "title";
     public static final String CONTENT = "content";
     public static final String TIME = "time";
 
@@ -24,6 +25,7 @@ public class NoteDB extends SQLiteOpenHelper{
 
         db.execSQL("CREATE TABLE " + TABLE_NAME + " ("
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TITLE + " TEXT NOT NULL, "
                 + CONTENT + " TEXT NOT NULL, "
                 + TIME + " TEXT NOT NULL);");
 

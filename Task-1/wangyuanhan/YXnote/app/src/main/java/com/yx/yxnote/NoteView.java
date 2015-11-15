@@ -26,8 +26,10 @@ public class NoteView extends Activity implements View.OnClickListener {
     private Button button_view_new;
 
     private TextView textview_view_time;
+    private EditText edittext_view_title;
     private EditText edittext_view_content;
 
+    private String title = null;
     private String content = null;
 
     private NoteDB noteDB = new NoteDB(this, "note.db", null, 1);
@@ -51,9 +53,22 @@ public class NoteView extends Activity implements View.OnClickListener {
         button_view_new.setOnClickListener(this);
 
         Intent intent = getIntent();
+        title = intent.getStringExtra("title");
+        edittext_view_title = (EditText) findViewById(R.id.edittext_note_view_title);
+        if (title.equals("无标题")) {
+            edittext_view_title.setHint("请在这里输入标题");
+        } else {
+            edittext_view_title.setText(title);
+        }
+
+        content = getContent();
         edittext_view_content = (EditText) findViewById(R.id.edittext_note_view_content);
-        content = intent.getStringExtra("content");
-        edittext_view_content.setText(content);
+        if (content.equals("无内容")) {
+            edittext_view_content.setHint("请在这里输入内容");
+        } else {
+            edittext_view_content.setText(content);
+        }
+
 
         textview_view_time = (TextView) findViewById(R.id.textview_note_view_time);
         textview_view_time.setText(getOldTime());
@@ -75,11 +90,23 @@ public class NoteView extends Activity implements View.OnClickListener {
 
             case R.id.button_note_view_finish:
 
-                if ((edittext_view_content.getText().toString()).equals("") == false) {
+                if (((edittext_view_title.getText().toString()).equals("") == false) ||
+                    (edittext_view_content.getText().toString()).equals("") == false) {
 
                     ContentValues values = new ContentValues();
 
-                    values.put("content", edittext_view_content.getText().toString());
+                    if (edittext_view_title.getText().toString().equals("") == true) {
+                        values.put("title", "无标题");
+                    } else {
+                        values.put("title", edittext_view_title.getText().toString());
+                    }
+
+                    if (edittext_view_content.getText().toString().equals("") == true) {
+                        values.put("content", "无内容");
+                    } else {
+                        values.put("content", edittext_view_content.getText().toString());
+                    }
+
                     values.put("time", getNewTime());
                     db.update("note", values, "content = ?", new String[]{content});
                 } else {
@@ -108,6 +135,29 @@ public class NoteView extends Activity implements View.OnClickListener {
         }
     }
 
+    private String getContent() {
+
+        String str = null;
+
+        SQLiteDatabase db = noteDB.getWritableDatabase();
+        Cursor cursor = db.query("note", null, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                if (title.equals(cursor.getString(cursor.getColumnIndex("title")))) {
+
+                    str = cursor.getString(cursor.getColumnIndex("content"));
+                }
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return str;
+    }
+
     private String getNewTime() {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
@@ -127,7 +177,7 @@ public class NoteView extends Activity implements View.OnClickListener {
 
             do {
 
-                if (content.equals(cursor.getString(cursor.getColumnIndex("content")))) {
+                if (title.equals(cursor.getString(cursor.getColumnIndex("title")))) {
 
                     str = cursor.getString(cursor.getColumnIndex("time"));
                 }

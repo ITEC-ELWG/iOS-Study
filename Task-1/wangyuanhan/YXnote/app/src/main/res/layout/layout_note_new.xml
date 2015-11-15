@@ -49,6 +49,20 @@
             android:text="0000/0/00 00:00:00"/>
 
         <EditText
+            android:id="@+id/edittext_note_new_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:hint="请在这里输入标题"
+            android:textScaleX="1.1"
+            android:textSize="20dp"
+            android:background="#FFFFFF"
+            android:textStyle="bold"/>
+
+        <EditText
             android:id="@+id/edittext_note_new_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

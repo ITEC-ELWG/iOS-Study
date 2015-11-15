@@ -33,7 +33,7 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
             view = LayoutInflater.from(getContext()).inflate(resourceID, null);
             view_holder = new ViewHolder();
-            view_holder.note_content = (TextView) view.findViewById(R.id.textview_note_content);
+            view_holder.note_title = (TextView) view.findViewById(R.id.textview_note_title);
             view.setTag(view_holder);
         } else {
 
@@ -41,12 +41,12 @@ public class NoteAdapter extends ArrayAdapter<Note> {
             view_holder = (ViewHolder) view.getTag();
         }
 
-        view_holder.note_content.setText(note.getContent());
+        view_holder.note_title.setText(note.getTitle());
         return view;
     }
 
     class ViewHolder {
 
-        TextView note_content;
+        TextView note_title;
     }
 }

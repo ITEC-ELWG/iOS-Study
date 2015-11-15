@@ -22,6 +22,7 @@ public class NoteNew extends Activity implements View.OnClickListener{
     private Button button_new_finsh;
 
     private TextView textview_new_time;
+    private EditText edittext_new_title;
     private EditText edittext_new_content;
 
     private NoteDB noteDB;
@@ -41,6 +42,7 @@ public class NoteNew extends Activity implements View.OnClickListener{
         textview_new_time = (TextView) findViewById(R.id.textview_note_new_time);
         textview_new_time.setText(getTime());
 
+        edittext_new_title = (EditText) findViewById(R.id.edittext_note_new_title);
         edittext_new_content = (EditText) findViewById(R.id.edittext_note_new_content);
 
         noteDB = new NoteDB(this, "note.db", null, 1);
@@ -56,12 +58,24 @@ public class NoteNew extends Activity implements View.OnClickListener{
                 break;
 
             case R.id.button_note_new_finish:
-                if ((edittext_new_content.getText().toString()).equals("") == false) {
+                if (((edittext_new_title.getText().toString()).equals("") == false) ||
+                    ((edittext_new_content.getText().toString()).equals("") == false)) {
 
                     SQLiteDatabase db = noteDB.getWritableDatabase();
                     ContentValues values = new ContentValues();
 
-                    values.put("content", edittext_new_content.getText().toString());
+                    if (edittext_new_title.getText().toString().equals("") == true) {
+                        values.put("title", "无标题");
+                    } else {
+                        values.put("title", edittext_new_title.getText().toString());
+                    }
+
+                    if (edittext_new_content.getText().toString().equals("") == true) {
+                        values.put("content", "无内容");
+                    } else {
+                        values.put("content", edittext_new_content.getText().toString());
+                    }
+
                     values.put("time", getTime());
                     db.insert("note", null, values);
                 }

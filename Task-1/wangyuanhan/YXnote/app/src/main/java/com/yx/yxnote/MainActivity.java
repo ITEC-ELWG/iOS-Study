@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.content_main);
 
         button_main = (Button) findViewById(R.id.button_note_new);
         button_main.setOnClickListener(this);
@@ -48,7 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 Note note = note_list.get(position);
                 Intent intent = new Intent(MainActivity.this, NoteView.class);
-                intent.putExtra("content", note.getContent());
+                intent.putExtra("title", note.getTitle());
                 startActivity(intent);
             }
         });
@@ -67,7 +68,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 TextView search_content = (TextView) view;
                 Intent intent_search = new Intent(MainActivity.this, NoteView.class);
                 String str = (String) search_content.getText();
-                intent_search.putExtra("content", str);
+                intent_search.putExtra("title", str);
                 startActivity(intent_search);
             }
         });
@@ -97,7 +98,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             do {
 
-                Note note = new Note(cursor.getString(cursor.getColumnIndex("content")));
+                Note note = new Note(cursor.getString(cursor.getColumnIndex("title")));
                 note_list.add(note);
             } while (cursor.moveToNext());
         }
@@ -113,7 +114,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             do {
 
-                array_adpater.add(cursor.getString(cursor.getColumnIndex("content")));
+                array_adpater.add(cursor.getString(cursor.getColumnIndex("title")));
             } while (cursor.moveToNext());
         }
         cursor.close();

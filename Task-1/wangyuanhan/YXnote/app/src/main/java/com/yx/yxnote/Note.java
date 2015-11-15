@@ -5,14 +5,14 @@ package com.yx.yxnote;
  */
 public class Note {
 
-    private String content;
+    private String title;
 
-    public Note(String content) {
+    public Note(String title) {
 
-        this.content = content;
+        this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
 }
