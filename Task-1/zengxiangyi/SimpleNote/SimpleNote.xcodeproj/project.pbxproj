@@ -1,0 +1,359 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9BC9F4FB1BF03DF50070960A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F4FA1BF03DF50070960A /* main.m */; };
+		9BC9F4FE1BF03DF50070960A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F4FD1BF03DF50070960A /* AppDelegate.m */; };
+		9BC9F5031BF03DF50070960A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC9F5021BF03DF50070960A /* Assets.xcassets */; };
+		9BC9F5121BF0492B0070960A /* ItemStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F5111BF0492B0070960A /* ItemStore.m */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5881BF466610070960A /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F5871BF466610070960A /* ItemViewController.m */; settings = {ASSET_TAGS = (); }; };
+		9BC9F58A1BF478720070960A /* FooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BC9F5891BF478720070960A /* FooterView.xib */; settings = {ASSET_TAGS = (); }; };
+		9BC9F58E1BF480B00070960A /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F58C1BF480B00070960A /* DetailViewController.m */; settings = {ASSET_TAGS = (); }; };
+		9BC9F58F1BF480B00070960A /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BC9F58D1BF480B00070960A /* DetailViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5931BF5A85F0070960A /* simpleNote.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F5901BF57F1B0070960A /* simpleNote.xcdatamodeld */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5991BF5AED10070960A /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F5981BF5AED10070960A /* Item.m */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5A01BF5B33A0070960A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC9F59A1BF5B33A0070960A /* libsqlite3.dylib */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5A11BF5B33A0070960A /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC9F59B1BF5B33A0070960A /* libsqlite3.0.dylib */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5A21BF5B33A0070960A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC9F59C1BF5B33A0070960A /* UIKit.framework */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5A31BF5B33A0070960A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC9F59D1BF5B33A0070960A /* Foundation.framework */; settings = {ASSET_TAGS = (); }; };
+		9BC9F5A41BF5B33A0070960A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC9F59E1BF5B33A0070960A /* CoreGraphics.framework */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9BC9F4F61BF03DF50070960A /* SimpleNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BC9F4FA1BF03DF50070960A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9BC9F4FC1BF03DF50070960A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9BC9F4FD1BF03DF50070960A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9BC9F5021BF03DF50070960A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9BC9F5071BF03DF50070960A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BC9F5101BF0492B0070960A /* ItemStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStore.h; sourceTree = "<group>"; };
+		9BC9F5111BF0492B0070960A /* ItemStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStore.m; sourceTree = "<group>"; };
+		9BC9F5861BF466610070960A /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ItemViewController.h; path = ../ItemViewController.h; sourceTree = "<group>"; };
+		9BC9F5871BF466610070960A /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ItemViewController.m; path = ../ItemViewController.m; sourceTree = "<group>"; };
+		9BC9F5891BF478720070960A /* FooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterView.xib; sourceTree = "<group>"; };
+		9BC9F58B1BF480B00070960A /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ../DetailViewController.h; sourceTree = "<group>"; };
+		9BC9F58C1BF480B00070960A /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ../DetailViewController.m; sourceTree = "<group>"; };
+		9BC9F58D1BF480B00070960A /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DetailViewController.xib; path = ../DetailViewController.xib; sourceTree = "<group>"; };
+		9BC9F5911BF57F1B0070960A /* SimpleNote.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleNote.xcdatamodel; sourceTree = "<group>"; };
+		9BC9F5971BF5AED10070960A /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		9BC9F5981BF5AED10070960A /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
+		9BC9F59A1BF5B33A0070960A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SOURCE_ROOT; };
+		9BC9F59B1BF5B33A0070960A /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SOURCE_ROOT; };
+		9BC9F59C1BF5B33A0070960A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = "<absolute>"; };
+		9BC9F59D1BF5B33A0070960A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		9BC9F59E1BF5B33A0070960A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9BC9F4F31BF03DF50070960A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BC9F5A11BF5B33A0070960A /* libsqlite3.0.dylib in Frameworks */,
+				9BC9F5A21BF5B33A0070960A /* UIKit.framework in Frameworks */,
+				9BC9F5A01BF5B33A0070960A /* libsqlite3.dylib in Frameworks */,
+				9BC9F5A41BF5B33A0070960A /* CoreGraphics.framework in Frameworks */,
+				9BC9F5A31BF5B33A0070960A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9BC9F4ED1BF03DF50070960A = {
+			isa = PBXGroup;
+			children = (
+				9BC9F59F1BF5B33A0070960A /* Frameworks */,
+				9BC9F4F81BF03DF50070960A /* SimpleNote */,
+				9BC9F4F71BF03DF50070960A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9BC9F4F71BF03DF50070960A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9BC9F4F61BF03DF50070960A /* SimpleNote.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9BC9F4F81BF03DF50070960A /* SimpleNote */ = {
+			isa = PBXGroup;
+			children = (
+				9BC9F58B1BF480B00070960A /* DetailViewController.h */,
+				9BC9F58C1BF480B00070960A /* DetailViewController.m */,
+				9BC9F58D1BF480B00070960A /* DetailViewController.xib */,
+				9BC9F5861BF466610070960A /* ItemViewController.h */,
+				9BC9F5871BF466610070960A /* ItemViewController.m */,
+				9BC9F5891BF478720070960A /* FooterView.xib */,
+				9BC9F5971BF5AED10070960A /* Item.h */,
+				9BC9F5981BF5AED10070960A /* Item.m */,
+				9BC9F4FC1BF03DF50070960A /* AppDelegate.h */,
+				9BC9F4FD1BF03DF50070960A /* AppDelegate.m */,
+				9BC9F5901BF57F1B0070960A /* simpleNote.xcdatamodeld */,
+				9BC9F5101BF0492B0070960A /* ItemStore.h */,
+				9BC9F5111BF0492B0070960A /* ItemStore.m */,
+				9BC9F5021BF03DF50070960A /* Assets.xcassets */,
+				9BC9F5071BF03DF50070960A /* Info.plist */,
+				9BC9F4F91BF03DF50070960A /* Supporting Files */,
+			);
+			path = SimpleNote;
+			sourceTree = "<group>";
+		};
+		9BC9F4F91BF03DF50070960A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9BC9F4FA1BF03DF50070960A /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9BC9F59F1BF5B33A0070960A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9BC9F59A1BF5B33A0070960A /* libsqlite3.dylib */,
+				9BC9F59B1BF5B33A0070960A /* libsqlite3.0.dylib */,
+				9BC9F59C1BF5B33A0070960A /* UIKit.framework */,
+				9BC9F59D1BF5B33A0070960A /* Foundation.framework */,
+				9BC9F59E1BF5B33A0070960A /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			path = ../../../Downloads/StuInfo;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9BC9F4F51BF03DF50070960A /* SimpleNote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BC9F50A1BF03DF50070960A /* Build configuration list for PBXNativeTarget "SimpleNote" */;
+			buildPhases = (
+				9BC9F4F21BF03DF50070960A /* Sources */,
+				9BC9F4F31BF03DF50070960A /* Frameworks */,
+				9BC9F4F41BF03DF50070960A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleNote;
+			productName = SimpleNote;
+			productReference = 9BC9F4F61BF03DF50070960A /* SimpleNote.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9BC9F4EE1BF03DF50070960A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = zxy;
+				TargetAttributes = {
+					9BC9F4F51BF03DF50070960A = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 9BC9F4F11BF03DF50070960A /* Build configuration list for PBXProject "SimpleNote" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9BC9F4ED1BF03DF50070960A;
+			productRefGroup = 9BC9F4F71BF03DF50070960A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9BC9F4F51BF03DF50070960A /* SimpleNote */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9BC9F4F41BF03DF50070960A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BC9F5031BF03DF50070960A /* Assets.xcassets in Resources */,
+				9BC9F58F1BF480B00070960A /* DetailViewController.xib in Resources */,
+				9BC9F58A1BF478720070960A /* FooterView.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9BC9F4F21BF03DF50070960A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BC9F5931BF5A85F0070960A /* simpleNote.xcdatamodeld in Sources */,
+				9BC9F5881BF466610070960A /* ItemViewController.m in Sources */,
+				9BC9F4FE1BF03DF50070960A /* AppDelegate.m in Sources */,
+				9BC9F4FB1BF03DF50070960A /* main.m in Sources */,
+				9BC9F5121BF0492B0070960A /* ItemStore.m in Sources */,
+				9BC9F5991BF5AED10070960A /* Item.m in Sources */,
+				9BC9F58E1BF480B00070960A /* DetailViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9BC9F5081BF03DF50070960A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9BC9F5091BF03DF50070960A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9BC9F50B1BF03DF50070960A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleNote/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/usr/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = obj.SimpleNote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9BC9F50C1BF03DF50070960A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleNote/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/usr/lib",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = obj.SimpleNote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9BC9F4F11BF03DF50070960A /* Build configuration list for PBXProject "SimpleNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BC9F5081BF03DF50070960A /* Debug */,
+				9BC9F5091BF03DF50070960A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9BC9F50A1BF03DF50070960A /* Build configuration list for PBXNativeTarget "SimpleNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BC9F50B1BF03DF50070960A /* Debug */,
+				9BC9F50C1BF03DF50070960A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9BC9F5901BF57F1B0070960A /* simpleNote.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9BC9F5911BF57F1B0070960A /* SimpleNote.xcdatamodel */,
+			);
+			currentVersion = 9BC9F5911BF57F1B0070960A /* SimpleNote.xcdatamodel */;
+			path = simpleNote.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 9BC9F4EE1BF03DF50070960A /* Project object */;
+}
