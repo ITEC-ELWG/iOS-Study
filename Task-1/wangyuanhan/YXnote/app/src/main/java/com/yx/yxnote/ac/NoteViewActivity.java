@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Mr.Lonely on 2015/11/13.
+ * Created by YX on 2015/11/13.
  */
 public class NoteViewActivity extends Activity implements View.OnClickListener {
 

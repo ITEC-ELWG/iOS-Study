@@ -1,11 +1,10 @@
 package com.yx.yxnote.ac;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,23 +13,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.yx.yxnote.ad.NoteAdapter;
 import com.yx.yxnote.R;
-import com.yx.yxnote.db.Note;
+import com.yx.yxnote.ad.YXadapter;
 import com.yx.yxnote.db.NoteDB;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends ListActivity implements View.OnClickListener {
 
     private Button button_main;
     private AutoCompleteTextView actv;
-
-    private List<Note> note_list = new ArrayList<Note>();
+    private YXadapter<String> adapter;
     private ArrayAdapter<String> array_adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +43,33 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TextView search_content = (TextView) view;
-                Intent intent_search = new Intent(MainActivity.this, NoteViewActivity.class);
-                String str = (String) search_content.getText();
-                intent_search.putExtra("title", str);
-                startActivity(intent_search);
+            TextView search_content = (TextView) view;
+            Intent intent_search = new Intent(MainActivity.this, NoteViewActivity.class);
+            String str = (String) search_content.getText();
+            intent_search.putExtra("title", str);
+            startActivity(intent_search);
             }
         });
 
-        note_list = new NoteDB(this, "note.db", null, 1, note_list).initNote();
-        NoteAdapter adapter = new NoteAdapter(MainActivity.this, R.layout.class_note, note_list);
-        ListView list_view = (ListView) findViewById(R.id.listview_note_exist);
-        list_view.setAdapter(adapter);
+        adapter = new YXadapter<String>(this, android.R.layout.simple_list_item_1) {
+            @Override
+            protected void initList(int position, View convertView, ViewGroup parent) {
+
+                ((TextView)(convertView)).setText(getItem(position).toString());
+            }
+        };
+
+        setListAdapter(adapter);
+        adapter = new NoteDB(this, "note.db", null, 1, adapter).initNote();
+
+
+        ListView list_view = (ListView) findViewById(android.R.id.list);
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Note note = note_list.get(position);
                 Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
-                intent.putExtra("title", note.getTitle());
+                intent.putExtra("title", adapter.getItem(position));
                 startActivity(intent);
             }
         });

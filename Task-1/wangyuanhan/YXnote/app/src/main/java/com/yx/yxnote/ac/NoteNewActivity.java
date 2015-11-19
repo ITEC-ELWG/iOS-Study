@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Mr.Lonely on 2015/11/12.
+ * Created by YX on 2015/11/12.
  */
 public class NoteNewActivity extends Activity implements View.OnClickListener{
 

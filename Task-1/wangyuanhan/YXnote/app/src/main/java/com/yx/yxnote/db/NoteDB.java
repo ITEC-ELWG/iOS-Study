@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.ArrayAdapter;
 
+import com.yx.yxnote.ad.YXadapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,7 @@ public class NoteDB extends SQLiteOpenHelper{
     private static final String DB_TIME = "time";
 
     private SQLiteDatabase db = this.getWritableDatabase();
-
-    private List<Note> note_list = new ArrayList<Note>();
+    private YXadapter<String> adapter;
     private ArrayAdapter<String> array_adapter;
 
     private String title = null;
@@ -32,10 +33,10 @@ public class NoteDB extends SQLiteOpenHelper{
         super(context, name, factory, version);
     }
 
-    public NoteDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, List<Note> note_list) {
+    public NoteDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, YXadapter<String> adapter) {
 
         super(context, name, factory, version);
-        this.note_list = note_list;
+        this.adapter = adapter;
     }
 
     public NoteDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, ArrayAdapter<String> array_adapter) {
@@ -66,6 +67,22 @@ public class NoteDB extends SQLiteOpenHelper{
 
     }
 
+    public YXadapter<String> initNote() {
+
+        Cursor cursor = db.query("note", null, null, null, null, null, "time DESC", null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                adapter.add(cursor.getString(cursor.getColumnIndex("title")));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return adapter;
+    }
+
     public ArrayAdapter<String> searchAdd() {
 
         Cursor cursor = db.query("note", null, null, null, null, null, "time DESC", null);
@@ -82,21 +99,11 @@ public class NoteDB extends SQLiteOpenHelper{
         return array_adapter;
     }
 
-    public List<Note> initNote() {
+    public int getId(String str) {
 
-        Cursor cursor = db.query("note", null, null, null, null, null, "time DESC", null);
+        int id = 0;
 
-        if (cursor.moveToFirst()) {
-
-            do {
-
-                Note note = new Note(cursor.getString(cursor.getColumnIndex("title")));
-                note_list.add(note);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return note_list;
+        return id;
     }
 
     public String getContent() {
