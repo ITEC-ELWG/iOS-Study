@@ -6,11 +6,11 @@
 //  Copyright © 2015年 zxy. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import "ItemViewController.h"
+#import "SNAppDelegate.h"
+#import "SNItemViewController.h"
 
 
-@implementation AppDelegate
+@implementation SNAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -18,7 +18,7 @@
     // Override point for customization after application launch.
     
     // Create a ItemsViewController
-    ItemViewController *itemsViewController = [[ItemViewController alloc] init];
+    SNItemViewController *itemsViewController = [[SNItemViewController alloc] init];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
 
