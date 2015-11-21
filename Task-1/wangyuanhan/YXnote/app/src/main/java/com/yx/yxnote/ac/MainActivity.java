@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.yx.yxnote.R;
 import com.yx.yxnote.ad.YXadapter;
 import com.yx.yxnote.db.NoteDB;
@@ -53,9 +54,9 @@ public class MainActivity extends ListActivity implements View.OnClickListener {
 
         adapter = new YXadapter<String>(this, android.R.layout.simple_list_item_1) {
             @Override
-            protected void initList(int position, View convertView, ViewGroup parent) {
+            protected void initList(int position, View view, ViewGroup parent) {
 
-                ((TextView)(convertView)).setText(getItem(position).toString());
+                ((TextView)(view)).setText(getItem(position).toString());
             }
         };
 

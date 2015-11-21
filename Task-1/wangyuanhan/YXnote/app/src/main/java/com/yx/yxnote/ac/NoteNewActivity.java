@@ -23,12 +23,9 @@ public class NoteNewActivity extends Activity implements View.OnClickListener{
 
     private Button button_new_back;
     private Button button_new_finsh;
-
     private TextView textview_new_time;
     private EditText edittext_new_title;
     private EditText edittext_new_content;
-
-    private NoteDB noteDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,7 +3,6 @@ package com.yx.yxnote.ac;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -27,11 +26,9 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
     private Button button_view_finish;
     private Button button_view_delete;
     private Button button_view_new;
-
     private TextView textview_view_time;
     private EditText edittext_view_title;
     private EditText edittext_view_content;
-
     private String title = null;
     private String content = null;
 

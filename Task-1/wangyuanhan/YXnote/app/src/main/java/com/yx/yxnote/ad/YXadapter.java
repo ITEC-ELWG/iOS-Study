@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import com.yx.yxnote.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +17,9 @@ import java.util.List;
  */
 public abstract class YXadapter<X> extends BaseAdapter {
 
-    private Context context;
     private int resID = 0;
 
+    private Context context;
     private List<X> list = new ArrayList<X>();
 
     protected abstract void initList(int position, View convertView, ViewGroup parent);
@@ -48,19 +51,34 @@ public abstract class YXadapter<X> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        
+        View view;
+        YXholder holder;
 
         if (convertView == null) {
 
-            convertView = LayoutInflater.from(getContext()).inflate(resID, null);
+            view = LayoutInflater.from(getContext()).inflate(resID, null);
+            holder = new YXholder();
+            holder.title = (TextView) view.findViewById(R.id.textview_note_title);
+            view.setTag(holder);
+        } else {
+
+            view = convertView;
+            holder = (YXholder) view.getTag();
         }
 
-        initList(position, convertView, parent);
+        initList(position, view, parent);
 
-        return convertView;
+        return view;
     }
 
     public void add(X item) {
 
         list.add(item);
+    }
+
+    public class YXholder {
+
+        public TextView title;
     }
 }

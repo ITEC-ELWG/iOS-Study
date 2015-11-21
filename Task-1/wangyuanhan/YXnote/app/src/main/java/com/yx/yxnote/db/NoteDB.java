@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import com.yx.yxnote.ad.YXadapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by YX on 2015/11/13.
@@ -22,11 +21,11 @@ public class NoteDB extends SQLiteOpenHelper{
     private static final String DB_CONTENT = "content";
     private static final String DB_TIME = "time";
 
+    private String title = null;
     private SQLiteDatabase db = this.getWritableDatabase();
     private YXadapter<String> adapter;
     private ArrayAdapter<String> array_adapter;
-
-    private String title = null;
+    private ArrayList id;
 
     public NoteDB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
 
@@ -97,13 +96,6 @@ public class NoteDB extends SQLiteOpenHelper{
         cursor.close();
 
         return array_adapter;
-    }
-
-    public int getId(String str) {
-
-        int id = 0;
-
-        return id;
     }
 
     public String getContent() {
