@@ -16,6 +16,9 @@
 		9B2304DC1BFCA8DF00E3A286 /* SNDBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304DB1BFCA8DF00E3A286 /* SNDBHelper.m */; settings = {ASSET_TAGS = (); }; };
 		9B2304E01BFD85F200E3A286 /* SNDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304DE1BFD85F200E3A286 /* SNDetailViewController.m */; settings = {ASSET_TAGS = (); }; };
 		9B2304E11BFD85F200E3A286 /* SNDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304DF1BFD85F200E3A286 /* SNDetailViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		9B2304E71C00159500E3A286 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304E61C00159500E3A286 /* star.png */; settings = {ASSET_TAGS = (); }; };
+		9B2304E91C00194000E3A286 /* emptyStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304E81C00194000E3A286 /* emptyStar.png */; settings = {ASSET_TAGS = (); }; };
+		9B2304EB1C02EFB300E3A286 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304EA1C02EFB300E3A286 /* home.png */; settings = {ASSET_TAGS = (); }; };
 		9BC9F4FB1BF03DF50070960A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F4FA1BF03DF50070960A /* main.m */; };
 		9BC9F4FE1BF03DF50070960A /* SNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F4FD1BF03DF50070960A /* SNAppDelegate.m */; };
 		9BC9F5031BF03DF50070960A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC9F5021BF03DF50070960A /* Assets.xcassets */; };
@@ -46,6 +49,9 @@
 		9B2304DD1BFD85F200E3A286 /* SNDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNDetailViewController.h; sourceTree = "<group>"; };
 		9B2304DE1BFD85F200E3A286 /* SNDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNDetailViewController.m; sourceTree = "<group>"; };
 		9B2304DF1BFD85F200E3A286 /* SNDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SNDetailViewController.xib; sourceTree = "<group>"; };
+		9B2304E61C00159500E3A286 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
+		9B2304E81C00194000E3A286 /* emptyStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyStar.png; sourceTree = "<group>"; };
+		9B2304EA1C02EFB300E3A286 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
 		9BC9F4F61BF03DF50070960A /* SimpleNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BC9F4FA1BF03DF50070960A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9BC9F4FC1BF03DF50070960A /* SNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SNAppDelegate.h; sourceTree = "<group>"; };
@@ -123,7 +129,10 @@
 				9B2304D71BFC902000E3A286 /* SNItemViewController.m */,
 				9B2304DA1BFCA8DF00E3A286 /* SNDBHelper.h */,
 				9B2304DB1BFCA8DF00E3A286 /* SNDBHelper.m */,
+				9B2304E61C00159500E3A286 /* star.png */,
+				9B2304EA1C02EFB300E3A286 /* home.png */,
 				9BC9F5971BF5AED10070960A /* SNItem.h */,
+				9B2304E81C00194000E3A286 /* emptyStar.png */,
 				9BC9F5981BF5AED10070960A /* SNItem.m */,
 				9BC9F4FC1BF03DF50070960A /* SNAppDelegate.h */,
 				9BC9F4FD1BF03DF50070960A /* SNAppDelegate.m */,
@@ -214,7 +223,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B2304E11BFD85F200E3A286 /* SNDetailViewController.xib in Resources */,
+				9B2304EB1C02EFB300E3A286 /* home.png in Resources */,
+				9B2304E91C00194000E3A286 /* emptyStar.png in Resources */,
 				9BC9F5031BF03DF50070960A /* Assets.xcassets in Resources */,
+				9B2304E71C00159500E3A286 /* star.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +343,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/usr/lib",
+					"$(SDKROOT)/usr/lib/system/introspection",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = obj.SimpleNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -346,6 +359,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/usr/lib",
+					"$(SDKROOT)/usr/lib/system/introspection",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = obj.SimpleNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";

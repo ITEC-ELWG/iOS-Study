@@ -15,6 +15,7 @@ static NSString *const TITLE = @"title";
 static NSString *const CONTENT = @"content";
 static NSString *const DATE = @"date";
 static NSString *const ID = @"id";
+static NSString *const ISFAVOR = @"isfavor";
 
 @implementation SNDBHelper
 
@@ -34,74 +35,77 @@ static NSString *const ID = @"id";
     //获得数据库文件的路径
     NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *dbPath = [doc stringByAppendingPathComponent:DB_NAME];
-    //获得数据库
-    FMDatabase *db = [FMDatabase databaseWithPath:dbPath];
-    //打开数据库
-    self.db = db;
-    self.dbPath = dbPath;
-    if ([_db open])
-    {
-        //创表
-        [_db executeUpdate:@"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE, CONTENT, DATE)"];
-        [_db close];
-    }
+    
+    self.queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+    self.dispachQueue = dispatch_queue_create("newThread", NULL);
+    
+    dispatch_async(_dispachQueue, ^{
+        [_queue inDatabase:^(FMDatabase *db) {
+            [db executeUpdate:@"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE, CONTENT, DATE, ISFAVOR)"];
+        }];
+    });
 }
 
 #pragma mark 数据库增删改查
 
 - (void)getAllData
 {
-    if ([_db open])
-    {
-        NSString *sql = @"SELECT * FROM INFO";
-        FMResultSet *result = [_db executeQuery:sql];
-        while ([result next])
-        {
-            NSString *title = [result stringForColumn:TITLE];
-            NSString *content = [result stringForColumn:CONTENT];
-            NSString *date = [result stringForColumn:DATE];
-            NSString *idNum = [result stringForColumn:ID];
+    dispatch_async(_dispachQueue, ^{
+        [_queue inDatabase:^(FMDatabase *db) {
+            NSString *sql = @"SELECT * FROM INFO";
+            FMResultSet *result = [db executeQuery:sql];
             
-            SNItem *newItem = [[SNItem sharedStore] createItem];
-            newItem.title = title;
-            newItem.detailText = content;
-            newItem.dateCreated = date;
-            newItem.idNum = idNum;
-            
-        }
-        [_db close];
-    }
+            while ([result next])
+            {
+                //从数据库中获取内容
+                NSString *title = [result stringForColumn:TITLE];
+                NSString *content = [result stringForColumn:CONTENT];
+                NSString *date = [result stringForColumn:DATE];
+                NSString *idNum = [result stringForColumn:ID];
+                NSString *isFavor = [result stringForColumn:ISFAVOR];
+                
+                //将数据库的内容存到Item数组
+                SNItem *newItem = [[SNItem sharedStore] createItem];
+                newItem.title = title;
+                newItem.detailText = content;
+                newItem.dateCreated = date;
+                newItem.idNum = idNum;
+                newItem.isFavor = isFavor;
+            }
+        }];
+    });
 }
 
-- (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText
+- (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor
 {
-    if ([_db open])
-    {
-        NSString *sql = @"INSERT INTO INFO (title, content, date) VALUES(?, ?, ?)";
-        [_db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText];
-        [_db close];
-    }
+    dispatch_async(_dispachQueue, ^{
+        [_queue inDatabase:^(FMDatabase *db) {
+            NSString *sql = @"INSERT INTO INFO (TITLE, CONTENT, DATE, ISFAVOR) VALUES(?, ?, ?, ?)";
+            [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, isFavor];
+
+        }];
+    });
 }
 
-- (void)deleteData:(NSString *)deleteID
+- (void)deleteDataByTitle:(NSString *)title content:(NSString *)content
 {
-    if ([_db open])
-    {
-        NSString *sql = @"DELETE FROM INFO WHERE ID = ?";
-        [_db executeUpdate:sql, deleteID];
+    dispatch_async(_dispachQueue, ^{
+        [_queue inDatabase:^(FMDatabase *db) {
+            NSString *sql = @"DELETE FROM INFO WHERE TITLE = ? AND CONTENT = ?";
+            [db executeUpdate:sql, title, content];
+        }];
+    });
+}
+
+- (void)updateTitle:(NSString *)title content:(NSString *)content isFavor:(NSString *)isFavor byOldTitle:(NSString *)oldTitle oldContent:(NSString *)oldContent
+{
+    dispatch_async(_dispachQueue, ^{
+        [_queue inDatabase:^(FMDatabase *db) {
+            NSString *sql = @"UPDATE INFO SET TITLE = ?, CONTENT = ?, ISFAVOR = ? WHERE TITLE = ? AND CONTENT = ?";
+            [db executeUpdate: sql, title, content, isFavor, oldTitle, oldContent];
         
-        [_db close];
-    }
-}
-
-- (void)updateTitle:(NSString *)title content:(NSString *)content by:(NSString *)ID
-{
-    if ([_db open])
-    {
-        NSString *sql = @"UPDATE INFO SET TITLE = ?, CONTENT = ? WHERE ID = ?";
-        [_db executeUpdate: sql, title, content, ID];
-        
-    }
+        }];
+    });
 }
 
 
