@@ -14,6 +14,7 @@
 @property (nonatomic, copy) NSString *detailText;
 @property (nonatomic, strong) NSString *dateCreated;
 @property (nonatomic) NSString *idNum;
+@property (nonatomic) NSString *isFavor;
 
 @property (nonatomic, readonly) NSArray *allItems;
 

@@ -23,6 +23,7 @@
     {
         self.title = title;
         self.detailText = dtext;
+        self.isFavor = Nil;
     }
     
     return self;

@@ -12,8 +12,9 @@
 
 @interface SNDBHelper : NSObject
 
-@property (nonatomic,strong) FMDatabase *db;
 @property (nonatomic, copy) NSString *dbPath;
+@property (nonatomic, strong) FMDatabaseQueue *queue;
+@property (nonatomic, strong) dispatch_queue_t dispachQueue;
 
 + (id)sharedDataBase;
 
@@ -21,9 +22,9 @@
 
 - (void)getAllData;
 
-- (void)deleteData:(NSString *)deleteID;
+- (void)deleteDataByTitle:(NSString *)title content:(NSString *)content;
 
-- (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText;
+- (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor;
 
-- (void)updateTitle:(NSString *)title content:(NSString *)content by:(NSString *)ID;
+- (void)updateTitle:(NSString *)title content:(NSString *)content isFavor:(NSString *)isFavor byOldTitle:(NSString *)oldTitle oldContent:(NSString *)oldContent;
 @end

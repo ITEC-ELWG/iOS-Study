@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "sqlite3.h"
 
 @class SNItem;
 

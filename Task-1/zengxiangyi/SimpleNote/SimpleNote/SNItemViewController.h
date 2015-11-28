@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "sqlite3.h"
 
 @interface SNItemViewController : UITableViewController<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
-
-- (void)createThread;
-
 @end
