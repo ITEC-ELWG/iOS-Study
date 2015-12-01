@@ -20,26 +20,27 @@ import java.util.Date;
  * Created by YX on 2015/11/12.
  */
 public class NoteNewActivity extends Activity implements View.OnClickListener{
-    private Button button_new_back;
-    private Button button_new_finsh;
-    private TextView textview_new_time;
-    private EditText edittext_new_title;
-    private EditText edittext_new_content;
+    private Button buttonBack;
+    private Button buttonFinsh;
+    private TextView textviewTime;
+    private EditText edittextTitle;
+    private EditText edittextContent;
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_new);
 
-        button_new_back = (Button) findViewById(R.id.button_note_new_back);
-        button_new_finsh = (Button) findViewById(R.id.button_note_new_finish);
-        textview_new_time = (TextView) findViewById(R.id.textview_note_new_time);
-        edittext_new_title = (EditText) findViewById(R.id.edittext_note_new_title);
-        edittext_new_content = (EditText) findViewById(R.id.edittext_note_new_content);
+        buttonBack = (Button) findViewById(R.id.button_note_new_back);
+        buttonFinsh = (Button) findViewById(R.id.button_note_new_finish);
+        textviewTime = (TextView) findViewById(R.id.textview_note_new_time);
+        edittextTitle = (EditText) findViewById(R.id.edittext_note_new_title);
+        edittextContent = (EditText) findViewById(R.id.edittext_note_new_content);
 
-        button_new_back.setOnClickListener(this);
-        button_new_finsh.setOnClickListener(this);
-        textview_new_time.setText(getTime());
+        buttonBack.setOnClickListener(this);
+        buttonFinsh.setOnClickListener(this);
+        textviewTime.setText(getTime());
     }
 
     @Override
@@ -50,21 +51,21 @@ public class NoteNewActivity extends Activity implements View.OnClickListener{
                 break;
 
             case R.id.button_note_new_finish:
-                if (((edittext_new_title.getText().toString()).equals("") == false) ||
-                        ((edittext_new_content.getText().toString()).equals("") == false)) {
-                    SQLiteDatabase db = new NoteDB(this, "note.db", null, 1).getWritableDatabase();
+                if (((edittextTitle.getText().toString()).equals("") == false) ||
+                        ((edittextContent.getText().toString()).equals("") == false)) {
+                    SQLiteDatabase db = new NoteDB(this).getWritableDatabase();
                     ContentValues values = new ContentValues();
 
-                    if (edittext_new_title.getText().toString().equals("") == true) {
+                    if (edittextTitle.getText().toString().equals("") == true) {
                         values.put("title", "无标题");
                     } else {
-                        values.put("title", edittext_new_title.getText().toString());
+                        values.put("title", edittextTitle.getText().toString());
                     }
 
-                    if (edittext_new_content.getText().toString().equals("") == true) {
+                    if (edittextContent.getText().toString().equals("") == true) {
                         values.put("content", "无内容");
                     } else {
-                        values.put("content", edittext_new_content.getText().toString());
+                        values.put("content", edittextContent.getText().toString());
                     }
 
                     values.put("time", getTime());
@@ -79,7 +80,6 @@ public class NoteNewActivity extends Activity implements View.OnClickListener{
     }
 
     private String getTime() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         Date curDate = new Date();
         String str = format.format(curDate);
         return str;

@@ -21,59 +21,67 @@ import java.util.Date;
  * Created by YX on 2015/11/13.
  */
 public class NoteViewActivity extends Activity implements View.OnClickListener {
-    private Button button_view_back;
-    private Button button_view_finish;
-    private Button button_view_delete;
-    private Button button_view_new;
-    private TextView textview_view_time;
-    private EditText edittext_view_title;
-    private EditText edittext_view_content;
+    private Button buttonBack;
+    private Button buttonFinish;
+    private Button buttonDelete;
+    private Button buttonNew;
+    private TextView textViewTime;
+    private EditText editTextTitle;
+    private EditText editTextContent;
+
+    private int id = 0;
     private String title = null;
     private String content = null;
+    private String time = null;
+
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_view);
 
-        button_view_back = (Button) findViewById(R.id.button_note_view_back);
-        button_view_finish = (Button) findViewById(R.id.button_note_view_finish);
-        button_view_delete = (Button) findViewById(R.id.button_note_view_delete);
-        button_view_new = (Button) findViewById(R.id.button_note_view_new);
-        edittext_view_title = (EditText) findViewById(R.id.edittext_note_view_title);
-        textview_view_time = (TextView) findViewById(R.id.textview_note_view_time);
+        buttonBack = (Button) findViewById(R.id.button_note_view_back);
+        buttonFinish = (Button) findViewById(R.id.button_note_view_finish);
+        buttonDelete = (Button) findViewById(R.id.button_note_view_delete);
+        buttonNew = (Button) findViewById(R.id.button_note_view_new);
+        editTextTitle = (EditText) findViewById(R.id.edittext_note_view_title);
+        editTextContent = (EditText) findViewById(R.id.edittext_note_view_content);
+        textViewTime = (TextView) findViewById(R.id.textview_note_view_time);
 
-        button_view_back.setOnClickListener(this);
-        button_view_finish.setOnClickListener(this);
-        button_view_delete.setOnClickListener(this);
-        button_view_new.setOnClickListener(this);
+        buttonBack.setOnClickListener(this);
+        buttonFinish.setOnClickListener(this);
+        buttonDelete.setOnClickListener(this);
+        buttonNew.setOnClickListener(this);
 
         Intent intent = getIntent();
-        title = intent.getStringExtra("title");
+        Bundle bundle = getIntent().getExtras();
+        id = bundle.getInt(NoteDB.DB_COLUMN_ID);
+        title = intent.getStringExtra(NoteDB.DB_NOTE_TITLE);
+        content = intent.getStringExtra(NoteDB.DB_NOTE_CONTENT);
+        time = intent.getStringExtra(NoteDB.DB_NOTE_TIME);
 
         if (title.equals("无标题")) {
-            edittext_view_title.setHint("请在这里输入标题");
+            editTextTitle.setHint("请在这里输入标题");
         } else {
-            edittext_view_title.setText(title);
+            editTextTitle.setText(title);
         }
 
-        content = new NoteDB(this, "note.db", null, 1, title).getContent();
-        edittext_view_content = (EditText) findViewById(R.id.edittext_note_view_content);
         if (content.equals("无内容")) {
-            edittext_view_content.setHint("请在这里输入内容");
+            editTextContent.setHint("请在这里输入内容");
         } else {
-            edittext_view_content.setText(content);
+            editTextContent.setText(content);
         }
 
-        textview_view_time.setText(new NoteDB(this, "note.db", null, 1, title).getTime());
+        textViewTime.setText(time);
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent_main = new Intent(NoteViewActivity.this, MainActivity.class);
-        Intent intent_new = new Intent(NoteViewActivity.this, NoteNewActivity.class);
+        Intent intentMain = new Intent(NoteViewActivity.this, MainActivity.class);
+        Intent intentNew = new Intent(NoteViewActivity.this, NoteNewActivity.class);
 
-        NoteDB noteDB = new NoteDB(this, "note.db", null, 1);
+        NoteDB noteDB = new NoteDB(this);
         SQLiteDatabase db = noteDB.getWritableDatabase();
 
         switch (v.getId()) {
@@ -82,42 +90,42 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.button_note_view_finish:
-                if (((edittext_view_title.getText().toString()).equals("") == false) ||
-                        (edittext_view_content.getText().toString()).equals("") == false) {
+                if (((editTextTitle.getText().toString()).equals("") == false) ||
+                        (editTextContent.getText().toString()).equals("") == false) {
                     ContentValues values = new ContentValues();
 
-                    if (edittext_view_title.getText().toString().equals("") == true) {
-                        values.put("title", "无标题");
+                    if (editTextTitle.getText().toString().equals("") == true) {
+                        values.put(NoteDB.DB_NOTE_TITLE, "无标题");
                     } else {
-                        values.put("title", edittext_view_title.getText().toString());
+                        values.put(NoteDB.DB_NOTE_TITLE, editTextTitle.getText().toString());
                     }
 
-                    if (edittext_view_content.getText().toString().equals("") == true) {
-                        values.put("content", "无内容");
+                    if (editTextContent.getText().toString().equals("") == true) {
+                        values.put(NoteDB.DB_NOTE_CONTENT, "无内容");
                     } else {
-                        values.put("content", edittext_view_content.getText().toString());
+                        values.put(NoteDB.DB_NOTE_CONTENT, editTextContent.getText().toString());
                     }
 
-                    values.put("time", getTime());
-                    db.update("note", values, "title = ?", new String[]{title});
+                    values.put(NoteDB.DB_NOTE_TIME, getTime());
+                    db.update(NoteDB.DB_TABLE_NAME, values, "_id =" + id, null);
                 } else {
-                    db.delete("note", "title = ?", new String[]{title});
+                    db.delete(NoteDB.DB_TABLE_NAME, "_id =" + id, null);
                     Toast.makeText(NoteViewActivity.this, "删除笔记", Toast.LENGTH_SHORT).show();
                 }
 
-                startActivity(intent_main);
+                startActivity(intentMain);
                 finish();
                 break;
 
             case R.id.button_note_view_delete:
-                db.delete("note", "title = ?", new String[]{title});
+                db.delete(NoteDB.DB_TABLE_NAME, "_id =" + id, null);
                 Toast.makeText(NoteViewActivity.this, "删除笔记", Toast.LENGTH_SHORT).show();
-                startActivity(intent_main);
+                startActivity(intentMain);
                 finish();
                 break;
 
             case R.id.button_note_view_new:
-                startActivity(intent_new);
+                startActivity(intentNew);
                 finish();
                 break;
 
@@ -126,7 +134,6 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
     }
 
     private String getTime() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         Date curDate = new Date();
         String str = format.format(curDate);
         return str;
