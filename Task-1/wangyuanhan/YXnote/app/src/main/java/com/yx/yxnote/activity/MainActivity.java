@@ -16,13 +16,13 @@ import android.widget.Toast;
 
 import com.yx.yxnote.R;
 import com.yx.yxnote.adapter.YXAdapter;
-import com.yx.yxnote.database.NoteSender;
-import com.yx.yxnote.database.NoteAdapter;
+import com.yx.yxnote.database.DBSender;
+import com.yx.yxnote.adapter.AdapterInit;
 
 public class MainActivity extends ListActivity {
     private Button buttonNew;
-    private AutoCompleteTextView autoCompleteTextView;
     private ListView listView;
+    private AutoCompleteTextView autoCompleteTextView;
     private YXAdapter yxAdapter;
     private ArrayAdapter arrayAdapter;
 
@@ -33,41 +33,40 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.content_main);
 
         buttonNew = (Button) findViewById(R.id.button_note_new);
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_note_search);
         listView = (ListView) findViewById(android.R.id.list);
-
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
-        arrayAdapter = new NoteAdapter(this, arrayAdapter).getArrayAdapter();
-        autoCompleteTextView.setAdapter(arrayAdapter);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_note_search);
 
         yxAdapter = new YXAdapter(this, android.R.layout.simple_list_item_1) {
-            @Override
             protected void initList(int position, View view, ViewGroup parent) {
                 ((TextView)(view)).setText(getItem(position).toString());
             }
         };
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
+
+        AdapterInit adapterInit = new AdapterInit(this, yxAdapter, arrayAdapter);
+
         setListAdapter(yxAdapter);
-        yxAdapter = new NoteAdapter(this, yxAdapter).getYxAdapter();
+        yxAdapter = adapterInit.getYxAdapter();
+        arrayAdapter = adapterInit.getArrayAdapter();
+        autoCompleteTextView.setAdapter(arrayAdapter);
 
         buttonNew.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, NoteNewActivity.class);
                 Toast.makeText(MainActivity.this, "新建笔记", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new NoteSender(MainActivity.this, position).sendNote();
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
+                startActivity(new DBSender(MainActivity.this, position, intent).sendNote());
             }
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new NoteSender(MainActivity.this, position).sendNote();
-                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
+                startActivity(new DBSender(MainActivity.this, position, intent).sendNote());
             }
         });
     }

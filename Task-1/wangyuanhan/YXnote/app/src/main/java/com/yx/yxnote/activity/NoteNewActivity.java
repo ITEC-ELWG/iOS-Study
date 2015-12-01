@@ -55,19 +55,8 @@ public class NoteNewActivity extends Activity implements View.OnClickListener{
                         ((edittextContent.getText().toString()).equals("") == false)) {
                     SQLiteDatabase db = new NoteDB(this).getWritableDatabase();
                     ContentValues values = new ContentValues();
-
-                    if (edittextTitle.getText().toString().equals("") == true) {
-                        values.put("title", "无标题");
-                    } else {
-                        values.put("title", edittextTitle.getText().toString());
-                    }
-
-                    if (edittextContent.getText().toString().equals("") == true) {
-                        values.put("content", "无内容");
-                    } else {
-                        values.put("content", edittextContent.getText().toString());
-                    }
-
+                    values.put("title", edittextTitle.getText().toString());
+                    values.put("content", edittextContent.getText().toString());
                     values.put("time", getTime());
                     db.insert("note", null, values);
                 }

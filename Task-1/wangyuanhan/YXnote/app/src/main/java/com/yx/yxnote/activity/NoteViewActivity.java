@@ -61,13 +61,13 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
         content = intent.getStringExtra(NoteDB.DB_NOTE_CONTENT);
         time = intent.getStringExtra(NoteDB.DB_NOTE_TIME);
 
-        if (title.equals("无标题")) {
+        if (title.equals("")) {
             editTextTitle.setHint("请在这里输入标题");
         } else {
             editTextTitle.setText(title);
         }
 
-        if (content.equals("无内容")) {
+        if (content.equals("")) {
             editTextContent.setHint("请在这里输入内容");
         } else {
             editTextContent.setText(content);
@@ -93,19 +93,8 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
                 if (((editTextTitle.getText().toString()).equals("") == false) ||
                         (editTextContent.getText().toString()).equals("") == false) {
                     ContentValues values = new ContentValues();
-
-                    if (editTextTitle.getText().toString().equals("") == true) {
-                        values.put(NoteDB.DB_NOTE_TITLE, "无标题");
-                    } else {
-                        values.put(NoteDB.DB_NOTE_TITLE, editTextTitle.getText().toString());
-                    }
-
-                    if (editTextContent.getText().toString().equals("") == true) {
-                        values.put(NoteDB.DB_NOTE_CONTENT, "无内容");
-                    } else {
-                        values.put(NoteDB.DB_NOTE_CONTENT, editTextContent.getText().toString());
-                    }
-
+                    values.put(NoteDB.DB_NOTE_TITLE, editTextTitle.getText().toString());
+                    values.put(NoteDB.DB_NOTE_CONTENT, editTextContent.getText().toString());
                     values.put(NoteDB.DB_NOTE_TIME, getTime());
                     db.update(NoteDB.DB_TABLE_NAME, values, "_id =" + id, null);
                 } else {
