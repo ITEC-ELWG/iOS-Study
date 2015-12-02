@@ -3,7 +3,6 @@ package com.yx.yxnote.activity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yx.yxnote.R;
+import com.yx.yxnote.database.DBOperator;
 import com.yx.yxnote.database.NoteDB;
 
 import java.text.SimpleDateFormat;
@@ -53,15 +53,15 @@ public class NoteNewActivity extends Activity implements View.OnClickListener{
             case R.id.button_note_new_finish:
                 if (((edittextTitle.getText().toString()).equals("") == false) ||
                         ((edittextContent.getText().toString()).equals("") == false)) {
-                    SQLiteDatabase db = new NoteDB(this).getWritableDatabase();
+                    DBOperator dbOperator = new DBOperator(this);
                     ContentValues values = new ContentValues();
-                    values.put("title", edittextTitle.getText().toString());
-                    values.put("content", edittextContent.getText().toString());
-                    values.put("time", getTime());
-                    db.insert("note", null, values);
+                    values.put(NoteDB.DB_NOTE_TIME, getTime());
+                    values.put(NoteDB.DB_NOTE_TITLE, edittextTitle.getText().toString());
+                    values.put(NoteDB.DB_NOTE_CONTENT, edittextContent.getText().toString());
+                    dbOperator.DBInsert(values);
                 }
 
-                Intent intent = new Intent(NoteNewActivity.this, MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;

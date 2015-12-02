@@ -43,30 +43,31 @@ public class MainActivity extends ListActivity {
         };
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
 
-        AdapterInit adapterInit = new AdapterInit(this, yxAdapter, arrayAdapter);
+        final AdapterInit adapterInit = new AdapterInit(this, yxAdapter, arrayAdapter);
 
         setListAdapter(yxAdapter);
         yxAdapter = adapterInit.getYxAdapter();
         arrayAdapter = adapterInit.getArrayAdapter();
         autoCompleteTextView.setAdapter(arrayAdapter);
 
+        final Intent intentNew = new Intent(this, NoteNewActivity.class);
+        final Intent intentView = new Intent(this, NoteViewActivity.class);
         buttonNew.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, NoteNewActivity.class);
                 Toast.makeText(MainActivity.this, "新建笔记", Toast.LENGTH_SHORT).show();
-                startActivity(intent);
+                startActivity(intentNew);
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
-                startActivity(new DBSender(MainActivity.this, position, intent).sendNote());
+                startActivity(new DBSender(MainActivity.this, position, intentView).sendNote());
             }
         });
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
-                startActivity(new DBSender(MainActivity.this, position, intent).sendNote());
+                String str = arrayAdapter.getItem(position).toString();
+                position = Integer.parseInt(str.substring(str.length() - 2, str.length() - 1)) - 1;
+                startActivity(new DBSender(MainActivity.this, position, intentView).sendNote());
             }
         });
     }

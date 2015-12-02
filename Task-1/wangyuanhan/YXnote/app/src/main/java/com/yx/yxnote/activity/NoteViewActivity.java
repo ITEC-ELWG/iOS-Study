@@ -3,15 +3,14 @@ package com.yx.yxnote.activity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yx.yxnote.R;
+import com.yx.yxnote.database.DBOperator;
 import com.yx.yxnote.database.NoteDB;
 
 import java.text.SimpleDateFormat;
@@ -57,32 +56,20 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
         Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
         id = bundle.getInt(NoteDB.DB_COLUMN_ID);
+        time = intent.getStringExtra(NoteDB.DB_NOTE_TIME);
         title = intent.getStringExtra(NoteDB.DB_NOTE_TITLE);
         content = intent.getStringExtra(NoteDB.DB_NOTE_CONTENT);
-        time = intent.getStringExtra(NoteDB.DB_NOTE_TIME);
-
-        if (title.equals("")) {
-            editTextTitle.setHint("请在这里输入标题");
-        } else {
-            editTextTitle.setText(title);
-        }
-
-        if (content.equals("")) {
-            editTextContent.setHint("请在这里输入内容");
-        } else {
-            editTextContent.setText(content);
-        }
 
         textViewTime.setText(time);
+        editTextTitle.setText(title);
+        editTextContent.setText(content);
     }
 
     @Override
     public void onClick(View v) {
-        Intent intentMain = new Intent(NoteViewActivity.this, MainActivity.class);
-        Intent intentNew = new Intent(NoteViewActivity.this, NoteNewActivity.class);
-
-        NoteDB noteDB = new NoteDB(this);
-        SQLiteDatabase db = noteDB.getWritableDatabase();
+        Intent intentMain = new Intent(this, MainActivity.class);
+        Intent intentNew = new Intent(this, NoteNewActivity.class);
+        DBOperator dbOperator = new DBOperator(this);
 
         switch (v.getId()) {
             case R.id.button_note_view_back:
@@ -93,22 +80,19 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
                 if (((editTextTitle.getText().toString()).equals("") == false) ||
                         (editTextContent.getText().toString()).equals("") == false) {
                     ContentValues values = new ContentValues();
+                    values.put(NoteDB.DB_NOTE_TIME, getTime());
                     values.put(NoteDB.DB_NOTE_TITLE, editTextTitle.getText().toString());
                     values.put(NoteDB.DB_NOTE_CONTENT, editTextContent.getText().toString());
-                    values.put(NoteDB.DB_NOTE_TIME, getTime());
-                    db.update(NoteDB.DB_TABLE_NAME, values, "_id =" + id, null);
+                    dbOperator.DBUpdate(values, id);
                 } else {
-                    db.delete(NoteDB.DB_TABLE_NAME, "_id =" + id, null);
-                    Toast.makeText(NoteViewActivity.this, "删除笔记", Toast.LENGTH_SHORT).show();
+                    dbOperator.DBDelete(id);
                 }
-
                 startActivity(intentMain);
                 finish();
                 break;
 
             case R.id.button_note_view_delete:
-                db.delete(NoteDB.DB_TABLE_NAME, "_id =" + id, null);
-                Toast.makeText(NoteViewActivity.this, "删除笔记", Toast.LENGTH_SHORT).show();
+                dbOperator.DBDelete(id);
                 startActivity(intentMain);
                 finish();
                 break;

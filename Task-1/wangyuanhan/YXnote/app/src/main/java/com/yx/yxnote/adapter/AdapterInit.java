@@ -26,21 +26,20 @@ public class AdapterInit {
     private void init() {
         new Thread(){
             public void run(){
+                int position = 0;
                 SQLiteDatabase db = new NoteDB(context).getWritableDatabase();
-                Cursor cursor = db.query(NoteDB.DB_TABLE_NAME, new String[]{NoteDB.DB_NOTE_TITLE},
+                Cursor cursor = db.query(NoteDB.DB_TABLE_NAME, null,
                         null, null, null, null, NoteDB.DB_NOTE_TIME + " DESC", null);
                 if (cursor.moveToFirst()) {
                     do {
+                        position++;
                         String str = cursor.getString(cursor.getColumnIndex(NoteDB.DB_NOTE_TITLE));
-                        if (str.equals("")) {
-                            yxAdapter.add("无标题");
-                        } else {
-                            yxAdapter.add(str);
-                            arrayAdapter.add(str);
-                        }
+                        yxAdapter.add(str + "【" + position + "】");
+                        arrayAdapter.add(str + "【" + position + "】");
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
+                db.close();
             }
         }.start();
     }
