@@ -8,105 +8,84 @@
 
 
 #import "SNDBHelper.h"
+#import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
 
-//数据库名和列名
 static NSString *const DB_NAME = @"note.sqlite";
-static NSString *const TITLE = @"title";
-static NSString *const CONTENT = @"content";
-static NSString *const DATE = @"date";
-static NSString *const ID = @"id";
-static NSString *const ISFAVOR = @"isfavor";
+
+
+@interface SNDBHelper()
+@property(strong) FMDatabaseQueue *dbQueue;
+
+@property(strong) NSOperationQueue *operationQueue;
+
+@property(strong) NSRecursiveLock *writeQueueLock;
+@end
 
 @implementation SNDBHelper
 
-+ (id)sharedDataBase
-{
-    static SNDBHelper *sharedDataBase = nil;
++ (SNDBHelper *)privateDBHelper {
+    static SNDBHelper *sndbHelper = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedDataBase = [self alloc];
-    });
-    
-    return sharedDataBase;
-}
+        sndbHelper = [SNDBHelper new];
+        NSString *createSql = [sndbHelper getCreateSql];
 
-- (void)createTable
-{
-    //获得数据库文件的路径
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dbPath = [doc stringByAppendingPathComponent:DB_NAME];
-    
-    self.queue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
-    self.dispachQueue = dispatch_queue_create("newThread", NULL);
-    
-    dispatch_async(_dispachQueue, ^{
-        [_queue inDatabase:^(FMDatabase *db) {
-            [db executeUpdate:@"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE, CONTENT, DATE, ISFAVOR)"];
+        NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString *dbPath = [doc stringByAppendingPathComponent:DB_NAME];
+        
+        sndbHelper.dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+        sndbHelper.operationQueue = [NSOperationQueue new];
+        [sndbHelper.operationQueue setMaxConcurrentOperationCount:1];
+        sndbHelper.writeQueueLock = [NSRecursiveLock new];
+        
+        [sndbHelper.dbQueue inDatabase:^(FMDatabase *db) {
+            [db executeUpdate:createSql];
         }];
     });
+    
+    return sndbHelper;
 }
 
-#pragma mark 数据库增删改查
+- (NSString *)getCreateSql {
+    static NSString *sql;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sql = @"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE, CONTENT, DATE, ISFAVOR)";
+    });
+    return sql;
+}
 
-- (void)getAllData
-{
-    dispatch_async(_dispachQueue, ^{
-        [_queue inDatabase:^(FMDatabase *db) {
-            NSString *sql = @"SELECT * FROM INFO";
-            FMResultSet *result = [db executeQuery:sql];
-            
-            while ([result next])
-            {
-                //从数据库中获取内容
-                NSString *title = [result stringForColumn:TITLE];
-                NSString *content = [result stringForColumn:CONTENT];
-                NSString *date = [result stringForColumn:DATE];
-                NSString *idNum = [result stringForColumn:ID];
-                NSString *isFavor = [result stringForColumn:ISFAVOR];
-                
-                //将数据库的内容存到Item数组
-                SNItem *newItem = [[SNItem sharedStore] createItem];
-                newItem.title = title;
-                newItem.detailText = content;
-                newItem.dateCreated = date;
-                newItem.idNum = idNum;
-                newItem.isFavor = isFavor;
++ (void)executeDBRead:(db_block)block {
+    SNDBHelper *sndbHelper = [SNDBHelper privateDBHelper];
+    
+    [sndbHelper.writeQueueLock lock];
+    [sndbHelper.dbQueue inDatabase:^(FMDatabase *db) {
+        if (block != nil) {
+            block(db);
+        }
+    }];
+    [sndbHelper.writeQueueLock unlock];
+}
+
++ (void)executeDBWriteInTransaction:(db_block)block {
+    SNDBHelper *sndbHelper = [SNDBHelper privateDBHelper];
+    
+    [sndbHelper.operationQueue addOperationWithBlock:^{
+        [sndbHelper.writeQueueLock lock];
+        [sndbHelper.dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+            if (block != nil) {
+                block(db);
             }
         }];
-    });
+        [sndbHelper.writeQueueLock unlock];
+    }];
+
 }
 
-- (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor
-{
-    dispatch_async(_dispachQueue, ^{
-        [_queue inDatabase:^(FMDatabase *db) {
-            NSString *sql = @"INSERT INTO INFO (TITLE, CONTENT, DATE, ISFAVOR) VALUES(?, ?, ?, ?)";
-            [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, isFavor];
-
-        }];
-    });
+- (void)dealloc {
+    [[SNDBHelper privateDBHelper].operationQueue cancelAllOperations];
+    [[SNDBHelper privateDBHelper].dbQueue close];
 }
-
-- (void)deleteDataByTitle:(NSString *)title content:(NSString *)content
-{
-    dispatch_async(_dispachQueue, ^{
-        [_queue inDatabase:^(FMDatabase *db) {
-            NSString *sql = @"DELETE FROM INFO WHERE TITLE = ? AND CONTENT = ?";
-            [db executeUpdate:sql, title, content];
-        }];
-    });
-}
-
-- (void)updateTitle:(NSString *)title content:(NSString *)content isFavor:(NSString *)isFavor byOldTitle:(NSString *)oldTitle oldContent:(NSString *)oldContent
-{
-    dispatch_async(_dispachQueue, ^{
-        [_queue inDatabase:^(FMDatabase *db) {
-            NSString *sql = @"UPDATE INFO SET TITLE = ?, CONTENT = ?, ISFAVOR = ? WHERE TITLE = ? AND CONTENT = ?";
-            [db executeUpdate: sql, title, content, isFavor, oldTitle, oldContent];
-        
-        }];
-    });
-}
-
 
 @end

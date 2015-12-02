@@ -6,7 +6,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SNDetailViewController">
             <connections>
-                <outlet property="contentField" destination="jXy-tt-dpb" id="gRv-jF-MeG"/>
                 <outlet property="dateLabel" destination="rNo-eM-N42" id="bXz-Wz-EAl"/>
                 <outlet property="titleField" destination="Hdw-gD-52C" id="06a-Ax-r9p"/>
                 <outlet property="view" destination="wTg-bs-ZSS" id="XEF-8d-cUN"/>
@@ -17,29 +16,39 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="笔记标题..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hdw-gD-52C">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="笔记标题..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hdw-gD-52C">
                     <rect key="frame" x="112" y="75" width="97" height="30"/>
                     <animations/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="97" id="EvM-EB-ByT"/>
+                        <constraint firstAttribute="height" constant="30" id="T6w-lY-bwT"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNo-eM-N42">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rNo-eM-N42">
                     <rect key="frame" x="91" y="108" width="161" height="21"/>
                     <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="YFY-8x-mOU"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="oSN-XS-yti"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="161" id="ycG-fM-tRZ"/>
+                        <constraint firstAttribute="width" constant="161" id="zpf-wS-0Og"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <color key="textColor" red="0.4757171684" green="0.42809958479999999" blue="0.4270500498" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jXy-tt-dpb">
-                    <rect key="frame" x="8" y="137" width="304" height="291"/>
-                    <animations/>
-                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="yes"/>
-                </textView>
             </subviews>
             <animations/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="rNo-eM-N42" firstAttribute="leading" secondItem="wTg-bs-ZSS" secondAttribute="leading" constant="91" id="BYb-2i-PKc"/>
+                <constraint firstItem="Hdw-gD-52C" firstAttribute="centerX" secondItem="wTg-bs-ZSS" secondAttribute="centerX" id="FJY-jF-U6S"/>
+                <constraint firstItem="rNo-eM-N42" firstAttribute="top" secondItem="Hdw-gD-52C" secondAttribute="bottom" constant="3" id="Ptk-4F-xMC"/>
+                <constraint firstItem="Hdw-gD-52C" firstAttribute="top" secondItem="wTg-bs-ZSS" secondAttribute="top" constant="75" id="WO8-jN-eai"/>
+            </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B1E7D081C0C39F60093106E /* SNDBService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E7D071C0C39F60093106E /* SNDBService.m */; settings = {ASSET_TAGS = (); }; };
+		9B1E7D0D1C0E98630093106E /* SNItemService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E7D0C1C0E98630093106E /* SNItemService.m */; settings = {ASSET_TAGS = (); }; };
 		9B23048F1BFB521000E3A286 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304851BFB521000E3A286 /* FMDatabase.m */; settings = {ASSET_TAGS = (); }; };
 		9B2304901BFB521000E3A286 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304871BFB521000E3A286 /* FMDatabaseAdditions.m */; settings = {ASSET_TAGS = (); }; };
 		9B2304911BFB521000E3A286 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304891BFB521000E3A286 /* FMDatabasePool.m */; settings = {ASSET_TAGS = (); }; };
@@ -16,9 +18,6 @@
 		9B2304DC1BFCA8DF00E3A286 /* SNDBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304DB1BFCA8DF00E3A286 /* SNDBHelper.m */; settings = {ASSET_TAGS = (); }; };
 		9B2304E01BFD85F200E3A286 /* SNDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2304DE1BFD85F200E3A286 /* SNDetailViewController.m */; settings = {ASSET_TAGS = (); }; };
 		9B2304E11BFD85F200E3A286 /* SNDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304DF1BFD85F200E3A286 /* SNDetailViewController.xib */; settings = {ASSET_TAGS = (); }; };
-		9B2304E71C00159500E3A286 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304E61C00159500E3A286 /* star.png */; settings = {ASSET_TAGS = (); }; };
-		9B2304E91C00194000E3A286 /* emptyStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304E81C00194000E3A286 /* emptyStar.png */; settings = {ASSET_TAGS = (); }; };
-		9B2304EB1C02EFB300E3A286 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B2304EA1C02EFB300E3A286 /* home.png */; settings = {ASSET_TAGS = (); }; };
 		9BC9F4FB1BF03DF50070960A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F4FA1BF03DF50070960A /* main.m */; };
 		9BC9F4FE1BF03DF50070960A /* SNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC9F4FD1BF03DF50070960A /* SNAppDelegate.m */; };
 		9BC9F5031BF03DF50070960A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC9F5021BF03DF50070960A /* Assets.xcassets */; };
@@ -31,6 +30,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9B1E7D061C0C39F60093106E /* SNDBService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNDBService.h; sourceTree = "<group>"; };
+		9B1E7D071C0C39F60093106E /* SNDBService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNDBService.m; sourceTree = "<group>"; };
+		9B1E7D0B1C0E98630093106E /* SNItemService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNItemService.h; sourceTree = "<group>"; };
+		9B1E7D0C1C0E98630093106E /* SNItemService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNItemService.m; sourceTree = "<group>"; };
 		9B2304841BFB521000E3A286 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		9B2304851BFB521000E3A286 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		9B2304861BFB521000E3A286 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -49,9 +52,6 @@
 		9B2304DD1BFD85F200E3A286 /* SNDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNDetailViewController.h; sourceTree = "<group>"; };
 		9B2304DE1BFD85F200E3A286 /* SNDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNDetailViewController.m; sourceTree = "<group>"; };
 		9B2304DF1BFD85F200E3A286 /* SNDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SNDetailViewController.xib; sourceTree = "<group>"; };
-		9B2304E61C00159500E3A286 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
-		9B2304E81C00194000E3A286 /* emptyStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyStar.png; sourceTree = "<group>"; };
-		9B2304EA1C02EFB300E3A286 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
 		9BC9F4F61BF03DF50070960A /* SimpleNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BC9F4FA1BF03DF50070960A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9BC9F4FC1BF03DF50070960A /* SNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SNAppDelegate.h; sourceTree = "<group>"; };
@@ -83,6 +83,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B1E7D051C0C37E40093106E /* DBHelper */ = {
+			isa = PBXGroup;
+			children = (
+				9B2304DA1BFCA8DF00E3A286 /* SNDBHelper.h */,
+				9B2304DB1BFCA8DF00E3A286 /* SNDBHelper.m */,
+			);
+			name = DBHelper;
+			sourceTree = "<group>";
+		};
+		9B1E7D091C0C3A050093106E /* DBService */ = {
+			isa = PBXGroup;
+			children = (
+				9B1E7D061C0C39F60093106E /* SNDBService.h */,
+				9B1E7D071C0C39F60093106E /* SNDBService.m */,
+			);
+			name = DBService;
+			sourceTree = "<group>";
+		};
+		9B1E7D0A1C0E97FA0093106E /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				9BC9F5971BF5AED10070960A /* SNItem.h */,
+				9BC9F5981BF5AED10070960A /* SNItem.m */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		9B1E7D0E1C0E986F0093106E /* service */ = {
+			isa = PBXGroup;
+			children = (
+				9B1E7D0B1C0E98630093106E /* SNItemService.h */,
+				9B1E7D0C1C0E98630093106E /* SNItemService.m */,
+			);
+			name = service;
+			sourceTree = "<group>";
+		};
+		9B1E7D0F1C0EC0470093106E /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				9B2304DE1BFD85F200E3A286 /* SNDetailViewController.m */,
+				9B2304DD1BFD85F200E3A286 /* SNDetailViewController.h */,
+				9B2304DF1BFD85F200E3A286 /* SNDetailViewController.xib */,
+				9B2304D61BFC902000E3A286 /* SNItemViewController.h */,
+				9B2304D71BFC902000E3A286 /* SNItemViewController.m */,
+			);
+			name = VC;
+			sourceTree = "<group>";
+		};
 		9B2304831BFB521000E3A286 /* fmdb */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,19 +169,12 @@
 		9BC9F4F81BF03DF50070960A /* SimpleNote */ = {
 			isa = PBXGroup;
 			children = (
+				9B1E7D0A1C0E97FA0093106E /* Entity */,
+				9B1E7D0E1C0E986F0093106E /* service */,
 				9B2304831BFB521000E3A286 /* fmdb */,
-				9B2304DD1BFD85F200E3A286 /* SNDetailViewController.h */,
-				9B2304DE1BFD85F200E3A286 /* SNDetailViewController.m */,
-				9B2304DF1BFD85F200E3A286 /* SNDetailViewController.xib */,
-				9B2304D61BFC902000E3A286 /* SNItemViewController.h */,
-				9B2304D71BFC902000E3A286 /* SNItemViewController.m */,
-				9B2304DA1BFCA8DF00E3A286 /* SNDBHelper.h */,
-				9B2304DB1BFCA8DF00E3A286 /* SNDBHelper.m */,
-				9B2304E61C00159500E3A286 /* star.png */,
-				9B2304EA1C02EFB300E3A286 /* home.png */,
-				9BC9F5971BF5AED10070960A /* SNItem.h */,
-				9B2304E81C00194000E3A286 /* emptyStar.png */,
-				9BC9F5981BF5AED10070960A /* SNItem.m */,
+				9B1E7D051C0C37E40093106E /* DBHelper */,
+				9B1E7D091C0C3A050093106E /* DBService */,
+				9B1E7D0F1C0EC0470093106E /* VC */,
 				9BC9F4FC1BF03DF50070960A /* SNAppDelegate.h */,
 				9BC9F4FD1BF03DF50070960A /* SNAppDelegate.m */,
 				9BC9F5021BF03DF50070960A /* Assets.xcassets */,
@@ -190,7 +231,7 @@
 		9BC9F4EE1BF03DF50070960A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = note;
+				CLASSPREFIX = SN;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = zxy;
 				TargetAttributes = {
@@ -223,10 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B2304E11BFD85F200E3A286 /* SNDetailViewController.xib in Resources */,
-				9B2304EB1C02EFB300E3A286 /* home.png in Resources */,
-				9B2304E91C00194000E3A286 /* emptyStar.png in Resources */,
 				9BC9F5031BF03DF50070960A /* Assets.xcassets in Resources */,
-				9B2304E71C00159500E3A286 /* star.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,12 +277,14 @@
 			files = (
 				9B2304D91BFC902000E3A286 /* SNItemViewController.m in Sources */,
 				9B2304DC1BFCA8DF00E3A286 /* SNDBHelper.m in Sources */,
+				9B1E7D0D1C0E98630093106E /* SNItemService.m in Sources */,
 				9BC9F4FE1BF03DF50070960A /* SNAppDelegate.m in Sources */,
 				9B2304E01BFD85F200E3A286 /* SNDetailViewController.m in Sources */,
 				9B23048F1BFB521000E3A286 /* FMDatabase.m in Sources */,
 				9B2304911BFB521000E3A286 /* FMDatabasePool.m in Sources */,
 				9B2304921BFB521000E3A286 /* FMDatabaseQueue.m in Sources */,
 				9BC9F4FB1BF03DF50070960A /* main.m in Sources */,
+				9B1E7D081C0C39F60093106E /* SNDBService.m in Sources */,
 				9BC9F5991BF5AED10070960A /* SNItem.m in Sources */,
 				9B2304931BFB521000E3A286 /* FMResultSet.m in Sources */,
 				9B2304901BFB521000E3A286 /* FMDatabaseAdditions.m in Sources */,
