@@ -19,7 +19,6 @@ public class AdapterInit {
         this.context = context;
         this.yxAdapter = yxAdapter;
         this.arrayAdapter = arrayAdapter;
-
         init();
     }
 
@@ -27,7 +26,7 @@ public class AdapterInit {
         new Thread(){
             public void run(){
                 int position = 0;
-                SQLiteDatabase db = new NoteDB(context).getWritableDatabase();
+                SQLiteDatabase db = new NoteDB(context).getReadableDatabase();
                 Cursor cursor = db.query(NoteDB.DB_TABLE_NAME, null,
                         null, null, null, null, NoteDB.DB_NOTE_TIME + " DESC", null);
                 if (cursor.moveToFirst()) {

@@ -29,10 +29,9 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
     private EditText editTextContent;
 
     private int id = 0;
+    private String time = null;
     private String title = null;
     private String content = null;
-    private String time = null;
-
     private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
 
     @Override
@@ -55,7 +54,7 @@ public class NoteViewActivity extends Activity implements View.OnClickListener {
 
         Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
-        id = bundle.getInt(NoteDB.DB_COLUMN_ID);
+        id = bundle.getInt(NoteDB.DB_NOTE_ID);
         time = intent.getStringExtra(NoteDB.DB_NOTE_TIME);
         title = intent.getStringExtra(NoteDB.DB_NOTE_TITLE);
         content = intent.getStringExtra(NoteDB.DB_NOTE_CONTENT);

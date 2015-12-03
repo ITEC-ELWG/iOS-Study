@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class NoteDB extends SQLiteOpenHelper{
     public static final String DB_TABLE_NAME = "note";
-    public static final String DB_COLUMN_ID = "_id";
+    public static final String DB_NOTE_ID = "_id";
     public static final String DB_NOTE_TIME = "time";
     public static final String DB_NOTE_TITLE = "title";
     public static final String DB_NOTE_CONTENT = "content";
@@ -22,7 +22,7 @@ public class NoteDB extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE "
             + DB_TABLE_NAME + " ("
-            + DB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + DB_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DB_NOTE_TIME + " TEXT NOT NULL, "
             + DB_NOTE_TITLE + " TEXT NOT NULL, "
             + DB_NOTE_CONTENT + " TEXT NOT NULL);");
