@@ -15,15 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yx.yxnote.R;
-import com.yx.yxnote.adapter.YXadapter;
-import com.yx.yxnote.database.NoteDB;
+import com.yx.yxnote.adapter.YXAdapter;
+import com.yx.yxnote.database.DBSender;
+import com.yx.yxnote.adapter.AdapterInit;
 
 public class MainActivity extends ListActivity {
-    private Button btn;
-    private AutoCompleteTextView actv;
-    private ListView lv;
-    private YXadapter<String> adapter;
-    private ArrayAdapter<String> array_adapter;
+    private Button buttonNew;
+    private ListView listView;
+    private AutoCompleteTextView autoCompleteTextView;
+    private YXAdapter yxAdapter;
+    private ArrayAdapter arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,48 +32,42 @@ public class MainActivity extends ListActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.content_main);
 
-        btn = (Button) findViewById(R.id.button_note_new);
-        actv = (AutoCompleteTextView) findViewById(R.id.auto_note_search);
-        lv = (ListView) findViewById(android.R.id.list);
+        buttonNew = (Button) findViewById(R.id.button_note_new);
+        listView = (ListView) findViewById(android.R.id.list);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_note_search);
 
-
-        array_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
-        array_adapter = new NoteDB(this, "note.db", null, 1, array_adapter).searchNote();
-        actv.setAdapter(array_adapter);
-
-        adapter = new YXadapter<String>(this, android.R.layout.simple_list_item_1) {
-            @Override
+        yxAdapter = new YXAdapter(this, android.R.layout.simple_list_item_1) {
             protected void initList(int position, View view, ViewGroup parent) {
                 ((TextView)(view)).setText(getItem(position).toString());
             }
         };
-        setListAdapter(adapter);
-        adapter = new NoteDB(this, "note.db", null, 1, adapter).initNote();
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
 
+        final AdapterInit adapterInit = new AdapterInit(this, yxAdapter, arrayAdapter);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
+        setListAdapter(yxAdapter);
+        yxAdapter = adapterInit.getYxAdapter();
+        arrayAdapter = adapterInit.getArrayAdapter();
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
+        final Intent intentNew = new Intent(this, NoteNewActivity.class);
+        final Intent intentView = new Intent(this, NoteViewActivity.class);
+        buttonNew.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent_new = new Intent(MainActivity.this, NoteNewActivity.class);
                 Toast.makeText(MainActivity.this, "新建笔记", Toast.LENGTH_SHORT).show();
-                startActivity(intent_new);
+                startActivity(intentNew);
             }
         });
-        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView search_content = (TextView) view;
-                Intent intent_search = new Intent(MainActivity.this, NoteViewActivity.class);
-                String str = (String) search_content.getText();
-                intent_search.putExtra("title", str);
-                startActivity(intent_search);
+                startActivity(new DBSender(MainActivity.this, position, intentView).sendNote());
             }
         });
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
-                intent.putExtra("title", adapter.getItem(position));
-                startActivity(intent);
+                String str = arrayAdapter.getItem(position).toString();
+                position = Integer.parseInt(str.substring(str.length() - 2, str.length() - 1)) - 1;
+                startActivity(new DBSender(MainActivity.this, position, intentView).sendNote());
             }
         });
     }
