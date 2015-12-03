@@ -16,15 +16,8 @@
 @property (nonatomic) NSString *idNum;
 @property (nonatomic) NSString *isFavor;
 
-@property (nonatomic, readonly) NSArray *allItems;
-
-+ (instancetype)sharedStore;
-
 - (instancetype)initWithItemTitle:(NSString *)title
                        detailText:(NSString *)dtext;
-- (SNItem *)createItem;
 
-- (void)removeItem:(SNItem *)item;
-
-
+- (NSString *)description;
 @end

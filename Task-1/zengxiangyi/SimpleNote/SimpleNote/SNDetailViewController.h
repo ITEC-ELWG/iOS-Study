@@ -12,6 +12,7 @@
 
 @interface SNDetailViewController : UIViewController
 @property (nonatomic, strong) SNItem *item;
-- (instancetype)setViewController;
+
+- (instancetype)initDetailItem:(BOOL)isNew;
 
 @end

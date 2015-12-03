@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface SNItemViewController : UITableViewController<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface SNItemViewController : UITableViewController
+
 @end

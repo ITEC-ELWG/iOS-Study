@@ -7,24 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FMDB.h"
-#import "SNItem.h"
+
+@class FMDatabase;
+
+typedef void (^db_block)(FMDatabase *db);
+
 
 @interface SNDBHelper : NSObject
++ (void)executeDBRead:(db_block)block;
 
-@property (nonatomic, copy) NSString *dbPath;
-@property (nonatomic, strong) FMDatabaseQueue *queue;
-@property (nonatomic, strong) dispatch_queue_t dispachQueue;
-
-+ (id)sharedDataBase;
-
-- (void)createTable;
-
-- (void)getAllData;
-
-- (void)deleteDataByTitle:(NSString *)title content:(NSString *)content;
-
-- (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor;
-
-- (void)updateTitle:(NSString *)title content:(NSString *)content isFavor:(NSString *)isFavor byOldTitle:(NSString *)oldTitle oldContent:(NSString *)oldContent;
+//更新操作使用
++ (void)executeDBWriteInTransaction:(db_block)block;
 @end
