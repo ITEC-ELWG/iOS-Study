@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +13,14 @@ import java.util.List;
 /**
  * Created by YX on 2015/11/19.
  */
-public abstract class YXAdapter extends BaseAdapter {
+public class YXAdapter extends BaseAdapter {
     private int resID = 0;
     private Context context;
     private List<String> list = new ArrayList();
 
-    protected abstract void initList(int position, View convertView, ViewGroup parent);
-
     public YXAdapter(Context context, int resID) {
         this.context = context;
         this.resID = resID;
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     @Override
@@ -48,12 +43,12 @@ public abstract class YXAdapter extends BaseAdapter {
         View view;
 
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(resID, null);
+            view = LayoutInflater.from(context).inflate(resID, null);
         } else {
             view = convertView;
         }
 
-        initList(position, view, parent);
+        ((TextView)(view)).setText(getItem(position).toString());
         return view;
     }
 

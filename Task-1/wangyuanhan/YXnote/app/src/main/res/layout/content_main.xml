@@ -41,7 +41,7 @@
             android:completionThreshold="1"/>
 
         <ListView
-            android:id="@android:id/list"
+            android:id="@+id/note_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </ListView>
