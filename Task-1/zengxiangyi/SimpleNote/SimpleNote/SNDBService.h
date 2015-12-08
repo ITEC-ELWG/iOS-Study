@@ -10,15 +10,17 @@
 #import "FMDB.h"
 @class SNItem;
 @class SNItemService;
+typedef void(^updateItem)(NSMutableArray *dbResults);
+
 @interface SNDBService : NSObject
 
 @property (nonatomic, copy) NSString *dbPath;
 @property (nonatomic, strong) FMDatabaseQueue *queue;
 @property (nonatomic, strong) dispatch_queue_t dispachQueue;
 
-+ (void)getAllData;
++ (void)getAllDataWithBlockcompletion:(updateItem)updateItemblock;
 
-+ (void)deleteDataByTitle:(NSString *)title content:(NSString *)content;
++ (void)deleteDataById:(NSString *)idNum;
 
 + (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor;
 

@@ -7,7 +7,6 @@
 //
 
 #import "SNItemViewController.h"
-#import "SNItemService.h"
 #import "SNItem.h"
 #import "SNDetailViewController.h"
 #import "FMDB.h"
@@ -20,7 +19,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 @property (nonatomic, strong) UIView *mask;
 @property (nonatomic, strong) FMDatabase *db;
 @property (nonatomic, copy) NSString *dbPath;
-@property (nonatomic, retain) NSArray *data;
+@property (nonatomic, retain) NSMutableArray *data;
 @property (nonatomic, retain) NSMutableArray *filterData;
 @property (nonatomic, assign) BOOL isFiltered; // 标识是否正在搜素
 @property (nonatomic, retain) NSMutableArray *favorData;
@@ -37,12 +36,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"笔记本";
         
-        //开启线程，载入数据库
-        [SNDBService getAllData];
-        self.data = [[SNItemService sharedStore] allItems];
-        
         self.detailViewController = [[SNDetailViewController alloc] init];
-
     }
     
     return self;
@@ -60,6 +54,10 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    //查询数据库
+    [SNDBService getAllDataWithBlockcompletion:^(NSMutableArray *dbResults) {
+        self.data = dbResults;
+    }];
     
     [self showAllItems];
 }
@@ -128,13 +126,10 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         selectedItem = _data[indexPath.row];
     }
     
-    _detailViewController = [self.detailViewController initDetailItem:NO];
     _detailViewController.item = selectedItem;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_detailViewController];
-        [self presentViewController:navController animated:YES completion:NULL];
-    });
+    _detailViewController = [self.detailViewController initDetailItem:NO];
     
+    [self.navigationController pushViewController:_detailViewController animated:YES];
 }
 
 //显示所有的笔记
@@ -149,24 +144,20 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 - (void)addNewItem {
     _detailViewController = [self.detailViewController initDetailItem:YES];
     
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_detailViewController];
     //新页面压入栈
-    [self presentViewController:navController animated:YES completion:NULL];
+    [self.navigationController pushViewController:_detailViewController animated:YES];
 }
 
 //删除操作
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         //视图上的删除
-        NSArray *items = [[SNItemService sharedStore] allItems];
-        SNItem *item = items[indexPath.row];
-        
-        [[SNItemService sharedStore] removeItem:item];
-        
+        SNItem *item = _data[indexPath.row];
+        [self.data removeObjectIdenticalTo:item];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
         //数据库中删除
-        [SNDBService deleteDataByTitle:item.title content:item.detailText];
+        [SNDBService deleteDataById:item.idNum];
     }
 }
 
@@ -198,7 +189,6 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         self.tableView.allowsSelection = YES;
         self.tableView.scrollEnabled = YES;
         self.navigationController.toolbarHidden = NO;
-        self.data = [[SNItemService sharedStore] allItems];
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains %@ || detailText contains %@",searchText, searchText];
         self.filterData =  [[NSMutableArray alloc] initWithArray:[self.data filteredArrayUsingPredicate:predicate]];
@@ -224,7 +214,6 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 
 - (void)showFavorItems {
     //点击收藏时，过滤出收藏的内容，再reloadData
-    self.data = [[SNItemService sharedStore] allItems];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavor contains 'YES'"];
     self.favorData = [[NSMutableArray alloc] initWithArray:[self.data filteredArrayUsingPredicate:predicate]];
     self.isFavored = YES;

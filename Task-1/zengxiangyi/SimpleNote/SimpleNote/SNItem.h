@@ -17,7 +17,10 @@
 @property (nonatomic) NSString *isFavor;
 
 - (instancetype)initWithItemTitle:(NSString *)title
-                       detailText:(NSString *)dtext;
+                       detailText:(NSString *)dtext
+                            idNum:(NSString *)idNum
+                             date:(NSString *)date
+                          isFavor:(NSString *)isFavor;
 
 - (NSString *)description;
 @end

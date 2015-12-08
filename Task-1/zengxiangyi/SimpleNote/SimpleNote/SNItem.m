@@ -10,19 +10,25 @@
 
 @implementation SNItem
 
-- (id)initWithItemTitle:(NSString *)title detailText:(NSString *)dtext {
+- (id)initWithItemTitle:(NSString *)title detailText:(NSString *)dtext idNum:(NSString *)idNum date:(NSString *)date isFavor:(NSString *)isFavor {
     self = [super init];
     if (self) {
         self.title = title;
         self.detailText = dtext;
-        self.isFavor = Nil;
+        self.idNum = idNum;
+        self.dateCreated = date;
+        self.isFavor = isFavor;
     }
     
     return self;
 }
 
-- (id)init {
-    return [self initWithItemTitle:@"" detailText:@""];
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self = [self initWithItemTitle:@"" detailText:@"" idNum:@"" date:@"" isFavor:@""];
+    }
+    return self;
 }
 
 - (NSString *)description {
