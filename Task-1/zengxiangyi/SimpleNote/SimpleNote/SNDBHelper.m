@@ -16,10 +16,7 @@ static NSString *const DB_NAME = @"note.sqlite";
 
 @interface SNDBHelper()
 @property(strong) FMDatabaseQueue *dbQueue;
-
 @property(strong) NSOperationQueue *operationQueue;
-
-@property(strong) NSRecursiveLock *writeQueueLock;
 @end
 
 @implementation SNDBHelper
@@ -35,16 +32,37 @@ static NSString *const DB_NAME = @"note.sqlite";
         NSString *dbPath = [doc stringByAppendingPathComponent:DB_NAME];
         
         sndbHelper.dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
-        sndbHelper.operationQueue = [NSOperationQueue new];
+        sndbHelper.operationQueue = [[NSOperationQueue alloc] init];
         [sndbHelper.operationQueue setMaxConcurrentOperationCount:1];
-        sndbHelper.writeQueueLock = [NSRecursiveLock new];
-        
         [sndbHelper.dbQueue inDatabase:^(FMDatabase *db) {
             [db executeUpdate:createSql];
         }];
     });
     
     return sndbHelper;
+}
+
+//查询异步操作
++ (void)executeSelect:(db_block)block {
+    SNDBHelper *dbHelper = [SNDBHelper privateDBHelper];
+    
+    [dbHelper.operationQueue addOperationWithBlock:^{
+        [dbHelper.dbQueue inDatabase:^(FMDatabase *db) {
+            if(block) {
+                block(db);
+            }
+        }];
+    }];
+}
+
+//增加，删除，修改同步操作
++ (void)executeUpdate:(db_block)block {
+    SNDBHelper *dbHelper = [SNDBHelper privateDBHelper];
+    [dbHelper.dbQueue inDatabase:^(FMDatabase *db) {
+        if(block) {
+            block(db);
+        }
+    }];
 }
 
 - (NSString *)getCreateSql {
@@ -54,33 +72,6 @@ static NSString *const DB_NAME = @"note.sqlite";
         sql = @"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE, CONTENT, DATE, ISFAVOR)";
     });
     return sql;
-}
-
-+ (void)executeDBRead:(db_block)block {
-    SNDBHelper *sndbHelper = [SNDBHelper privateDBHelper];
-    
-    [sndbHelper.writeQueueLock lock];
-    [sndbHelper.dbQueue inDatabase:^(FMDatabase *db) {
-        if (block != nil) {
-            block(db);
-        }
-    }];
-    [sndbHelper.writeQueueLock unlock];
-}
-
-+ (void)executeDBWriteInTransaction:(db_block)block {
-    SNDBHelper *sndbHelper = [SNDBHelper privateDBHelper];
-    
-    [sndbHelper.operationQueue addOperationWithBlock:^{
-        [sndbHelper.writeQueueLock lock];
-        [sndbHelper.dbQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-            if (block != nil) {
-                block(db);
-            }
-        }];
-        [sndbHelper.writeQueueLock unlock];
-    }];
-
 }
 
 - (void)dealloc {

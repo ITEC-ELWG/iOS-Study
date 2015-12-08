@@ -8,14 +8,12 @@
 
 #import "SNDetailViewController.h"
 #import "SNItem.h"
-#import "SNItemService.h"
 #import "FMDB.h"
 #import "SNDBService.h"
 @interface SNDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *titleField;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-//@property (weak, nonatomic) IBOutlet UITextView *contentField;
-@property (weak, nonatomic) UITextView *contentField;
+@property (strong, nonatomic) UITextView *contentField;
 @property (nonatomic) BOOL isNew;
 @property (nonatomic) NSString *isFavor;
 @end
@@ -24,15 +22,14 @@
 
 - (instancetype)init {
     self = [super init];
-    UITextView *textview = [[UITextView alloc] initWithFrame:CGRectMake(10, 150, 355, 440)];
-    textview.backgroundColor=[UIColor groupTableViewBackgroundColor]; //背景色
-    self.contentField = textview;
-    [self.view addSubview:textview];
+    
+    self.item = [[SNItem alloc] init];
+    self.contentField = [[UITextView alloc] initWithFrame:CGRectMake(10, 150, 355, 440)];
+    self.contentField.backgroundColor = [UIColor groupTableViewBackgroundColor];
     return self;
 }
 
 - (instancetype)initDetailItem:(BOOL)isNew {
-    self = [self init];
     self.isNew = isNew;
     //如果是新建的情况
     if (isNew) {
@@ -50,12 +47,31 @@
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(modify)];
         navItem.rightBarButtonItem = barButtonItem;
     }
-    
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //添加约束
+    [self.view addSubview:self.contentField];
+    
+    self.contentField.contentMode = UIViewContentModeScaleAspectFit;
+    self.contentField.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *nameMap = @{@"contentField":self.contentField, @"dateLabel": self.dateLabel };
+    
+    NSArray *horizontalConstraints =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[contentField]-10-|"
+                                            options:0
+                                            metrics:nil
+                                              views:nameMap];
+    NSArray *verticalConstraints =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"V:[dateLabel]-10-[contentField]-60-|"
+                                            options:0
+                                            metrics:nil
+                                              views:nameMap];
+    [self.view addConstraints:horizontalConstraints];
+    [self.view addConstraints:verticalConstraints];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,24 +97,13 @@
     
     //插入数据库
     [SNDBService addTitle:_titleField.text content:_contentField.text date:_dateLabel.text isFavor:_isFavor];
-    SNItem *newItem = [SNItemService createItem];
-    self.item = newItem;
-    self.item.isFavor = _isFavor;
-    self.item.title = _titleField.text;
-    self.item.detailText = _contentField.text ;
-    self.item.dateCreated = _dateLabel.text;
-    
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)modify {
     //修改数据库
     [SNDBService updateTitle:_titleField.text content:_contentField.text  isFavor:_isFavor byOldTitle:_item.title oldContent:_item.detailText];
-    //修改Item数组
-    self.item.title = _titleField.text;
-    self.item.detailText = _contentField.text ;
-    self.item.isFavor = _isFavor;
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)toggleFavor {
@@ -141,7 +146,7 @@
     dispatch_once(&onceToken, ^{
         dateFormatter = [[NSDateFormatter alloc] init];
     });
-
+    
     dispatch_queue_t queue =  dispatch_get_main_queue();
     dispatch_async(queue, ^{
         if (_isNew) {
@@ -150,6 +155,7 @@
             
             self.dateLabel.text = strDate;
             self.titleField.text = @"";
+            self.contentField.text = @"";
             self.isFavor = nil;
             self.item = nil;
         }
@@ -161,5 +167,4 @@
         }
     });
 }
-
 @end

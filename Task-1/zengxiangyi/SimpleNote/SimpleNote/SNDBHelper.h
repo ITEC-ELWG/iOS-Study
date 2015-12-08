@@ -14,8 +14,6 @@ typedef void (^db_block)(FMDatabase *db);
 
 
 @interface SNDBHelper : NSObject
-+ (void)executeDBRead:(db_block)block;
-
-//更新操作使用
-+ (void)executeDBWriteInTransaction:(db_block)block;
++ (void)executeSelect:(db_block)block;
++ (void)executeUpdate:(db_block)block;
 @end

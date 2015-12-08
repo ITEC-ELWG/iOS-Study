@@ -194,7 +194,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 - (BOOL)open;
 
-/** Opening a new database connection with flags and an optional virtual file system (VFS)
+/** Opening a new database connection with flags
 
  @param flags one of the following three values, optionally combined with the `SQLITE_OPEN_NOMUTEX`, `SQLITE_OPEN_FULLMUTEX`, `SQLITE_OPEN_SHAREDCACHE`, `SQLITE_OPEN_PRIVATECACHE`, and/or `SQLITE_OPEN_URI` flags:
 
@@ -210,8 +210,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  The database is opened for reading and writing, and is created if it does not already exist. This is the behavior that is always used for `open` method.
  
- If vfs is given the value is passed to the vfs parameter of sqlite3_open_v2.
- 
  @return `YES` if successful, `NO` on error.
 
  @see [sqlite3_open_v2()](http://sqlite.org/c3ref/open.html)
@@ -221,7 +219,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags;
-- (BOOL)openWithFlags:(int)flags vfs:(NSString *)vfsName;
 #endif
 
 /** Closing a database connection
@@ -336,52 +333,23 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 - (BOOL)executeUpdateWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
 
 /** Execute single update statement
- 
+
  This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
- 
+
  The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
- 
+
  @param sql The SQL to be performed, with optional `?` placeholders.
- 
+
  @param arguments A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
- 
+
  @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
- 
- @see executeUpdate:values:error:
+
  @see lastError
  @see lastErrorCode
  @see lastErrorMessage
  */
 
 - (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
-
-/** Execute single update statement
- 
- This method executes a single SQL update statement (i.e. any SQL that does not return results, such as `UPDATE`, `INSERT`, or `DELETE`. This method employs [`sqlite3_prepare_v2`](http://sqlite.org/c3ref/prepare.html) and [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html) binding any `?` placeholders in the SQL with the optional list of parameters.
- 
- The optional values provided to this method should be objects (e.g. `NSString`, `NSNumber`, `NSNull`, `NSDate`, and `NSData` objects), not fundamental data types (e.g. `int`, `long`, `NSInteger`, etc.). This method automatically handles the aforementioned object types, and all other object types will be interpreted as text values using the object's `description` method.
- 
- This is similar to `<executeUpdate:withArgumentsInArray:>`, except that this also accepts a pointer to a `NSError` pointer, so that errors can be returned.
-
- In Swift 2, this throws errors, as if it were defined as follows:
- 
- `func executeUpdate(sql: String!, values: [AnyObject]!) throws -> Bool`
- 
- @param sql The SQL to be performed, with optional `?` placeholders.
- 
- @param values A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
-
- @param error A `NSError` object to receive any error object (if any).
-
- @return `YES` upon success; `NO` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
- 
- @see lastError
- @see lastErrorCode
- @see lastErrorMessage
- 
- */
-
-- (BOOL)executeUpdate:(NSString*)sql values:(NSArray *)values error:(NSError * __autoreleasing *)error;
 
 /** Execute single update statement
 
@@ -505,8 +473,6 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  @see FMResultSet
  @see [`FMResultSet next`](<[FMResultSet next]>)
  @see [`sqlite3_bind`](http://sqlite.org/c3ref/bind_blob.html)
- 
- @note If you want to use this from Swift, please note that you must include `FMDatabaseVariadic.swift` in your project. Without that, you cannot use this method directly, and instead have to use methods such as `<executeQuery:withArgumentsInArray:>`.
  */
 
 - (FMResultSet *)executeQuery:(NSString*)sql, ...;
@@ -537,6 +503,8 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
  
  There are two reasons why this distinction is important. First, the printf-style escape sequences can only be used where it is permissible to use a SQLite `?` placeholder. You can use it only for values in SQL statements, but not for table names or column names or any other non-value context. This method also cannot be used in conjunction with `pragma` statements and the like. Second, note the lack of quotation marks in the SQL. The `WHERE` clause was _not_ `WHERE name='%@'` (like you might have to do if you built a SQL statement using `NSString` method `stringWithFormat`), but rather simply `WHERE name=%@`.
  
+ @note If you want to use this from Swift, please note that you must include `FMDatabaseVariadic.swift` in your project. Without that, you cannot use this method directly, and instead have to use methods such as `<executeQuery:withArgumentsInArray:>`.
+
  */
 
 - (FMResultSet *)executeQueryWithFormat:(NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
@@ -553,41 +521,11 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
 
- @see -executeQuery:values:error:
  @see FMResultSet
  @see [`FMResultSet next`](<[FMResultSet next]>)
  */
 
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
-
-/** Execute select statement
- 
- Executing queries returns an `<FMResultSet>` object if successful, and `nil` upon failure.  Like executing updates, there is a variant that accepts an `NSError **` parameter.  Otherwise you should use the `<lastErrorMessage>` and `<lastErrorMessage>` methods to determine why a query failed.
- 
- In order to iterate through the results of your query, you use a `while()` loop.  You also need to "step" (via `<[FMResultSet next]>`) from one record to the other.
- 
- This is similar to `<executeQuery:withArgumentsInArray:>`, except that this also accepts a pointer to a `NSError` pointer, so that errors can be returned.
- 
- In Swift 2, this throws errors, as if it were defined as follows:
- 
- `func executeQuery(sql: String!, values: [AnyObject]!) throws  -> FMResultSet!`
-
- @param sql The SELECT statement to be performed, with optional `?` placeholders.
- 
- @param values A `NSArray` of objects to be used when binding values to the `?` placeholders in the SQL statement.
-
- @param error A `NSError` object to receive any error object (if any).
-
- @return A `<FMResultSet>` for the result set upon success; `nil` upon failure. If failed, you can call `<lastError>`, `<lastErrorCode>`, or `<lastErrorMessage>` for diagnostic information regarding the failure.
- 
- @see FMResultSet
- @see [`FMResultSet next`](<[FMResultSet next]>)
- 
- @note When called from Swift, only use the first two parameters, `sql` and `values`. This but throws the error.
-
- */
-
-- (FMResultSet *)executeQuery:(NSString *)sql values:(NSArray *)values error:(NSError * __autoreleasing *)error;
 
 /** Execute select statement
 
@@ -724,7 +662,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see https://www.zetetic.net/sqlcipher/
+ @see http://www.sqlite-encrypt.com/develop-guide.htm
  
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
@@ -737,7 +675,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see https://www.zetetic.net/sqlcipher/
+ @see http://www.sqlite-encrypt.com/develop-guide.htm
 
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
@@ -750,7 +688,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see https://www.zetetic.net/sqlcipher/
+ @see http://www.sqlite-encrypt.com/develop-guide.htm
  
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
@@ -763,7 +701,7 @@ typedef int(^FMDBExecuteStatementsCallbackBlock)(NSDictionary *resultsDictionary
 
  @return `YES` if success, `NO` on error.
 
- @see https://www.zetetic.net/sqlcipher/
+ @see http://www.sqlite-encrypt.com/develop-guide.htm
 
  @warning You need to have purchased the sqlite encryption extensions for this method to work.
  */
