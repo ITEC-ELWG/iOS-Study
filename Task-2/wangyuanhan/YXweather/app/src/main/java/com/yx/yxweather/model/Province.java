@@ -12,11 +12,11 @@ public class Province {
         this.id = id;
     }
 
-    public void setProvince_name(String province_name) {
+    public void setProvinceName(String province_name) {
         this.province_name = province_name;
     }
 
-    public void setProvince_code(String province_code) {
+    public void setProvinceCode(String province_code) {
         this.province_code = province_code;
     }
 
@@ -24,11 +24,11 @@ public class Province {
         return id;
     }
 
-    public String getProvince_name() {
+    public String getProvinceName() {
         return province_name;
     }
 
-    public String getProvince_code() {
+    public String getProvinceCode() {
         return province_code;
     }
 }

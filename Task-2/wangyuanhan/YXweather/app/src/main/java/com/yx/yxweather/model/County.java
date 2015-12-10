@@ -13,15 +13,15 @@ public class County {
         this.id = id;
     }
 
-    public void setCity_id(int city_id) {
+    public void setCityId(int city_id) {
         this.city_id = city_id;
     }
 
-    public void setCounty_name(String county_name) {
+    public void setCountyName(String county_name) {
         this.county_name = county_name;
     }
 
-    public void setCounty_code(String county_code) {
+    public void setCountyCode(String county_code) {
         this.county_code = county_code;
     }
 
@@ -29,15 +29,15 @@ public class County {
         return id;
     }
 
-    public int getCity_id() {
+    public int getCityId() {
         return city_id;
     }
 
-    public String getCounty_name() {
+    public String getCountyName() {
         return county_name;
     }
 
-    public String getCounty_code() {
+    public String getCountyCode() {
         return county_code;
     }
 }

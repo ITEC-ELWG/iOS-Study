@@ -13,15 +13,15 @@ public class City {
         this.id = id;
     }
 
-    public void setProvince_id(int province_id) {
+    public void setProvinceId(int province_id) {
         this.province_id = province_id;
     }
 
-    public void setCity_name(String city_name) {
+    public void setCityName(String city_name) {
         this.city_name = city_name;
     }
 
-    public void setCity_code(String city_code) {
+    public void setCityCode(String city_code) {
         this.city_code = city_code;
     }
 
@@ -29,15 +29,15 @@ public class City {
         return id;
     }
 
-    public int getProvince_id() {
+    public int getProvinceId() {
         return province_id;
     }
 
-    public String getCity_name() {
+    public String getCityName() {
         return city_name;
     }
 
-    public String getCity_code() {
+    public String getCityCode() {
         return city_code;
     }
 }

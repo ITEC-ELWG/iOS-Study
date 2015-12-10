@@ -38,8 +38,8 @@ public class YXweatherDB {
     public void saveProvince(Province province) {
         if (province != null) {
             ContentValues values = new ContentValues();
-            values.put("province_name", province.getProvince_name());
-            values.put("province_code", province.getProvince_code());
+            values.put("province_name", province.getProvinceName());
+            values.put("province_code", province.getProvinceCode());
             db.insert("Province", null, values);
         }
     }
@@ -47,9 +47,9 @@ public class YXweatherDB {
     public void saveCity(City city) {
         if (city != null) {
             ContentValues values = new ContentValues();
-            values.put("province_id", city.getProvince_id());
-            values.put("city_name", city.getCity_name());
-            values.put("city_code", city.getCity_code());
+            values.put("province_id", city.getProvinceId());
+            values.put("city_name", city.getCityName());
+            values.put("city_code", city.getCityCode());
             db.insert("City", null, values);
         }
     }
@@ -57,9 +57,9 @@ public class YXweatherDB {
     public void saveCounty(County county) {
         if (county != null) {
             ContentValues values = new ContentValues();
-            values.put("city_id", county.getCity_id());
-            values.put("county_name", county.getCounty_name());
-            values.put("county_code", county.getCounty_code());
+            values.put("city_id", county.getCityId());
+            values.put("county_name", county.getCountyName());
+            values.put("county_code", county.getCountyCode());
             db.insert("County", null, values);
         }
     }
@@ -73,8 +73,8 @@ public class YXweatherDB {
                 Province province = new Province();
 
                 province.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                province.setProvince_name(cursor.getString(cursor.getColumnIndex("province_name")));
-                province.setProvince_code(cursor.getString(cursor.getColumnIndex("province_code")));
+                province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
+                province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
 
                 list.add(province);
             } while (cursor.moveToNext());
@@ -97,9 +97,9 @@ public class YXweatherDB {
                 City city = new City();
 
                 city.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                city.setProvince_id(province_id);
-                city.setCity_name(cursor.getString(cursor.getColumnIndex("city_name")));
-                city.setCity_code(cursor.getString(cursor.getColumnIndex("city_code")));
+                city.setProvinceId(province_id);
+                city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
+                city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
 
                 list.add(city);
             } while (cursor.moveToNext());
@@ -122,9 +122,9 @@ public class YXweatherDB {
                 County county = new County();
 
                 county.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                county.setCity_id(city_id);
-                county.setCounty_name(cursor.getString(cursor.getColumnIndex("county_name")));
-                county.setCounty_code(cursor.getString(cursor.getColumnIndex("county_code")));
+                county.setCityId(city_id);
+                county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
+                county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
 
                 list.add(county);
             } while (cursor.moveToNext());
