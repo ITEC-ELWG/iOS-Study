@@ -31,7 +31,10 @@ public class ImageID {
             case "多云":
                 id = R.drawable.cloudy_small;
                 break;
-            case "阵雪":
+            case "小雨":
+                id = R.drawable.lightrain_small;
+                break;
+            case "小雪":
                 id = R.drawable.lightsnow_small;
                 break;
             default:

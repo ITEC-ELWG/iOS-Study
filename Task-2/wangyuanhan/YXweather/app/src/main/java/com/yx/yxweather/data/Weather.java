@@ -84,6 +84,17 @@ public class Weather {
             JSONObject retData = jsonObject.getJSONObject("retData");
             city = retData.getString("city");
 
+            JSONArray history = retData.getJSONArray("history");
+            for (int i = history.length() - 2; i < history.length(); i++) {
+                JSONObject tempJson = (JSONObject) history.get(i);
+                HashMap<String, String> tempHash = new HashMap<>();
+                tempHash.put(MainActivity.WEATHER_WEEK, tempJson.getString("week"));
+                tempHash.put(MainActivity.WEATHER_TYPE, tempJson.getString("type"));
+//                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + tempJson.getString("type"));
+                tempHash.put(MainActivity.WEATHER_TEMPERATURE, tempJson.getString("lowtemp") + " ~ " + tempJson.getString("hightemp"));
+                list.add(tempHash);
+            }
+
             JSONObject today = retData.getJSONObject("today");
             type = today.getString("type");
             background = new BackgroundID(type).getBackgroundID();
@@ -100,7 +111,8 @@ public class Weather {
                 HashMap<String, String> tempHash = new HashMap<>();
                 tempHash.put(MainActivity.WEATHER_WEEK, tempJson.getString("week"));
                 tempHash.put(MainActivity.WEATHER_TYPE, tempJson.getString("type"));
-                tempHash.put(MainActivity.WEATHER_TEMPERATURE, tempJson.getString("lowtemp") + " ~ " + today.getString("hightemp"));
+//                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + tempJson.getString("type"));
+                tempHash.put(MainActivity.WEATHER_TEMPERATURE, tempJson.getString("lowtemp") + " ~ " + tempJson.getString("hightemp"));
                 list.add(tempHash);
             }
         } catch (Exception e) {

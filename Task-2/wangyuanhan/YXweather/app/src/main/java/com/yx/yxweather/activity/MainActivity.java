@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -16,17 +18,20 @@ import com.yx.yxweather.R;
 import com.yx.yxweather.adapter.WeatherAdapter;
 import com.yx.yxweather.data.Weather;
 import com.yx.yxweather.database.CityDB;
+import com.yx.yxweather.database.CityHome;
 
 public class MainActivity extends Activity {
     public static final String WEATHER_WEEK = "week";
     public static final String WEATHER_TYPE = "type";
     public static final String WEATHER_TEMPERATURE = "temperature";
+    private String code = null;
 
     private LinearLayout linearLayout;
     private TextView textCity;
     private TextView textType;
     private TextView textTurTemp;
     private ListView listView;
+    private SwipeRefreshLayout swipe;
     private Weather weather;
 
     public static final int END = 1;
@@ -38,11 +43,12 @@ public class MainActivity extends Activity {
                     linearLayout.setBackgroundResource(weather.getBackground());
                     textCity.setText(weather.getCity());
                     textType.setText(weather.getType());
-                    System.out.println(weather.getType());
                     textTurTemp.setText(weather.getCurTemp());
 
                     WeatherAdapter adapter = new WeatherAdapter(MainActivity.this, weather.getList());
                     listView.setAdapter(adapter);
+                    listView.setSelection(2);
+                    swipe.setRefreshing(false);
                     break;
                 default:
             }
@@ -60,8 +66,9 @@ public class MainActivity extends Activity {
         textType = (TextView) findViewById(R.id.text_type);
         textTurTemp = (TextView) findViewById(R.id.text_curTemp);
         listView = (ListView) findViewById(R.id.list_weather);
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
 
-        weather = new Weather(handler, getCityID());
+        weather = new Weather(handler, getCityCode());
         SQLiteDatabase db = new CityDB(this).getWritableDatabase();
 
         textCity.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +78,12 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, 1);
             }
         });
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                weather = new Weather(handler, getCityCode());
+            }
+        });
     }
 
     @Override
@@ -78,19 +91,31 @@ public class MainActivity extends Activity {
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
-                    weather = new Weather(handler, data.getStringExtra(CityDB.DB_SEARCH_CODE));
+                    code = data.getStringExtra(CityDB.DB_SEARCH_CODE);
+                    weather = new Weather(handler, code);
                 }
                 break;
             default:
         }
     }
 
-    private String getCityID() {
-        String str = "101010100";
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        new CityHome(this).saveHomeCity(getCityCode());
+    }
+
+    private String getCityCode() {
         Intent intent = getIntent();
-        if (intent.getStringExtra(CityDB.DB_SAVE_CODE) != null) {
-            str = intent.getStringExtra(CityDB.DB_SAVE_CODE);
+        String text = new CityHome(this).loadHomeCity();
+        if (!TextUtils.isEmpty(text)) {
+            return text;
+        } else if (code != null) {
+            return code;
+        } else if (intent.getStringExtra(CityDB.DB_SAVE_CODE) != null) {
+            return intent.getStringExtra(CityDB.DB_SAVE_CODE);
+        } else {
+            return "101010100";
         }
-        return str;
     }
 }

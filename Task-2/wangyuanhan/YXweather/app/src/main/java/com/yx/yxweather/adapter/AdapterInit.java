@@ -48,7 +48,7 @@ public class AdapterInit {
                 db.close();
 
                 Message message = new Message();
-                message.what = SearchActivity.COMPLETE;
+                message.what = SearchActivity.END;
                 handler.sendMessage(message);
             }
         }).start();

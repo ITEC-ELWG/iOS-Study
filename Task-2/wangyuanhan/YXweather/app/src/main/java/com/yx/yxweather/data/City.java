@@ -54,7 +54,7 @@ public class City {
                 db.close();
 
                 Message message = new Message();
-                message.what = SaveActivity.COMPLETE;
+                message.what = SaveActivity.END;
                 handler.sendMessage(message);
             }
         }).start();

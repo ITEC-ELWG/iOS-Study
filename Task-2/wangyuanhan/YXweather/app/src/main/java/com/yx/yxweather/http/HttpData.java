@@ -25,6 +25,7 @@ public class HttpData {
         httpUrl = httpUrl + httpArg;
 
         try {
+//            Thread.sleep(1000); //  test
             URL url = new URL(httpUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

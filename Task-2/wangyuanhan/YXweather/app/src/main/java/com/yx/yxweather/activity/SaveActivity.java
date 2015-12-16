@@ -27,12 +27,12 @@ public class SaveActivity extends Activity {
     private City city;
     private String cityDelete;
 
-    public static final int COMPLETE = 1;
+    public static final int END = 1;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case COMPLETE:
+                case END:
                     CityAdapter adapter = new CityAdapter(SaveActivity.this, city.getList());
                     listView.setAdapter(adapter);
                     break;

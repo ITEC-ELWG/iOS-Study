@@ -1,6 +1,7 @@
 package com.yx.yxweather.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,10 @@ public class WeatherAdapter extends BaseAdapter {
         holder.textWeatherWeek.setText(map.get(MainActivity.WEATHER_WEEK));
         holder.imageWeatherType.setImageResource(new ImageID(map.get(MainActivity.WEATHER_TYPE)).getImageID());
         holder.textWeatherTemperature.setText(map.get(MainActivity.WEATHER_TEMPERATURE));
+
+        if (position == 2) {
+            holder.textWeatherWeek.setTextColor(Color.rgb(51, 102, 204));
+        }
 
         return convertView;
     }

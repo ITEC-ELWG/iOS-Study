@@ -28,10 +28,10 @@ public class BackgroundID {
             case "多云":
                 id = R.drawable.cloudy;
                 break;
-            case "阵雨":
+            case "小雨":
                 id = R.drawable.lightrain;
                 break;
-            case "阵雪":
+            case "小雪":
                 id = R.drawable.lightsnow;
                 break;
             case "雷阵雨":
