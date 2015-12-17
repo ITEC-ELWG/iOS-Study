@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/background_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_weight="5.0"
             android:layout_height="match_parent"
             android:layout_marginLeft="11dp"
-            android:background="#111111"
+            android:background="@drawable/background"
             android:textColor="#FFFFFF"
             android:paddingLeft="11dp"/>
 

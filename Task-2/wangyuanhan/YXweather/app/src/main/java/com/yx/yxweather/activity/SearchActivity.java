@@ -11,12 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.yx.yxweather.R;
 import com.yx.yxweather.adapter.AdapterInit;
 import com.yx.yxweather.data.City;
 
 public class SearchActivity extends Activity {
+    private LinearLayout linearLayout;
     private AutoCompleteTextView autoCompleteTextView;
     private Button buttonCancel;
     private ArrayAdapter adapter;
@@ -39,8 +41,11 @@ public class SearchActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_search);
 
+        linearLayout = (LinearLayout) findViewById(R.id.background_search);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_search);
         buttonCancel = (Button) findViewById(R.id.button_cancel);
+
+        linearLayout.setBackgroundResource(getIntent().getExtras().getInt("background"));
 
         adapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
         AdapterInit adapterInit = new AdapterInit(this, adapter, handler);
@@ -49,7 +54,8 @@ public class SearchActivity extends Activity {
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                autoCompleteTextView.setText("");
+                setResult(RESULT_CANCELED, new Intent());
+                finish();
             }
         });
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
