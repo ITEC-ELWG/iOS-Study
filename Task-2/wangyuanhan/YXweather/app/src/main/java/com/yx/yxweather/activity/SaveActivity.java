@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.yx.yxweather.R;
@@ -22,6 +23,8 @@ import com.yx.yxweather.database.CitySave;
 import com.yx.yxweather.database.CityDB;
 
 public class SaveActivity extends Activity {
+    private int background;
+    private LinearLayout linearLayout;
     private ListView listView;
     private Button addCity;
     private City city;
@@ -45,18 +48,23 @@ public class SaveActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_city);
+        setContentView(R.layout.activity_save);
 
+        linearLayout = (LinearLayout) findViewById(R.id.background_save);
         listView = (ListView) findViewById(R.id.list_city);
         addCity = (Button) findViewById(R.id.add_city);
 
         city = new City(this, handler);
+        background = getIntent().getExtras().getInt("background");
+        linearLayout.setBackgroundResource(background);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SaveActivity.this, MainActivity.class);
                 startActivity(new CityOpen(SaveActivity.this, position, intent).openCity());
+                finish();
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -88,6 +96,7 @@ public class SaveActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SaveActivity.this, SearchActivity.class);
+                intent.putExtra("background", background);
                 startActivityForResult(intent, 1);
             }
         });
@@ -99,13 +108,20 @@ public class SaveActivity extends Activity {
             case 1:
                 if (resultCode == RESULT_OK) {
                     new CitySave(SaveActivity.this, data.getStringExtra(CityDB.DB_SAVE_CITY), data.getStringExtra(CityDB.DB_SEARCH_CODE)).saveCity();
-                    Intent intent = new Intent();
+                    Intent intent = new Intent(SaveActivity.this, MainActivity.class);
                     intent.putExtra(CityDB.DB_SEARCH_CODE, data.getStringExtra(CityDB.DB_SEARCH_CODE));
-                    setResult(RESULT_OK, intent);
+                    startActivity(intent);
                     finish();
                 }
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SaveActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

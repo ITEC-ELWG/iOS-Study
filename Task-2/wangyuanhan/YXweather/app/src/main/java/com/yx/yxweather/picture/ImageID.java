@@ -22,21 +22,24 @@ public class ImageID {
             case "阴":
                 id = R.drawable.overcast_small;
                 break;
-            case "霾":
-                id = R.drawable.haze_small;
-                break;
+//            case "霾":
+//                id = R.drawable.haze_small;
+//                break;
             case "雾":
                 id = R.drawable.foggy_small;
                 break;
             case "多云":
                 id = R.drawable.cloudy_small;
                 break;
+            case "阵雨":
+                id = R.drawable.shower_small;
+                break;
             case "小雨":
                 id = R.drawable.lightrain_small;
                 break;
-            case "小雪":
-                id = R.drawable.lightsnow_small;
-                break;
+//            case "小雪":
+//                id = R.drawable.lightsnow_small;
+//                break;
             default:
         }
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bg"
+    android:id="@+id/background_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,6 +16,7 @@
             android:id="@+id/text_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="__ __"
             android:textSize="33dp"
             android:textColor="#FFFFFF"
             android:gravity="center"/>
@@ -25,6 +25,7 @@
             android:id="@+id/text_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="__"
             android:textSize="20dp"
             android:textColor="#FFFFFF"
             android:gravity="center"/>
@@ -33,6 +34,7 @@
             android:id="@+id/text_curTemp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="__℃"
             android:textSize="77dp"
             android:textColor="#FFFFFF"
             android:gravity="center"/>
