@@ -2,15 +2,6 @@ package com.yx.yxweather.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.LinearLayout;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 /**
  * Created by YX on 2015/12/16.

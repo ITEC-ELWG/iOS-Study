@@ -18,6 +18,7 @@ public class CityDelete {
         SQLiteDatabase db = new CityDB(context).getWritableDatabase();
         db.delete(CityDB.DB_TABLE_NAME_SAVE, "city = ?", new String[]{cityDelete});
         db.close();
+
         Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
     }
 }

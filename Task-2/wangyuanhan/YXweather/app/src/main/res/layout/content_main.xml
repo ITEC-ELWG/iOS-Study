@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="__ __"
-            android:textSize="33dp"
-            android:textColor="#FFFFFF"
+            android:textSize="35dp"
+            android:textColor="#FFF"
             android:gravity="center"/>
 
         <TextView
@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="__"
-            android:textSize="20dp"
-            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:textColor="#FFF"
             android:gravity="center"/>
 
         <TextView
@@ -35,8 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="__℃"
-            android:textSize="77dp"
-            android:textColor="#FFFFFF"
+            android:textSize="75dp"
+            android:textColor="#FFF"
             android:gravity="center"/>
 
     </LinearLayout>

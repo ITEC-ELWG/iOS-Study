@@ -58,7 +58,6 @@ public class SaveActivity extends Activity {
         background = getIntent().getExtras().getInt("background");
         linearLayout.setBackgroundResource(background);
 
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,9 +83,7 @@ public class SaveActivity extends Activity {
                 });
                 dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
                 dialog.show();
                 return true;

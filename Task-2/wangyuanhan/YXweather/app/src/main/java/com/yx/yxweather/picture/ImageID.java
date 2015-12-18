@@ -22,9 +22,9 @@ public class ImageID {
             case "阴":
                 id = R.drawable.overcast_small;
                 break;
-//            case "霾":
-//                id = R.drawable.haze_small;
-//                break;
+            case "霾":
+                id = R.drawable.haze_small;
+                break;
             case "雾":
                 id = R.drawable.foggy_small;
                 break;

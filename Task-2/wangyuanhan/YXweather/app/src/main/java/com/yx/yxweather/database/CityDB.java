@@ -64,6 +64,11 @@ public class CityDB extends SQLiteOpenHelper {
     }
 
     private void init() {
+        SharedPreferences.Editor editor = context.getSharedPreferences("data", Context.MODE_PRIVATE).edit();
+        editor.putInt("background", R.drawable.sunny);
+        editor.putString("code", "101010100");
+        editor.commit();
+
         new Thread(new Runnable() {
             @Override
             public void run() {

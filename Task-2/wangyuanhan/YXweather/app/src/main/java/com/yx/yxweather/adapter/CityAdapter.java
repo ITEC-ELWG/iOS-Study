@@ -60,7 +60,6 @@ public class CityAdapter extends BaseAdapter {
         }
 
         holder.textCity.setText(list.get(position));
-
         return convertView;
     }
 }

@@ -46,8 +46,7 @@ public class City {
                 Cursor cursor = db.query(CityDB.DB_TABLE_NAME_SAVE, null, null, null, null, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
-                        String str = cursor.getString(cursor.getColumnIndex(CityDB.DB_SAVE_CITY));
-                        list.add(str);
+                        list.add(cursor.getString(cursor.getColumnIndex(CityDB.DB_SAVE_CITY)));
                     } while (cursor.moveToNext());
                 }
                 cursor.close();

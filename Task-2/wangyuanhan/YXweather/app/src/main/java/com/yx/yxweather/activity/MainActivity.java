@@ -2,17 +2,16 @@ package com.yx.yxweather.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yx.yxweather.R;
 import com.yx.yxweather.adapter.WeatherAdapter;
@@ -43,16 +42,21 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case END:
-                    background = weather.getBackground();
-                    linearLayout.setBackgroundResource(background);
-                    textCity.setText(weather.getCity());
-                    textType.setText(weather.getType());
-                    textTurTemp.setText(weather.getCurTemp());
+                    if (weather.getBackground() != 0) {
+                        background = weather.getBackground();
+                        linearLayout.setBackgroundResource(background);
 
-                    WeatherAdapter adapter = new WeatherAdapter(MainActivity.this, weather.getList());
-                    listView.setAdapter(adapter);
-//                    listView.setSelection(3);
-                    listView.setSelectionFromTop(2, 0);
+                        textCity.setText(weather.getCity());
+                        textType.setText(weather.getType());
+                        textTurTemp.setText(weather.getCurTemp());
+
+                        WeatherAdapter adapter = new WeatherAdapter(MainActivity.this, weather.getList());
+                        listView.setAdapter(adapter);
+                        listView.setSelection(2);
+                    } else {
+                        Toast.makeText(MainActivity.this, "网络错误", Toast.LENGTH_SHORT).show();
+                    }
+
                     swipe.setRefreshing(false);
                     break;
                 default:
@@ -66,6 +70,8 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        new CityDB(this).getReadableDatabase();
+
         linearLayout = (LinearLayout) findViewById(R.id.background_main);
         textCity = (TextView) findViewById(R.id.text_city);
         textType = (TextView) findViewById(R.id.text_type);
@@ -77,7 +83,6 @@ public class MainActivity extends Activity {
         weather = new Weather(handler, getCode());
         background = home.loadHomeBackground();
         linearLayout.setBackgroundResource(background);
-        SQLiteDatabase db = new CityDB(this).getWritableDatabase();
 
         textCity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +111,7 @@ public class MainActivity extends Activity {
         Intent intent = getIntent();
         String saveCode = intent.getStringExtra(CityDB.DB_SAVE_CODE);
         String searchCode = intent.getStringExtra(CityDB.DB_SEARCH_CODE);
-        String text = home.loadHomeCode();
+
         if (code != null) {
             return code;
         } else if (saveCode != null) {
@@ -114,7 +119,7 @@ public class MainActivity extends Activity {
         } else if (searchCode != null) {
             return searchCode;
         } else {
-            return text;
+            return home.loadHomeCode();
         }
     }
 }

@@ -19,7 +19,8 @@ public class HttpData {
     }
 
     public String getData() {
-        BufferedReader reader = null;
+        HttpURLConnection connection = null;
+        BufferedReader reader;
         String result = null;
         StringBuffer buffer = new StringBuffer();
         httpUrl = httpUrl + httpArg;
@@ -27,13 +28,15 @@ public class HttpData {
         try {
 //            Thread.sleep(1000); //  test
             URL url = new URL(httpUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+            connection.setConnectTimeout(2000);
+            connection.setReadTimeout(2000);
             connection.setRequestProperty("apikey",  "090af4ffa23943002a9388c59a9e3081");
             connection.connect();
             InputStream is = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            String bufferRead = null;
+            String bufferRead;
             while ((bufferRead = reader.readLine()) != null) {
                 buffer.append(bufferRead);
                 buffer.append("\r\n");
@@ -42,6 +45,10 @@ public class HttpData {
             result = buffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return result;
     }

@@ -34,6 +34,9 @@ public class BackgroundID {
             case "小雨":
                 id = R.drawable.lightrain;
                 break;
+            case "暴雨":
+                id = R.drawable.rainstorm;
+                break;
             case "小雪":
                 id = R.drawable.lightsnow;
                 break;

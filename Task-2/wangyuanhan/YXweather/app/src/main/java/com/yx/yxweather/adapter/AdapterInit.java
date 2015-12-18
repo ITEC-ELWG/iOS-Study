@@ -38,7 +38,6 @@ public class AdapterInit {
                 Cursor cursor = db.query(CityDB.DB_TABLE_NAME_SEARCH, null, null, null, null, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
-//                        Thread.sleep(100);
                         String str1 = cursor.getString(cursor.getColumnIndex(CityDB.DB_SEARCH_CITY));
                         String str2 = cursor.getString(cursor.getColumnIndex(CityDB.DB_SEARCH_PROVINCE));
                         adapter.add(str1 + "（" + str2 + "）");

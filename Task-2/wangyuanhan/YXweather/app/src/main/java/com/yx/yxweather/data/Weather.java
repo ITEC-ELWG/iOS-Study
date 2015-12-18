@@ -10,11 +10,6 @@ import com.yx.yxweather.picture.BackgroundID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,9 +22,9 @@ public class Weather {
     private String city;
     private String type;
     private String curTemp;
-    private ArrayList<HashMap<String, String>> list;
     private String httpUrl = "http://apis.baidu.com/apistore/weatherservice/recentweathers?cityid=";
     private String httpArg = "";
+    private ArrayList<HashMap<String, String>> list;
 
     public Weather(Handler handler, String httpArg) {
         this.handler = handler;
@@ -65,7 +60,9 @@ public class Weather {
                 try {
 //                    Thread.sleep(1000); // test
                     String result = new HttpData(httpUrl, httpArg).getData();
-                    parseJSON(result);
+                    if (result != null) {
+                        parseJSON(result);
+                    }
 
                     Message message = new Message();
                     message.what = MainActivity.END;
@@ -90,7 +87,6 @@ public class Weather {
                 HashMap<String, String> tempHash = new HashMap<>();
                 tempHash.put(MainActivity.WEATHER_WEEK, tempJson.getString("week"));
                 tempHash.put(MainActivity.WEATHER_TYPE, tempJson.getString("type"));
-//                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + tempJson.getString("type"));
                 tempHash.put(MainActivity.WEATHER_TEMPERATURE, tempJson.getString("lowtemp") + " ~ " + tempJson.getString("hightemp"));
                 list.add(tempHash);
             }
@@ -111,7 +107,6 @@ public class Weather {
                 HashMap<String, String> tempHash = new HashMap<>();
                 tempHash.put(MainActivity.WEATHER_WEEK, tempJson.getString("week"));
                 tempHash.put(MainActivity.WEATHER_TYPE, tempJson.getString("type"));
-//                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + tempJson.getString("type"));
                 tempHash.put(MainActivity.WEATHER_TEMPERATURE, tempJson.getString("lowtemp") + " ~ " + tempJson.getString("hightemp"));
                 list.add(tempHash);
             }
