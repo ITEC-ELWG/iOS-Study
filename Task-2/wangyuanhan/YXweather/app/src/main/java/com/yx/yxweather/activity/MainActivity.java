@@ -103,8 +103,8 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onRestart() {
+        super.onRestart();
         weather = new Weather(handler, getCode());
         Intent intent = new Intent(this, YXService.class);
         stopService(intent);

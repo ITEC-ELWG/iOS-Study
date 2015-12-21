@@ -2,6 +2,7 @@ package com.yx.yxweather.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -19,10 +20,31 @@ public class CitySave {
     }
 
     public void saveCity() {
-        SQLiteDatabase db = new CityDB(context).getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(CityDB.DB_SAVE_CITY, city);
-        values.put(CityDB.DB_SAVE_CODE, code);
-        db.insert(CityDB.DB_TABLE_NAME_SAVE, null, values);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Boolean able = true;
+                SQLiteDatabase db = new CityDB(context).getWritableDatabase();
+
+                Cursor cursor = db.query(CityDB.DB_TABLE_NAME_SAVE, null, null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        if (code.equals(cursor.getString(cursor.getColumnIndex(CityDB.DB_SAVE_CODE)))) {
+                            able = false;
+                            break;
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+
+                if (able) {
+                    ContentValues values = new ContentValues();
+                    values.put(CityDB.DB_SAVE_CITY, city);
+                    values.put(CityDB.DB_SAVE_CODE, code);
+                    db.insert(CityDB.DB_TABLE_NAME_SAVE, null, values);
+                    db.close();
+                }
+            }
+        }).start();
     }
 }
