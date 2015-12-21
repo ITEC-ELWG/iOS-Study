@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9B00338D1C1E5E2D0085D343 /* SWLocalListsDBService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B00338C1C1E5E2D0085D343 /* SWLocalListsDBService.m */; settings = {ASSET_TAGS = (); }; };
+		9B0033901C1E5E7D0085D343 /* SWDBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B00338F1C1E5E7D0085D343 /* SWDBHelper.m */; settings = {ASSET_TAGS = (); }; };
+		9B0033931C1E92FA0085D343 /* SWLocalLists.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0033921C1E92FA0085D343 /* SWLocalLists.m */; settings = {ASSET_TAGS = (); }; };
+		9B0033961C1E9DA70085D343 /* SWAllCitiesDBService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0033951C1E9DA70085D343 /* SWAllCitiesDBService.m */; settings = {ASSET_TAGS = (); }; };
+		9B0033C11C2109990085D343 /* SWHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B0033C01C2109990085D343 /* SWHeaderView.xib */; settings = {ASSET_TAGS = (); }; };
+		9B147BF81C17E78C0054B944 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B147BF71C17E78C0054B944 /* main.m */; };
+		9B147BFB1C17E78C0054B944 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B147BFA1C17E78C0054B944 /* AppDelegate.m */; };
+		9B6FA2D11C1ADCF5000F8B56 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6FA2CF1C1ADCF5000F8B56 /* SWTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		9B6FA2D21C1ADCF5000F8B56 /* SWTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B6FA2D01C1ADCF5000F8B56 /* SWTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		9B6FA3831C1BBFB3000F8B56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */; settings = {ASSET_TAGS = (); }; };
+		9B7854C11C17FBBB0012620B /* SWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854BF1C17FBBB0012620B /* SWViewController.m */; settings = {ASSET_TAGS = (); }; };
+		9B7854C21C17FBBB0012620B /* SWViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B7854C01C17FBBB0012620B /* SWViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		9B7854C61C1808210012620B /* SWAddCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854C41C1808210012620B /* SWAddCityViewController.m */; settings = {ASSET_TAGS = (); }; };
+		9B7854C71C1808210012620B /* SWAddCityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B7854C51C1808210012620B /* SWAddCityViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		9B7854C91C1855200012620B /* BaiduMap_cityCenter.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9B7854C81C1855200012620B /* BaiduMap_cityCenter.txt */; settings = {ASSET_TAGS = (); }; };
+		9B7854CC1C1913940012620B /* SWCityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854CB1C1913940012620B /* SWCityInfo.m */; settings = {ASSET_TAGS = (); }; };
+		9B7854D11C1999540012620B /* SWLocalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854CF1C1999540012620B /* SWLocalListViewController.m */; settings = {ASSET_TAGS = (); }; };
+		9B7854D21C1999540012620B /* SWLocalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B7854D01C1999540012620B /* SWLocalListViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		A27C6F4431D7E284E46F559B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAF1C7F9902877AE459F98D /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0AAF1C7F9902877AE459F98D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AF00862DBA5B7E41EE21668 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		9B00338B1C1E5E2D0085D343 /* SWLocalListsDBService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLocalListsDBService.h; sourceTree = "<group>"; };
+		9B00338C1C1E5E2D0085D343 /* SWLocalListsDBService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLocalListsDBService.m; sourceTree = "<group>"; };
+		9B00338E1C1E5E7D0085D343 /* SWDBHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWDBHelper.h; sourceTree = "<group>"; };
+		9B00338F1C1E5E7D0085D343 /* SWDBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWDBHelper.m; sourceTree = "<group>"; };
+		9B0033911C1E92FA0085D343 /* SWLocalLists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLocalLists.h; sourceTree = "<group>"; };
+		9B0033921C1E92FA0085D343 /* SWLocalLists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLocalLists.m; sourceTree = "<group>"; };
+		9B0033941C1E9DA60085D343 /* SWAllCitiesDBService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWAllCitiesDBService.h; sourceTree = "<group>"; };
+		9B0033951C1E9DA70085D343 /* SWAllCitiesDBService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWAllCitiesDBService.m; sourceTree = "<group>"; };
+		9B0033C01C2109990085D343 /* SWHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWHeaderView.xib; sourceTree = "<group>"; };
+		9B147BF31C17E78C0054B944 /* SimpleWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B147BF71C17E78C0054B944 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9B147BF91C17E78C0054B944 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9B147BFA1C17E78C0054B944 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9B147C011C17E78C0054B944 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B6FA2CE1C1ADCF5000F8B56 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
+		9B6FA2CF1C1ADCF5000F8B56 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
+		9B6FA2D01C1ADCF5000F8B56 /* SWTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWTableViewCell.xib; sourceTree = "<group>"; };
+		9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9B7854BE1C17FBBB0012620B /* SWViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWViewController.h; sourceTree = "<group>"; };
+		9B7854BF1C17FBBB0012620B /* SWViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWViewController.m; sourceTree = "<group>"; };
+		9B7854C01C17FBBB0012620B /* SWViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWViewController.xib; sourceTree = "<group>"; };
+		9B7854C31C1808210012620B /* SWAddCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWAddCityViewController.h; sourceTree = "<group>"; };
+		9B7854C41C1808210012620B /* SWAddCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWAddCityViewController.m; sourceTree = "<group>"; };
+		9B7854C51C1808210012620B /* SWAddCityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWAddCityViewController.xib; sourceTree = "<group>"; };
+		9B7854C81C1855200012620B /* BaiduMap_cityCenter.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BaiduMap_cityCenter.txt; sourceTree = "<group>"; };
+		9B7854CA1C1913940012620B /* SWCityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWCityInfo.h; sourceTree = "<group>"; };
+		9B7854CB1C1913940012620B /* SWCityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWCityInfo.m; sourceTree = "<group>"; };
+		9B7854CE1C1999540012620B /* SWLocalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLocalListViewController.h; sourceTree = "<group>"; };
+		9B7854CF1C1999540012620B /* SWLocalListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLocalListViewController.m; sourceTree = "<group>"; };
+		9B7854D01C1999540012620B /* SWLocalListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWLocalListViewController.xib; sourceTree = "<group>"; };
+		E4F3F2B976F0744E49D7631F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9B147BF01C17E78C0054B944 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A27C6F4431D7E284E46F559B /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		93FCF35B94BC3584693E329C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2AF00862DBA5B7E41EE21668 /* Pods.debug.xcconfig */,
+				E4F3F2B976F0744E49D7631F /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9B0033891C1E5DDD0085D343 /* DBService */ = {
+			isa = PBXGroup;
+			children = (
+				9B00338B1C1E5E2D0085D343 /* SWLocalListsDBService.h */,
+				9B00338C1C1E5E2D0085D343 /* SWLocalListsDBService.m */,
+				9B0033941C1E9DA60085D343 /* SWAllCitiesDBService.h */,
+				9B0033951C1E9DA70085D343 /* SWAllCitiesDBService.m */,
+			);
+			name = DBService;
+			sourceTree = "<group>";
+		};
+		9B00338A1C1E5DF40085D343 /* DBHelper */ = {
+			isa = PBXGroup;
+			children = (
+				9B00338E1C1E5E7D0085D343 /* SWDBHelper.h */,
+				9B00338F1C1E5E7D0085D343 /* SWDBHelper.m */,
+			);
+			name = DBHelper;
+			sourceTree = "<group>";
+		};
+		9B0033C61C2408290085D343 /* MainVC */ = {
+			isa = PBXGroup;
+			children = (
+				9B0033C71C2408980085D343 /* UI */,
+				9B7854BF1C17FBBB0012620B /* SWViewController.m */,
+				9B7854BE1C17FBBB0012620B /* SWViewController.h */,
+			);
+			name = MainVC;
+			sourceTree = "<group>";
+		};
+		9B0033C71C2408980085D343 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				9B6FA2CE1C1ADCF5000F8B56 /* SWTableViewCell.h */,
+				9B6FA2CF1C1ADCF5000F8B56 /* SWTableViewCell.m */,
+				9B6FA2D01C1ADCF5000F8B56 /* SWTableViewCell.xib */,
+				9B0033C01C2109990085D343 /* SWHeaderView.xib */,
+				9B7854C01C17FBBB0012620B /* SWViewController.xib */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		9B0033C91C24092D0085D343 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				9B147BF91C17E78C0054B944 /* AppDelegate.h */,
+				9B147BFA1C17E78C0054B944 /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		9B147BEA1C17E78B0054B944 = {
+			isa = PBXGroup;
+			children = (
+				9B147BF51C17E78C0054B944 /* SimpleWeather */,
+				9B147BF41C17E78C0054B944 /* Products */,
+				93FCF35B94BC3584693E329C /* Pods */,
+				FC5291E6D8490507A859F383 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		9B147BF41C17E78C0054B944 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9B147BF31C17E78C0054B944 /* SimpleWeather.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9B147BF51C17E78C0054B944 /* SimpleWeather */ = {
+			isa = PBXGroup;
+			children = (
+				9B0033C91C24092D0085D343 /* AppDelegate */,
+				9B0033C61C2408290085D343 /* MainVC */,
+				9B0033891C1E5DDD0085D343 /* DBService */,
+				9B00338A1C1E5DF40085D343 /* DBHelper */,
+				9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */,
+				9B7854D41C1999880012620B /* AddNewCity */,
+				9B7854D31C1999650012620B /* LocalCityList */,
+				9B7854CD1C19139C0012620B /* Entity */,
+				9B147BF61C17E78C0054B944 /* Supporting Files */,
+			);
+			path = SimpleWeather;
+			sourceTree = "<group>";
+		};
+		9B147BF61C17E78C0054B944 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9B7854C81C1855200012620B /* BaiduMap_cityCenter.txt */,
+				9B147C011C17E78C0054B944 /* Info.plist */,
+				9B147BF71C17E78C0054B944 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9B7854CD1C19139C0012620B /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				9B0033911C1E92FA0085D343 /* SWLocalLists.h */,
+				9B0033921C1E92FA0085D343 /* SWLocalLists.m */,
+				9B7854CA1C1913940012620B /* SWCityInfo.h */,
+				9B7854CB1C1913940012620B /* SWCityInfo.m */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		9B7854D31C1999650012620B /* LocalCityList */ = {
+			isa = PBXGroup;
+			children = (
+				9B7854CE1C1999540012620B /* SWLocalListViewController.h */,
+				9B7854CF1C1999540012620B /* SWLocalListViewController.m */,
+				9B7854D01C1999540012620B /* SWLocalListViewController.xib */,
+			);
+			name = LocalCityList;
+			sourceTree = "<group>";
+		};
+		9B7854D41C1999880012620B /* AddNewCity */ = {
+			isa = PBXGroup;
+			children = (
+				9B7854C31C1808210012620B /* SWAddCityViewController.h */,
+				9B7854C41C1808210012620B /* SWAddCityViewController.m */,
+				9B7854C51C1808210012620B /* SWAddCityViewController.xib */,
+			);
+			name = AddNewCity;
+			sourceTree = "<group>";
+		};
+		FC5291E6D8490507A859F383 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0AAF1C7F9902877AE459F98D /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9B147BF21C17E78C0054B944 /* SimpleWeather */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B147C041C17E78C0054B944 /* Build configuration list for PBXNativeTarget "SimpleWeather" */;
+			buildPhases = (
+				26175DF1F76676BE8D411CCF /* Check Pods Manifest.lock */,
+				9B147BEF1C17E78C0054B944 /* Sources */,
+				9B147BF01C17E78C0054B944 /* Frameworks */,
+				9B147BF11C17E78C0054B944 /* Resources */,
+				A73352389F84E9B811E390BC /* Embed Pods Frameworks */,
+				E39ACDC3F360FE4B0616B75C /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleWeather;
+			productName = SimpleWeather;
+			productReference = 9B147BF31C17E78C0054B944 /* SimpleWeather.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9B147BEB1C17E78B0054B944 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SW;
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = zxy;
+				TargetAttributes = {
+					9B147BF21C17E78C0054B944 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 9B147BEE1C17E78B0054B944 /* Build configuration list for PBXProject "SimpleWeather" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9B147BEA1C17E78B0054B944;
+			productRefGroup = 9B147BF41C17E78C0054B944 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9B147BF21C17E78C0054B944 /* SimpleWeather */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9B147BF11C17E78C0054B944 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B7854D21C1999540012620B /* SWLocalListViewController.xib in Resources */,
+				9B6FA2D21C1ADCF5000F8B56 /* SWTableViewCell.xib in Resources */,
+				9B7854C91C1855200012620B /* BaiduMap_cityCenter.txt in Resources */,
+				9B7854C21C17FBBB0012620B /* SWViewController.xib in Resources */,
+				9B6FA3831C1BBFB3000F8B56 /* Assets.xcassets in Resources */,
+				9B7854C71C1808210012620B /* SWAddCityViewController.xib in Resources */,
+				9B0033C11C2109990085D343 /* SWHeaderView.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		26175DF1F76676BE8D411CCF /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A73352389F84E9B811E390BC /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E39ACDC3F360FE4B0616B75C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9B147BEF1C17E78C0054B944 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B147BFB1C17E78C0054B944 /* AppDelegate.m in Sources */,
+				9B0033901C1E5E7D0085D343 /* SWDBHelper.m in Sources */,
+				9B6FA2D11C1ADCF5000F8B56 /* SWTableViewCell.m in Sources */,
+				9B0033961C1E9DA70085D343 /* SWAllCitiesDBService.m in Sources */,
+				9B7854C11C17FBBB0012620B /* SWViewController.m in Sources */,
+				9B00338D1C1E5E2D0085D343 /* SWLocalListsDBService.m in Sources */,
+				9B0033931C1E92FA0085D343 /* SWLocalLists.m in Sources */,
+				9B147BF81C17E78C0054B944 /* main.m in Sources */,
+				9B7854CC1C1913940012620B /* SWCityInfo.m in Sources */,
+				9B7854D11C1999540012620B /* SWLocalListViewController.m in Sources */,
+				9B7854C61C1808210012620B /* SWAddCityViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9B147C021C17E78C0054B944 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9B147C031C17E78C0054B944 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9B147C051C17E78C0054B944 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2AF00862DBA5B7E41EE21668 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleWeather/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = obj.SimpleWeather;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9B147C061C17E78C0054B944 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E4F3F2B976F0744E49D7631F /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SimpleWeather/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = obj.SimpleWeather;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9B147BEE1C17E78B0054B944 /* Build configuration list for PBXProject "SimpleWeather" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B147C021C17E78C0054B944 /* Debug */,
+				9B147C031C17E78C0054B944 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9B147C041C17E78C0054B944 /* Build configuration list for PBXNativeTarget "SimpleWeather" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B147C051C17E78C0054B944 /* Debug */,
+				9B147C061C17E78C0054B944 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9B147BEB1C17E78B0054B944 /* Project object */;
+}
