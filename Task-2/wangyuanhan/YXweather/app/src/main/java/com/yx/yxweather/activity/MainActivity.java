@@ -18,6 +18,7 @@ import com.yx.yxweather.adapter.WeatherAdapter;
 import com.yx.yxweather.data.Weather;
 import com.yx.yxweather.database.CityDB;
 import com.yx.yxweather.data.Home;
+import com.yx.yxweather.service.YXService;
 
 public class MainActivity extends Activity {
     public static final String WEATHER_WEEK = "week";
@@ -102,9 +103,30 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        weather = new Weather(handler, getCode());
+        Intent intent = new Intent(this, YXService.class);
+        stopService(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Intent intent = new Intent(this, YXService.class);
+        intent.putExtra("city", weather.getCity());
+        intent.putExtra("type", weather.getType());
+        intent.putExtra("curTemp", weather.getCurTemp());
+        startService(intent);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         new Home(this).saveHome(background, getCode());
+
+        Intent intent = new Intent(this, YXService.class);
+        stopService(intent);
     }
 
     private String getCode() {
