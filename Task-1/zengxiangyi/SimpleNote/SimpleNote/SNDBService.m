@@ -23,10 +23,10 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
 
 #pragma mark 数据库增删改查
 
-+ (void)getAllDataWithBlockcompletion:(updateItem)updateItemblock {
++ (void)getAllDataWithComplete:(updateItem)updateItemblock {
     NSString *sql = @"SELECT * FROM INFO";
     NSMutableArray * dbResults= [[NSMutableArray alloc] init];
-    [SNDBHelper executeSelect:^(FMDatabase *db) {
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
         FMResultSet *result = [db executeQuery:sql];
         while ([result next]) {
             //从数据库中获取内容
@@ -37,7 +37,12 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
             NSString *isFavor = [result stringForColumn:DB_COLUMN_NAME_ISFAVOR];
             
             //将数据库的内容存到Item数组
-            SNItem *newItem = [[SNItem alloc] initWithItemTitle:title detailText:dText idNum:idNum date:date isFavor:isFavor];
+            SNItem *newItem = [[SNItem alloc] initWithItemTitle:title
+                                                     detailText:dText
+                                                          idNum:idNum
+                                                           date:date
+                                                        isFavor:isFavor];
+            
             [dbResults addObject:newItem];
         }
         updateItemblock(dbResults);
@@ -45,27 +50,39 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
     }];
 }
 
-+ (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor {
++ (void)addTitle:(NSString *)titleFieldText
+         content:(NSString *)contentFieldText
+            date:(NSString *)dateLabelText
+         isFavor:(NSString *)isFavor
+        complete:(void (^)())complete {
     NSString *sql = @"INSERT INTO INFO (TITLE, CONTENT, DATE, ISFAVOR) VALUES(?, ?, ?, ?)";
-    
-    [SNDBHelper executeUpdate:^(FMDatabase *db) {
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
         [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, isFavor];
+        complete();
     }];
+
 }
 
-+ (void)deleteDataById:(NSString *)idNum{
++ (void)deleteDataById:(NSString *)idNum complete:(void (^)())complete {
     NSString *sql = @"DELETE FROM INFO WHERE ID = ?";
-    
-    [SNDBHelper executeUpdate:^(FMDatabase *db) {
+
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
         [db executeUpdate:sql, idNum];
+        complete();
     }];
 }
 
-+ (void)updateTitle:(NSString *)title content:(NSString *)content isFavor:(NSString *)isFavor byOldTitle:(NSString *)oldTitle oldContent:(NSString *)oldContent {
++ (void)updateTitle:(NSString *)title
+            content:(NSString *)content
+            isFavor:(NSString *)isFavor
+         byOldTitle:(NSString *)oldTitle
+         oldContent:(NSString *)oldContent
+           complete:(void (^)())complete {
     NSString *sql = @"UPDATE INFO SET TITLE = ?, CONTENT = ?, ISFAVOR = ? WHERE TITLE = ? AND CONTENT = ?";
     
-    [SNDBHelper executeUpdate:^(FMDatabase *db) {
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
         [db executeUpdate: sql, title, content, isFavor, oldTitle, oldContent];
+        complete();
     }];
 }
 

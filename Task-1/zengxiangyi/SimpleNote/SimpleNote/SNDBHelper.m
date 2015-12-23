@@ -30,10 +30,9 @@ static NSString *const DB_NAME = @"note.sqlite";
 
         NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
         NSString *dbPath = [doc stringByAppendingPathComponent:DB_NAME];
-        
+    
         sndbHelper.dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
         sndbHelper.operationQueue = [[NSOperationQueue alloc] init];
-        [sndbHelper.operationQueue setMaxConcurrentOperationCount:1];
         [sndbHelper.dbQueue inDatabase:^(FMDatabase *db) {
             [db executeUpdate:createSql];
         }];
@@ -42,8 +41,8 @@ static NSString *const DB_NAME = @"note.sqlite";
     return sndbHelper;
 }
 
-//查询异步操作
-+ (void)executeSelect:(db_block)block {
+//异步数据库操作
++ (void)executeOperation:(db_block)block {
     SNDBHelper *dbHelper = [SNDBHelper privateDBHelper];
     
     [dbHelper.operationQueue addOperationWithBlock:^{
@@ -55,15 +54,6 @@ static NSString *const DB_NAME = @"note.sqlite";
     }];
 }
 
-//增加，删除，修改同步操作
-+ (void)executeUpdate:(db_block)block {
-    SNDBHelper *dbHelper = [SNDBHelper privateDBHelper];
-    [dbHelper.dbQueue inDatabase:^(FMDatabase *db) {
-        if(block) {
-            block(db);
-        }
-    }];
-}
 
 - (NSString *)getCreateSql {
     static NSString *sql;

@@ -17,8 +17,6 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 @interface SNItemViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIView *mask;
-@property (nonatomic, strong) FMDatabase *db;
-@property (nonatomic, copy) NSString *dbPath;
 @property (nonatomic, retain) NSMutableArray *data;
 @property (nonatomic, retain) NSMutableArray *filterData;
 @property (nonatomic, assign) BOOL isFiltered; // 标识是否正在搜素
@@ -55,17 +53,19 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     //查询数据库
-    [SNDBService getAllDataWithBlockcompletion:^(NSMutableArray *dbResults) {
-        self.data = dbResults;
+    [SNDBService getAllDataWithComplete:^(NSMutableArray *dbResults) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            self.data = dbResults;
+            [self.tableView reloadData];
+        });
     }];
-    
     [self showAllItems];
 }
 
 #pragma mark 获取table中得行数和单元格信息
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+
     // 通过 isFiltered， isFavor区分当前的结果集
     if (_isFiltered) {
         return _filterData.count;
@@ -83,7 +83,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //根据标识去缓存池中取
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-
+    
     //缓存池没有时，重新创建
     if(cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
@@ -126,8 +126,8 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         selectedItem = _data[indexPath.row];
     }
     
-    _detailViewController.item = selectedItem;
-    _detailViewController = [self.detailViewController initDetailItem:NO];
+    self.detailViewController.item = selectedItem;
+    self.detailViewController = [self.detailViewController initDetailItem:NO];
     
     [self.navigationController pushViewController:_detailViewController animated:YES];
 }
@@ -151,13 +151,19 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 //删除操作
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //视图上的删除
         SNItem *item = _data[indexPath.row];
-        [self.data removeObjectIdenticalTo:item];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
+
         //数据库中删除
-        [SNDBService deleteDataById:item.idNum];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SNDBService deleteDataById:item.idNum
+                               complete:^{
+                                   //视图上的删除
+                                   dispatch_sync(dispatch_get_main_queue(), ^{
+                                       [self.data removeObjectIdenticalTo:item];
+                                       [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                   });
+                               }];
+        });
     }
 }
 

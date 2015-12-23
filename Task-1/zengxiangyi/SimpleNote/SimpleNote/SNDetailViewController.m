@@ -35,7 +35,9 @@
     if (isNew) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"新建";
-        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(save)];
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                       target:self
+                                                                                       action:@selector(save)];
         
         navItem.rightBarButtonItem = barButtonItem;
     }
@@ -44,7 +46,9 @@
     else {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"详细内容";
-        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(modify)];
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                       target:self
+                                                                                       action:@selector(modify)];
         navItem.rightBarButtonItem = barButtonItem;
     }
     return self;
@@ -96,14 +100,29 @@
     }
     
     //插入数据库
-    [SNDBService addTitle:_titleField.text content:_contentField.text date:_dateLabel.text isFavor:_isFavor];
-    [self.navigationController popViewControllerAnimated:YES];
+    [SNDBService addTitle:_titleField.text
+                  content:_contentField.text
+                     date:_dateLabel.text
+                  isFavor:_isFavor
+                 complete:^{
+                     dispatch_sync(dispatch_get_main_queue(), ^{
+                         [self.navigationController popViewControllerAnimated:YES];
+                     });
+                 }];
 }
 
 - (void)modify {
     //修改数据库
-    [SNDBService updateTitle:_titleField.text content:_contentField.text  isFavor:_isFavor byOldTitle:_item.title oldContent:_item.detailText];
-    [self.navigationController popViewControllerAnimated:YES];
+    [SNDBService updateTitle:_titleField.text
+                     content:_contentField.text
+                     isFavor:_isFavor
+                  byOldTitle:_item.title
+                  oldContent:_item.detailText
+                    complete:^{
+                        dispatch_sync(dispatch_get_main_queue(), ^{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        });
+                    }];
 }
 
 - (void)toggleFavor {
@@ -126,7 +145,10 @@
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *favorite = nil;
     if (_isFavor) {
-        favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleFavor)];
+        favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(toggleFavor)];
     }
     
     else {
@@ -147,8 +169,7 @@
         dateFormatter = [[NSDateFormatter alloc] init];
     });
     
-    dispatch_queue_t queue =  dispatch_get_main_queue();
-    dispatch_async(queue, ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         if (_isNew) {
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
             NSString *strDate = [dateFormatter stringFromDate:[NSDate date]];
