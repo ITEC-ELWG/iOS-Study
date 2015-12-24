@@ -16,18 +16,18 @@ typedef void(^updateItem)(NSMutableArray *dbResults);
 
 + (void)getAllDataWithComplete:(updateItem)updateItemblock;
 
-+ (void)deleteDataById:(NSString *)idNum
++ (void)deleteDataById:(NSInteger)idNum
               complete:(void (^)())complete;
 
 + (void)addTitle:(NSString *)titleFieldText
          content:(NSString *)contentFieldText
-            date:(NSString *)dateLabelText
-         isFavor:(NSString *)isFavor
+            date:(NSDate *)dateLabelText
+         isFavor:(BOOL)isFavor
         complete:(void (^)())complete;
 
 + (void)updateTitle:(NSString *)title
             content:(NSString *)content
-            isFavor:(NSString *)isFavor
+            isFavor:(BOOL)isFavor
          byOldTitle:(NSString *)oldTitle
          oldContent:(NSString *)oldContent
            complete:(void (^)())complete;

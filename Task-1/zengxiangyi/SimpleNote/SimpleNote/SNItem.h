@@ -12,15 +12,15 @@
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *detailText;
-@property (nonatomic, strong) NSString *dateCreated;
-@property (nonatomic) NSString *idNum;
-@property (nonatomic) NSString *isFavor;
+@property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic) NSInteger idNum;
+@property (nonatomic) BOOL isFavor;
 
 - (instancetype)initWithItemTitle:(NSString *)title
                        detailText:(NSString *)dtext
-                            idNum:(NSString *)idNum
-                             date:(NSString *)date
-                          isFavor:(NSString *)isFavor;
+                            idNum:(NSInteger)idNum
+                             date:(NSDate *)date
+                          isFavor:(BOOL)isFavor;
 
 - (NSString *)description;
 @end

@@ -220,7 +220,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 
 - (void)showFavorItems {
     //点击收藏时，过滤出收藏的内容，再reloadData
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavor contains 'YES'"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavor == YES "];
     self.favorData = [[NSMutableArray alloc] initWithArray:[self.data filteredArrayUsingPredicate:predicate]];
     self.isFavored = YES;
     

@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (strong, nonatomic) UITextView *contentField;
 @property (nonatomic) BOOL isNew;
-@property (nonatomic) NSString *isFavor;
+@property (nonatomic) BOOL isFavor;
 @end
 
 @implementation SNDetailViewController
@@ -81,7 +81,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    self.isFavor = _item.isFavor;
     [self showCurrentItem];
     [self createToolbarItems];
 }
@@ -98,11 +97,10 @@
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         return;
     }
-    
     //插入数据库
     [SNDBService addTitle:_titleField.text
                   content:_contentField.text
-                     date:_dateLabel.text
+                     date:_item.dateCreated
                   isFavor:_isFavor
                  complete:^{
                      dispatch_sync(dispatch_get_main_queue(), ^{
@@ -128,12 +126,12 @@
 - (void)toggleFavor {
     if (!_isFavor) {
         self.toolbarItems[1].image = [UIImage imageNamed:@"star.png"];
-        self.isFavor = @"YES";
+        self.isFavor = YES;
     }
     
     else {
         self.toolbarItems[1].image = [UIImage imageNamed:@"emptyStar.png"];
-        self.isFavor = nil;
+        self.isFavor = NO;
     }
 }
 
@@ -177,14 +175,16 @@
             self.dateLabel.text = strDate;
             self.titleField.text = @"";
             self.contentField.text = @"";
-            self.isFavor = nil;
-            self.item = nil;
+            self.isFavor = NO;
+            self.item.dateCreated = [dateFormatter dateFromString:strDate];
         }
         
         else {
             self.titleField.text = _item.title;
             self.contentField.text =  _item.detailText;
-            self.dateLabel.text = _item.dateCreated;
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSString *strDate = [dateFormatter stringFromDate:_item.dateCreated];
+            self.dateLabel.text = strDate;
         }
     });
 }

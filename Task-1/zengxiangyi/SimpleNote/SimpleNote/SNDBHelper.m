@@ -30,7 +30,7 @@ static NSString *const DB_NAME = @"note.sqlite";
 
         NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
         NSString *dbPath = [doc stringByAppendingPathComponent:DB_NAME];
-    
+        NSLog(@"%@", dbPath);
         sndbHelper.dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
         sndbHelper.operationQueue = [[NSOperationQueue alloc] init];
         [sndbHelper.dbQueue inDatabase:^(FMDatabase *db) {
@@ -59,7 +59,7 @@ static NSString *const DB_NAME = @"note.sqlite";
     static NSString *sql;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sql = @"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE, CONTENT, DATE, ISFAVOR)";
+        sql = @"CREATE TABLE IF NOT EXISTS INFO (ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, CONTENT TEXT, DATE DATE, ISFAVOR BOOLEAN)";
     });
     return sql;
 }

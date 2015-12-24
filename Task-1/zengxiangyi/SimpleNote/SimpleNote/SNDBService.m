@@ -32,9 +32,9 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
             //从数据库中获取内容
             NSString *title = [result stringForColumn:DB_COLUMN_NAME_TITLE];
             NSString *dText = [result stringForColumn:DB_COLUMN_NAME_CONTENT];
-            NSString *date = [result stringForColumn:DB_COLUMN_NAME_DATE];
-            NSString *idNum = [result stringForColumn:DB_COLUMN_NAME_ID];
-            NSString *isFavor = [result stringForColumn:DB_COLUMN_NAME_ISFAVOR];
+            NSDate *date = [result dateForColumn:DB_COLUMN_NAME_DATE];
+            NSInteger idNum = [result intForColumn:DB_COLUMN_NAME_ID];
+            BOOL isFavor = [result intForColumn:DB_COLUMN_NAME_ISFAVOR];
             
             //将数据库的内容存到Item数组
             SNItem *newItem = [[SNItem alloc] initWithItemTitle:title
@@ -42,7 +42,6 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
                                                           idNum:idNum
                                                            date:date
                                                         isFavor:isFavor];
-            
             [dbResults addObject:newItem];
         }
         updateItemblock(dbResults);
@@ -52,18 +51,18 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
 
 + (void)addTitle:(NSString *)titleFieldText
          content:(NSString *)contentFieldText
-            date:(NSString *)dateLabelText
-         isFavor:(NSString *)isFavor
+            date:(NSDate *)dateLabelText
+         isFavor:(BOOL)isFavor
         complete:(void (^)())complete {
     NSString *sql = @"INSERT INTO INFO (TITLE, CONTENT, DATE, ISFAVOR) VALUES(?, ?, ?, ?)";
     [SNDBHelper executeOperation:^(FMDatabase *db) {
-        [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, isFavor];
+        [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, [NSNumber numberWithBool:isFavor]];
         complete();
     }];
 
 }
 
-+ (void)deleteDataById:(NSString *)idNum complete:(void (^)())complete {
++ (void)deleteDataById:(NSInteger)idNum complete:(void (^)())complete {
     NSString *sql = @"DELETE FROM INFO WHERE ID = ?";
 
     [SNDBHelper executeOperation:^(FMDatabase *db) {
@@ -74,14 +73,14 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
 
 + (void)updateTitle:(NSString *)title
             content:(NSString *)content
-            isFavor:(NSString *)isFavor
+            isFavor:(BOOL)isFavor
          byOldTitle:(NSString *)oldTitle
          oldContent:(NSString *)oldContent
            complete:(void (^)())complete {
     NSString *sql = @"UPDATE INFO SET TITLE = ?, CONTENT = ?, ISFAVOR = ? WHERE TITLE = ? AND CONTENT = ?";
     
     [SNDBHelper executeOperation:^(FMDatabase *db) {
-        [db executeUpdate: sql, title, content, isFavor, oldTitle, oldContent];
+        [db executeUpdate: sql, title, content, [NSNumber numberWithBool:isFavor], oldTitle, oldContent];
         complete();
     }];
 }
