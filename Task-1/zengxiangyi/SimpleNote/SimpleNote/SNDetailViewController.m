@@ -20,6 +20,8 @@
 
 @implementation SNDetailViewController
 
+#pragma mark - Init
+
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -54,6 +56,30 @@
     return self;
 }
 
+- (NSArray *)configToolbarItems {
+    self.navigationController.toolbarHidden = NO;
+    
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *favorite = nil;
+    
+    if (_item.isFavor) {
+        favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star.png"]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(toggleFavor)];
+    } else {
+        favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"emptyStar.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleFavor)];
+    }
+    
+    favorite.image = [favorite.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    NSArray *ary = @[space, favorite, space];
+    
+    return ary;
+}
+
+#pragma mark - View life cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -63,6 +89,7 @@
     //添加约束
     self.textView.contentMode = UIViewContentModeScaleAspectFit;
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     NSDictionary *nameMap = @{@"textView":_textView, @"dateLabel": _dateLabel };
     
     NSArray *horizontalConstraints =
@@ -90,10 +117,13 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.view endEditing:YES];
+    
+    self.titleField.text = @"";
+    self.textView.text = @"";
+    self.dateLabel.text = @"";
 }
 
-#pragma mark 增加和修改操作
+#pragma mark - Private methods
 
 - (void)save {
     if ([_titleField.text isEqualToString:@""] && [_textView.text isEqualToString:@""]) {
@@ -134,30 +164,6 @@
         self.toolbarItems[1].image = [UIImage imageNamed:@"emptyStar.png"];
         self.item.isFavor = NO;
     }
-}
-
-#pragma mark 在视图上显示内容
-
-- (NSArray *)configToolbarItems {
-    self.navigationController.toolbarHidden = NO;
-
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *favorite = nil;
-    
-    if (_item.isFavor) {
-        favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star.png"]
-                                                    style:UIBarButtonItemStylePlain
-                                                   target:self
-                                                   action:@selector(toggleFavor)];
-    } else {
-        favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"emptyStar.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleFavor)];
-    }
-    
-    favorite.image = [favorite.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    NSArray *ary = @[space, favorite, space];
-
-    return ary;
 }
 
 -(void)showCurrentItem {

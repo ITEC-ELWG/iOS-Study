@@ -13,15 +13,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UITextField *detailTextField;
-
 @end
 
 @implementation SNTableViewCell
 
+#pragma mark - public methods
+
 - (void)configTableCell:(SNItem *)data {
     self.titleLabel.text = data.title;
     self.detailTextField.text = data.detailText;
-    
     self.dateLabel.text = [_dateFormatter stringFromDate:data.dateCreated];
 }
 

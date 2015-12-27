@@ -25,7 +25,7 @@ static NSString *const DB_NAME = @"note.sqlite";
     static SNDBHelper *sndbHelper = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sndbHelper = [SNDBHelper new];
+        sndbHelper = [[SNDBHelper alloc] init];
         NSString *createSql = [sndbHelper getCreateSql];
 
         NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];

@@ -36,28 +36,68 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 
 @implementation SNItemViewController
 
+#pragma mark - Init
+
 - (instancetype)init {
     self = [super initWithStyle:UITableViewStylePlain];
     
-    if (self){
+    if (self) {
         self.dateFormatter = [[NSDateFormatter alloc] init];
         [_dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
         
         self.detailViewController = [[SNDetailViewController alloc] init];
         _detailViewController.dateFormatter = _dateFormatter;
         
-        self.originToolBarItems = [self configOriginToolBarItems];
-        self.favorToolBarItems = [self configFavorToolBarItems];
-        
-        self.favorPredicate = [NSPredicate predicateWithFormat:@"isFavor == YES"];
-        
     }
     
     return self;
 }
 
+//创建搜索视图，mask透明
+- (void)createSearchBar {
+    CGRect size = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:size];
+    
+    searchBar.placeholder = @"搜索你的笔记";
+    searchBar.delegate = self;
+    
+    self.tableView.tableHeaderView = searchBar;
+    
+    self.mask = [[UIView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 40)];
+    self.mask.backgroundColor = [UIColor blackColor];
+    self.mask.alpha = 0;
+    
+    [self.view addSubview: _mask];
+}
+
+- (NSArray *)configOriginToolBarItems {
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showFavorItems)];
+    
+    NSArray *ary = @[space, addItem, space, favorite, space];
+    
+    return ary;
+}
+
+- (NSArray *)configFavorToolBarItems {
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *home = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"home.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showAllItems)];
+    
+    NSArray *ary = @[space, home, space];
+    
+    return ary;
+}
+
+#pragma mark - View life cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.originToolBarItems = [self configOriginToolBarItems];
+    self.favorToolBarItems = [self configFavorToolBarItems];
+    
+    self.favorPredicate = [NSPredicate predicateWithFormat:@"isFavor == YES"];
     
     self.navigationController.toolbarHidden = NO;
 
@@ -76,15 +116,12 @@ static NSString *const cellIdentifier = @"UITableViewCell";
     [SNDBService getAllDataWithComplete:^(NSMutableArray *dbResults) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.data = dbResults;
-            
-            self.favorData = [[NSMutableArray alloc] initWithArray:[_data filteredArrayUsingPredicate:_favorPredicate]];
-            
             [self.tableView reloadData];
         });
     }];
 }
 
-#pragma mark 获取table中得行数和单元格信息
+#pragma mark - Table view data source and delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
@@ -110,17 +147,16 @@ static NSString *const cellIdentifier = @"UITableViewCell";
     SNItem *cellItem = nil;
 
     // 通过 isFiltered， isFavor区分当前的结果集
-    if (_isFavored) {
-        cellItem =  _favorData[indexPath.row];
-    } else if (_isFavored) {
+    if (_isFiltered) {
         cellItem =  _filterData[indexPath.row];
+    } else if (_isFavored) {
+        cellItem =  _favorData[indexPath.row];
     } else {
         cellItem =  _data[indexPath.row];
     }
+    
     cell.dateFormatter = _dateFormatter;
     [cell configTableCell:cellItem];
-    //cell.textLabel.text = cellItem.title;
-    //cell.detailTextLabel.text = [cellItem description];
 
     return cell;
 }
@@ -149,27 +185,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
     [self.navigationController pushViewController:_detailViewController animated:YES];
 }
 
-//显示所有的笔记
-- (void)showAllItems {
-    self.isFavored = NO;
-    
-    self.navigationItem.title = @"笔记本";
-
-    self.toolbarItems = _originToolBarItems;
-    
-    [self.tableView reloadData];
-}
-
-#pragma mark 增删操作
-
-- (void)addNewItem {
-    self.detailViewController = [_detailViewController initDetailItem:YES];
-    
-    //新页面压入栈
-    [self.navigationController pushViewController:_detailViewController animated:YES];
-}
-
-//删除操作
+//选中删除
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         SNItem *item = nil;
@@ -178,7 +194,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         } else {
             item = _data[indexPath.row];
         }
-
+        
         //数据库中删除
         dispatch_async(dispatch_get_main_queue(), ^{
             [SNDBService deleteDataById:item.idNum
@@ -187,8 +203,9 @@ static NSString *const cellIdentifier = @"UITableViewCell";
                                    dispatch_sync(dispatch_get_main_queue(), ^{
                                        if (_isFavored) {
                                            [_favorData removeObjectIdenticalTo:item];
+                                       } else {
+                                           [_data removeObjectIdenticalTo:item];
                                        }
-                                       [_data removeObjectIdenticalTo:item];
                                        
                                        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                    });
@@ -197,12 +214,12 @@ static NSString *const cellIdentifier = @"UITableViewCell";
     }
 }
 
-#pragma mark 实现搜索的函数
+#pragma mark - Search delegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     // 开始搜索时弹出 mask 并禁止 tableview 点击
     searchBar.showsCancelButton = YES;
-
+    
     self.isFiltered = YES;
     self.mask.alpha = 0.3;
     
@@ -228,7 +245,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         
         self.tableView.scrollEnabled = YES;
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains %@ || detailText contains %@",searchText, searchText];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title contains %@ || detailText contains %@", searchText, searchText];
         self.filterData =  [[NSMutableArray alloc] initWithArray:[_data filteredArrayUsingPredicate:predicate]];
     }
     
@@ -250,52 +267,43 @@ static NSString *const cellIdentifier = @"UITableViewCell";
     [self.tableView reloadData];
 }
 
-#pragma mark 显示收藏的笔记
+#pragma mark - Private methods
+
+//显示所有的笔记
+- (void)showAllItems {
+    self.isFavored = NO;
+    
+    [SNDBService getAllDataWithComplete:^(NSMutableArray *dbResults) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.data = dbResults;
+            [self.tableView reloadData];
+        });
+    }];
+    
+    self.navigationItem.title = @"笔记本";
+    self.toolbarItems = _originToolBarItems;
+    
+    [self.tableView reloadData];
+}
+
+- (void)addNewItem {
+    self.detailViewController = [_detailViewController initDetailItem:YES];
+    
+    //新页面压入栈
+    [self.navigationController pushViewController:_detailViewController animated:YES];
+}
+
+//删除操作
+
 
 - (void)showFavorItems {
     self.isFavored = YES;
-    
+    self.favorData = [[NSMutableArray alloc] initWithArray:[_data filteredArrayUsingPredicate:_favorPredicate]];
+
     self.navigationItem.title = @"收藏夹";
     self.toolbarItems = _favorToolBarItems;
 
     [self.tableView reloadData];
-}
-
-#pragma mark 添加搜索栏和工具栏
-//创建搜索视图，mask透明
-- (void)createSearchBar {
-    CGRect size = CGRectMake(0, 0, self.view.frame.size.width, 40);
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:size];
-    
-    searchBar.placeholder = @"搜索你的笔记";
-    searchBar.delegate = self;
-    
-    self.tableView.tableHeaderView = searchBar;
-
-    self.mask = [[UIView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, self.view.frame.size.height - 40)];
-    self.mask.backgroundColor = [UIColor blackColor];
-    self.mask.alpha = 0;
-    
-    [self.view addSubview: _mask];
-}
-
-- (NSArray *)configOriginToolBarItems {
-    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem)];
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *favorite = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showFavorItems)];
-    
-    NSArray *ary = @[space, addItem, space, favorite, space];
-    
-    return ary;
-}
-
-- (NSArray *)configFavorToolBarItems {
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *home = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"home.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showAllItems)];
-    
-    NSArray *ary = @[space, home, space];
-    
-    return ary;
 }
 
 @end
