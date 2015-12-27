@@ -12,7 +12,6 @@
 
 typedef void (^db_block)(FMDatabase *db);
 
-
 @interface SNDBHelper : NSObject
 + (void)executeOperation:(db_block)block;
 @end

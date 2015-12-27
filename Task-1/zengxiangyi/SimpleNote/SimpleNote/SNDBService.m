@@ -66,7 +66,7 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
     NSString *sql = @"DELETE FROM INFO WHERE ID = ?";
 
     [SNDBHelper executeOperation:^(FMDatabase *db) {
-        [db executeUpdate:sql, idNum];
+        [db executeUpdate:sql, [NSNumber numberWithInteger:idNum]];
         complete();
     }];
 }
