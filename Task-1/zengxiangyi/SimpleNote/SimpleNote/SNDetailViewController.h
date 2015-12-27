@@ -12,6 +12,7 @@
 
 @interface SNDetailViewController : UIViewController
 @property (nonatomic, strong) SNItem *item;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 - (instancetype)initDetailItem:(BOOL)isNew;
 

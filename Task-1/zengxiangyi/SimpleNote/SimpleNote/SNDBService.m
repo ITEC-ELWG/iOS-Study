@@ -23,21 +23,25 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
 
 #pragma mark 数据库增删改查
 
-+ (void)getAllDataWithBlockcompletion:(updateItem)updateItemblock {
++ (void)getAllDataWithComplete:(updateItem)updateItemblock {
     NSString *sql = @"SELECT * FROM INFO";
     NSMutableArray * dbResults= [[NSMutableArray alloc] init];
-    [SNDBHelper executeSelect:^(FMDatabase *db) {
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
         FMResultSet *result = [db executeQuery:sql];
         while ([result next]) {
             //从数据库中获取内容
             NSString *title = [result stringForColumn:DB_COLUMN_NAME_TITLE];
             NSString *dText = [result stringForColumn:DB_COLUMN_NAME_CONTENT];
-            NSString *date = [result stringForColumn:DB_COLUMN_NAME_DATE];
-            NSString *idNum = [result stringForColumn:DB_COLUMN_NAME_ID];
-            NSString *isFavor = [result stringForColumn:DB_COLUMN_NAME_ISFAVOR];
+            NSDate *date = [result dateForColumn:DB_COLUMN_NAME_DATE];
+            NSInteger idNum = [result intForColumn:DB_COLUMN_NAME_ID];
+            BOOL isFavor = [result intForColumn:DB_COLUMN_NAME_ISFAVOR];
             
             //将数据库的内容存到Item数组
-            SNItem *newItem = [[SNItem alloc] initWithItemTitle:title detailText:dText idNum:idNum date:date isFavor:isFavor];
+            SNItem *newItem = [[SNItem alloc] initWithItemTitle:title
+                                                     detailText:dText
+                                                          idNum:idNum
+                                                           date:date
+                                                        isFavor:isFavor];
             [dbResults addObject:newItem];
         }
         updateItemblock(dbResults);
@@ -45,27 +49,39 @@ static NSString *const DB_COLUMN_NAME_ISFAVOR = @"isfavor";
     }];
 }
 
-+ (void)addTitle:(NSString *)titleFieldText content:(NSString *)contentFieldText date:(NSString *)dateLabelText isFavor:(NSString *)isFavor {
++ (void)addTitle:(NSString *)titleFieldText
+         content:(NSString *)contentFieldText
+            date:(NSDate *)dateLabelText
+         isFavor:(BOOL)isFavor
+        complete:(void (^)())complete {
     NSString *sql = @"INSERT INTO INFO (TITLE, CONTENT, DATE, ISFAVOR) VALUES(?, ?, ?, ?)";
-    
-    [SNDBHelper executeUpdate:^(FMDatabase *db) {
-        [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, isFavor];
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
+        [db executeUpdate: sql, titleFieldText, contentFieldText, dateLabelText, [NSNumber numberWithBool:isFavor]];
+        complete();
     }];
+
 }
 
-+ (void)deleteDataById:(NSString *)idNum{
++ (void)deleteDataById:(NSInteger)idNum complete:(void (^)())complete {
     NSString *sql = @"DELETE FROM INFO WHERE ID = ?";
-    
-    [SNDBHelper executeUpdate:^(FMDatabase *db) {
-        [db executeUpdate:sql, idNum];
+
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
+        [db executeUpdate:sql, [NSNumber numberWithInteger:idNum]];
+        complete();
     }];
 }
 
-+ (void)updateTitle:(NSString *)title content:(NSString *)content isFavor:(NSString *)isFavor byOldTitle:(NSString *)oldTitle oldContent:(NSString *)oldContent {
++ (void)updateTitle:(NSString *)title
+            content:(NSString *)content
+            isFavor:(BOOL)isFavor
+         byOldTitle:(NSString *)oldTitle
+         oldContent:(NSString *)oldContent
+           complete:(void (^)())complete {
     NSString *sql = @"UPDATE INFO SET TITLE = ?, CONTENT = ?, ISFAVOR = ? WHERE TITLE = ? AND CONTENT = ?";
     
-    [SNDBHelper executeUpdate:^(FMDatabase *db) {
-        [db executeUpdate: sql, title, content, isFavor, oldTitle, oldContent];
+    [SNDBHelper executeOperation:^(FMDatabase *db) {
+        [db executeUpdate: sql, title, content, [NSNumber numberWithBool:isFavor], oldTitle, oldContent];
+        complete();
     }];
 }
 

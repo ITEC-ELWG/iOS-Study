@@ -1,5 +1,1 @@
-XSym
-0044
-9f0c0aced8d42feed7d0783757c8f1af
 ../../../FMDB/src/fmdb/FMDatabaseAdditions.h
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

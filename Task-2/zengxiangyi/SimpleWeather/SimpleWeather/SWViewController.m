@@ -221,8 +221,7 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
 
 #pragma mark table数据源
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger dayNums = 7;
-    return dayNums;
+    return _sevenDaysData.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -232,8 +231,8 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
     if (!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"SWTableViewCell" owner:self options:nil] lastObject];
     }
-    NSInteger offset = 5;
-    [cell configFortTable: _sevenDaysData[offset + indexPath.row]];
+    
+    [cell configFortTable: _sevenDaysData[indexPath.row]];
     
     return cell;
 }
@@ -298,9 +297,12 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
         self.windDirection.text = currentCityInfo[RETDATA][TODAY][FENGXIANG];
         self.windSpeed.text = currentCityInfo[RETDATA][TODAY][FENGLI];
         
+        [_sevenDaysData removeAllObjects];
         [self.sevenDaysData addObjectsFromArray:currentCityInfo[RETDATA][HISTORY]];
         [self.sevenDaysData addObject:currentCityInfo[RETDATA][TODAY]];
         [self.sevenDaysData addObjectsFromArray:currentCityInfo[RETDATA][FORECAST]];
+        
+        [_sevenDaysData removeObjectsInRange:NSMakeRange(0, 5)];
 
         self.backgroundView.image = [UIImage imageNamed:_backgroundImages[self.weatherType.text]];
         [self.navigationController.navigationBar setBackgroundImage:_backgroundView.image forBarMetrics:UIBarMetricsCompactPrompt];
