@@ -17,11 +17,11 @@ static NSString *const DB_COLUMN_NAME_CITYCODE = @"cityCode";
 
 @implementation SWLocalListsDBService
 
-+ (void)getAllDataWithBlockcompletion:(updateLists)updateItemblock {
++ (void)getAllDataWithComplete:(updateLists)updateItemblock {
     NSString *sql = @"SELECT * FROM LOCALCITIES";
     NSMutableArray *dbResults= [[NSMutableArray alloc] init];
     
-    [SWDBHelper executeSelect:^(FMDatabase *db) {
+    [SWDBHelper executeOperation:^(FMDatabase *db) {
         FMResultSet *result = [db executeQuery:sql];
         while ([result next]) {
             NSString *cityName = [result stringForColumn:DB_COLUMN_NAME_CITYNAME];
@@ -35,18 +35,23 @@ static NSString *const DB_COLUMN_NAME_CITYCODE = @"cityCode";
     }];
 }
 
-+ (void)addCityName:(NSString *)cityName
-           cityCode:(NSString *)cityCode {
++ (void)insertCityName:(NSString *)cityName
+              cityCode:(NSString *)cityCode
+              complete:(void (^)())complete {
     NSString *sql = @"INSERT INTO LOCALCITIES (CITYNAME, CITYCODE) VALUES (?, ?)";
-    [SWDBHelper executeUpdate:^(FMDatabase *db) {
+    [SWDBHelper executeOperation:^(FMDatabase *db) {
         [db executeUpdate:sql, cityName, cityCode];
+        complete();
     }];
 }
 
-+ (void)deleteLocalListByCityCide:(NSString *)cityCode {
++ (void)deleteLocalListByCityCide:(NSString *)cityCode
+                         complete:(void (^)())complete {
     NSString *sql = @"DELETE FROM LOCALCITIES WHERE CITYCODE = ?";
-    [SWDBHelper executeUpdate:^(FMDatabase *db) {
+    [SWDBHelper executeOperation:^(FMDatabase *db) {
         [db executeUpdate:sql, cityCode];
+        complete();
     }];
 }
+
 @end

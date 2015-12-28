@@ -10,16 +10,11 @@
 #import "SWAddCityViewController.h"
 #import "SWLocalListViewController.h"
 #import "SWTableViewCell.h"
-#import "SWCityInfo.h"
 #import "SWLocalLists.h"
 #import "SWLocalListsDBService.h"
 #import "SWAllCitiesDBService.h"
-
-static NSString *const HTTPURL = @"http://apis.baidu.com/apistore/weatherservice/recentweathers";
-static NSString *const FILENAME = @"BaiduMap_cityCenter";
-static NSString *const APIKEY = @"apikey";
-static NSString *const APIKEYVALUE = @"d826b9bf5289e2de1a99f938ab11f9fe";
-static NSString *const HTTPARG = @"cityname=";
+#import "SWHttp.h"
+#import "SWDataParser.h"
 
 static NSString *const RETDATA = @"retData";
 static NSString *const TODAY = @"today";
@@ -31,15 +26,14 @@ static NSString *const CURTEMP = @"curTemp";
 static NSString *const FENGLI = @"fengli";
 static NSString *const FENGXIANG = @"fengxiang";
 
-static NSString *const PROVINCE = @"省";
-static NSString *const CITIES = @"市";
-static NSString *const CITYNAME = @"市名";
-static NSString *const CODE = @"编码";
-
 static NSString *const HOMECITYNAME = @"homeCityName";
 static NSString *const HOMECITYCODE = @"homeCityCode";
 
-@interface SWViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, UINavigationControllerDelegate>
+static NSString *const cellIdentifier = @"CellIdentifier";
+static NSString *const nibNamed = @"SWTableViewCell";
+static NSInteger const navigationHeight = 66;
+
+@interface SWViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong) NSDictionary *cityList;
 @property (weak, nonatomic) IBOutlet UILabel *windDirection;
 @property (weak, nonatomic) IBOutlet UILabel *windSpeed;
@@ -55,44 +49,49 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
 
 @implementation SWViewController
 
+#pragma mark - Init
+
 - (instancetype)init {
     self = [super init];
     if (self) {
-        //查询全国城市信息，
-        [SWAllCitiesDBService getAllDataWithBlockcompletion:^(NSMutableArray *dbResults) {
+        //应用首次运行建立全国城市信息的数据库
+        [SWAllCitiesDBService getAllDataWithComplete:^(NSMutableArray *dbResults) {
             if (![dbResults count]) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
-
-                [self initAllCitiesDb];
+                    [SWDataParser initAllCitiesDb];
                 });
             }
         }];
-        self.sevenDaysData = [[NSMutableArray alloc] init];
-        self.backgroundImages = [[NSDictionary alloc] init];
-        self.backgroundImages = @{@"晴":@"sunbg",
-                                  @"霾":@"maibg",
-                                  @"多云":@"cloudbg",
-                                  @"阴":@"yinbg",
-                                  @"小雨":@"lightRainbg",
-                                  @"阵雨":@"rainbg",
-                                  @"中到大雨":@"rainbg",
-                                  @"小雪":@"snowbg",
-                                  @"中雪":@"snowbg",
-                                  @"阵雪":@"snowbg",
-                                  @"小到中雪":@"snowbg",
-                                  @"雾":@"fogbg"};
     }
     
     return self;
 }
 
+#pragma mark - View life cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.sevenDaysData = [[NSMutableArray alloc] init];
+    self.backgroundImages = [[NSDictionary alloc] init];
+    self.backgroundImages = @{@"晴":@"sunbg",
+                              @"霾":@"maibg",
+                              @"多云":@"cloudbg",
+                              @"阴":@"yinbg",
+                              @"小雨":@"lightRainbg",
+                              @"阵雨":@"rainbg",
+                              @"中到大雨":@"rainbg",
+                              @"小雪":@"snowbg",
+                              @"中雪":@"snowbg",
+                              @"阵雪":@"snowbg",
+                              @"小到中雪":@"snowbg",
+                              @"雾":@"fogbg"};
 
     //设置导航栏
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(manageCityList)];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(manageCityLists)];
     self.navigationItem.leftBarButtonItem = leftButton;
-    
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+
     //设置表格
     self.tableView = [[UITableView alloc] init];
     self.tableView.backgroundColor = [UIColor clearColor];
@@ -100,7 +99,7 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
     self.tableView.dataSource = self;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.pagingEnabled = YES;
-    [self.view addSubview:self.tableView];
+    [self.view addSubview:_tableView];
     
     //设置tableHeaderView
     NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"SWHeaderView" owner:self options:nil];
@@ -112,100 +111,76 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refreshStateChange:) forControlEvents:UIControlEventValueChanged];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"下拉刷新"];
-    [self.tableView addSubview:refreshControl];
+    [_tableView addSubview:refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     [self.navigationController.navigationBar setTintColor:[UIColor blueColor]];
     
-    //根据默认城市，查询天气
     SWLocalLists *homeCity = [self readNSUserDefaults];
+    
+    //默认城市为空，就进入添加页面设置
     if ([homeCity.cityName isEqualToString:@""] || !homeCity.cityName) {
         SWAddCityViewController *addController = [[SWAddCityViewController alloc] init];
         addController.currentCity = ^(NSString *cityName, NSString *cityCode) {
-            [self encodeHttpArg:cityName withCityCode:cityCode];
+            [SWHttp requestWithCityName:cityName cityCode:cityCode complete:^(NSString *responseData) {
+                [self setViewData:responseData];
+            }];
             
-            //将增加的城市添加到本地城市列表，并设置为默认城市
-            [SWLocalListsDBService addCityName:cityName cityCode:cityCode];
-            [self saveUserDefaults:cityName andCityCode:cityCode];
+            //将增加的城市添加到收藏城市的数据库
+            [SWLocalListsDBService insertCityName:cityName cityCode:cityCode complete:^{
+                //设置为默认城市
+                [self saveUserDefaults:cityName andCityCode:cityCode];
+            }];
         };
+        
         [self.navigationController pushViewController:addController animated:YES];
+    } else {
+        [SWHttp requestWithCityName:homeCity.cityName cityCode:homeCity.cityCode complete:^(NSString *responseData) {
+            [self setViewData:responseData];
+        }];
     }
-    
-    else {
-        [self encodeHttpArg:homeCity.cityName withCityCode:homeCity.cityCode];
-    }
-}
-
-//刷新
--(void)refreshStateChange:(UIRefreshControl *)control
-{
-    SWLocalLists *currentCity = [self readNSUserDefaults];
-    [self encodeHttpArg:currentCity.cityName withCityCode:currentCity.cityCode];
-    [control endRefreshing];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    
     CGRect bounds = self.view.bounds;
     self.tableView.frame = bounds;
 }
 
+#pragma mark - Table view data source and delegate
 
-#pragma mark 导航栏函数
-- (void)manageCityList {
-    SWLocalListViewController *listController = [[SWLocalListViewController alloc] init];
-    listController.homeCity = _cityName.text;
-    listController.currentCity = ^(NSString *cityName, NSString *cityCode) {
-        [self saveUserDefaults:cityName andCityCode:cityCode];
-        [self encodeHttpArg:cityName withCityCode:cityCode];
-        [self saveUserDefaults:cityName andCityCode:cityCode];
-    };
-    [self.navigationController pushViewController:listController animated:YES];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _sevenDaysData.count;
 }
 
-#pragma mark 全国城市信息处理
-- (void)initAllCitiesDb {
-    NSMutableArray *cityNameLists = [self getCityListFromText:FILENAME];
-    NSInteger provinceNum = [cityNameLists count], cityNumInProvince = 0;
-    NSUInteger i = 0, j = 0;
-    NSMutableArray *cityData = [[NSMutableArray alloc] init];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    for (i = 0; i < provinceNum; i++) {
-        cityNumInProvince = [cityNameLists[i][CITIES] count];
-        for (j = 0; j < cityNumInProvince; j++) {
-            SWCityInfo *newCityInfo = [[SWCityInfo alloc] init];
-            newCityInfo.provinceName  = cityNameLists[i][PROVINCE];
-            newCityInfo.cityName = cityNameLists[i][CITIES][j][CITYNAME];
-            newCityInfo.cityCode = cityNameLists[i][CITIES][j][CODE];
-            newCityInfo.cityPinyin = [self transformToPinyin:newCityInfo.cityName];
-            [cityData addObject:newCityInfo];
-            [SWAllCitiesDBService insertprovinceName:newCityInfo.provinceName cityName:newCityInfo.cityName cityCode:newCityInfo.cityCode cityPinyin:newCityInfo.cityPinyin];
-        }
+    if (!cell) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:nibNamed owner:self options:nil] lastObject];
     }
-}
-
-//从文件中读取城市数据，转换为数组对象
-- (NSMutableArray *)getCityListFromText:(NSString *)path {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:path ofType:@"txt"];
-    NSString *jsonString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     
-    return [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+    [cell configFortTable: _sevenDaysData[indexPath.row]];
+    
+    return cell;
 }
 
-- (NSString *)transformToPinyin:(NSString *)name {
-    NSMutableString *mutableString = [NSMutableString stringWithString:name];
-    CFStringTransform((CFMutableStringRef)mutableString, NULL, kCFStringTransformToLatin, false);
-    CFStringTransform((CFMutableStringRef)mutableString, NULL, kCFStringTransformStripDiacritics, false);
-    return [mutableString stringByReplacingOccurrencesOfString:@" " withString:@""];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    NSInteger cellCount = _sevenDaysData.count;;
+    
+    return (screenHeight - navigationHeight)/cellCount;;
 }
 
-#pragma mark 存取NSUserDefaults
+#pragma mark - NSUserDefaults
 
 - (void)saveUserDefaults:(NSString *)cityName andCityCode:(NSString *)cityCode {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
     [userDefaults setObject:cityName forKey:HOMECITYNAME];
     [userDefaults setObject:cityCode forKey:HOMECITYCODE];
 }
@@ -219,74 +194,19 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
     return homeCity;
 }
 
-#pragma mark table数据源
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _sevenDaysData.count;
+#pragma mark - Private methods
+
+- (void)manageCityLists {
+    SWLocalListViewController *listController = [[SWLocalListViewController alloc] init];
+    listController.homeCity = _cityName.text;
+    listController.currentCity = ^(NSString *cityName, NSString *cityCode) {
+        [self saveUserDefaults:cityName andCityCode:cityCode];
+    };
+    
+    [self.navigationController pushViewController:listController animated:YES];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"CellIdentifier";
-    SWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if (!cell) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"SWTableViewCell" owner:self options:nil] lastObject];
-    }
-    
-    [cell configFortTable: _sevenDaysData[indexPath.row]];
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger navHeight = 66;
-    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-    NSInteger cellCount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    return (screenHeight - navHeight)/cellCount;
-}
-
-#pragma mark HTTP请求获取天气数据
-//将待查询的城市和城市代码转换成Unicode格式
-- (void)encodeHttpArg: (NSString *)httpArg
-         withCityCode:(NSString *)cityCode {
-    httpArg= [self encodeString:httpArg];
-    httpArg = [HTTPARG stringByAppendingString:httpArg];
-    httpArg = [httpArg stringByAppendingString:@"&cityid="];
-    httpArg = [httpArg stringByAppendingString:cityCode];
-    [self request:HTTPURL withHttpArg:httpArg];
-}
-
-- (NSString*)encodeString:(NSString*)unencodedString{
-    NSString *encodedString = [unencodedString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    return encodedString;
-}
-
-- (void)request: (NSString*)httpUrl withHttpArg: (NSString *)HttpArg  {
-    __block NSString *responseString = nil;
-    NSString *urlStr = [[NSString alloc]initWithFormat: @"%@?%@", httpUrl, HttpArg];
-    NSURL *url = [NSURL URLWithString: urlStr];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setHTTPMethod: @"GET"];
-    [request addValue: APIKEYVALUE forHTTPHeaderField: APIKEY];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
-                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                      if (error) {
-                                          responseString = nil;
-                                      }
-                                      else {
-                                          responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                          [self getWeatherDataByCityName:responseString];
-                                      }
-                                  }];
-    
-    [task resume];
-}
-
-#pragma mark 解析返回的json数据
-
-- (void)getWeatherDataByCityName:(NSString *)cityWeatherData {
+- (void)setViewData:(NSString *)cityWeatherData {
     //转换成字典对象
     NSMutableDictionary *currentCityInfo = [self transformToDic:cityWeatherData];
     
@@ -298,16 +218,16 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
         self.windSpeed.text = currentCityInfo[RETDATA][TODAY][FENGLI];
         
         [_sevenDaysData removeAllObjects];
-        [self.sevenDaysData addObjectsFromArray:currentCityInfo[RETDATA][HISTORY]];
-        [self.sevenDaysData addObject:currentCityInfo[RETDATA][TODAY]];
-        [self.sevenDaysData addObjectsFromArray:currentCityInfo[RETDATA][FORECAST]];
+        [_sevenDaysData addObjectsFromArray:currentCityInfo[RETDATA][HISTORY]];
+        [_sevenDaysData addObject:currentCityInfo[RETDATA][TODAY]];
+        [_sevenDaysData addObjectsFromArray:currentCityInfo[RETDATA][FORECAST]];
         
         [_sevenDaysData removeObjectsInRange:NSMakeRange(0, 5)];
 
-        self.backgroundView.image = [UIImage imageNamed:_backgroundImages[self.weatherType.text]];
+        self.backgroundView.image = [UIImage imageNamed:_backgroundImages[_weatherType.text]];
         [self.navigationController.navigationBar setBackgroundImage:_backgroundView.image forBarMetrics:UIBarMetricsCompactPrompt];
-        self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        [self.tableView reloadData];
+        
+        [_tableView reloadData];
     });
 }
 
@@ -317,6 +237,18 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     
     return [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+}
+
+//刷新
+-(void)refreshStateChange:(UIRefreshControl *)control
+{
+    SWLocalLists *currentCity = [self readNSUserDefaults];
+    
+    [SWHttp requestWithCityName:currentCity.cityName cityCode:currentCity.cityCode complete:^(NSString *responseData) {
+        [self setViewData:responseData];
+    }];
+    
+    [control endRefreshing];
 }
 
 @end

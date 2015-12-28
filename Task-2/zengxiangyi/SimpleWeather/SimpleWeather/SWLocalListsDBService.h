@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+
 typedef void(^updateLists)(NSMutableArray *dbResults);
 
 @interface SWLocalListsDBService : NSObject
-+ (void)getAllDataWithBlockcompletion:(updateLists)updateItemblock;
-+ (void)addCityName:(NSString *)cityName
-           cityCode:(NSString *)cityCod;
++ (void)getAllDataWithComplete:(updateLists)updateItemblock;
 
-+ (void)deleteLocalListByCityCide:(NSString *)cityCode;
++ (void)insertCityName:(NSString *)cityName
+              cityCode:(NSString *)cityCode
+              complete:(void(^)())complete;
+
++ (void)deleteLocalListByCityCide:(NSString *)cityCode
+                         complete:(void(^)())complete;
 @end

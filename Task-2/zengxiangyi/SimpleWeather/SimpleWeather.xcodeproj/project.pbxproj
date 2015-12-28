@@ -25,6 +25,8 @@
 		9B7854CC1C1913940012620B /* SWCityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854CB1C1913940012620B /* SWCityInfo.m */; settings = {ASSET_TAGS = (); }; };
 		9B7854D11C1999540012620B /* SWLocalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854CF1C1999540012620B /* SWLocalListViewController.m */; settings = {ASSET_TAGS = (); }; };
 		9B7854D21C1999540012620B /* SWLocalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B7854D01C1999540012620B /* SWLocalListViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		9B8669C41C30DF10001F45DE /* SWHttp.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8669C31C30DF10001F45DE /* SWHttp.m */; settings = {ASSET_TAGS = (); }; };
+		9B8669CA1C31328E001F45DE /* SWDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8669C91C31328E001F45DE /* SWDataParser.m */; settings = {ASSET_TAGS = (); }; };
 		A27C6F4431D7E284E46F559B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAF1C7F9902877AE459F98D /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +50,7 @@
 		9B6FA2CE1C1ADCF5000F8B56 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWTableViewCell.h; sourceTree = "<group>"; };
 		9B6FA2CF1C1ADCF5000F8B56 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWTableViewCell.m; sourceTree = "<group>"; };
 		9B6FA2D01C1ADCF5000F8B56 /* SWTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWTableViewCell.xib; sourceTree = "<group>"; };
-		9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = SimpleWeather/Assets.xcassets; sourceTree = "<group>"; };
 		9B7854BE1C17FBBB0012620B /* SWViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWViewController.h; sourceTree = "<group>"; };
 		9B7854BF1C17FBBB0012620B /* SWViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWViewController.m; sourceTree = "<group>"; };
 		9B7854C01C17FBBB0012620B /* SWViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWViewController.xib; sourceTree = "<group>"; };
@@ -61,6 +63,10 @@
 		9B7854CE1C1999540012620B /* SWLocalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLocalListViewController.h; sourceTree = "<group>"; };
 		9B7854CF1C1999540012620B /* SWLocalListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLocalListViewController.m; sourceTree = "<group>"; };
 		9B7854D01C1999540012620B /* SWLocalListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWLocalListViewController.xib; sourceTree = "<group>"; };
+		9B8669C21C30DF10001F45DE /* SWHttp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWHttp.h; sourceTree = "<group>"; };
+		9B8669C31C30DF10001F45DE /* SWHttp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWHttp.m; sourceTree = "<group>"; };
+		9B8669C81C31328E001F45DE /* SWDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWDataParser.h; sourceTree = "<group>"; };
+		9B8669C91C31328E001F45DE /* SWDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWDataParser.m; sourceTree = "<group>"; };
 		E4F3F2B976F0744E49D7631F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,17 +111,16 @@
 			name = DBHelper;
 			sourceTree = "<group>";
 		};
-		9B0033C61C2408290085D343 /* MainVC */ = {
+		9B0033C61C2408290085D343 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				9B0033C71C2408980085D343 /* UI */,
-				9B7854BF1C17FBBB0012620B /* SWViewController.m */,
-				9B7854BE1C17FBBB0012620B /* SWViewController.h */,
+				9B8669C51C312F5D001F45DE /* ViewController */,
+				9B0033C71C2408980085D343 /* View */,
 			);
-			name = MainVC;
+			name = UI;
 			sourceTree = "<group>";
 		};
-		9B0033C71C2408980085D343 /* UI */ = {
+		9B0033C71C2408980085D343 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				9B6FA2CE1C1ADCF5000F8B56 /* SWTableViewCell.h */,
@@ -123,8 +128,10 @@
 				9B6FA2D01C1ADCF5000F8B56 /* SWTableViewCell.xib */,
 				9B0033C01C2109990085D343 /* SWHeaderView.xib */,
 				9B7854C01C17FBBB0012620B /* SWViewController.xib */,
+				9B7854C51C1808210012620B /* SWAddCityViewController.xib */,
+				9B7854D01C1999540012620B /* SWLocalListViewController.xib */,
 			);
-			name = UI;
+			name = View;
 			sourceTree = "<group>";
 		};
 		9B0033C91C24092D0085D343 /* AppDelegate */ = {
@@ -140,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				9B147BF51C17E78C0054B944 /* SimpleWeather */,
+				9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */,
 				9B147BF41C17E78C0054B944 /* Products */,
 				93FCF35B94BC3584693E329C /* Pods */,
 				FC5291E6D8490507A859F383 /* Frameworks */,
@@ -157,13 +165,12 @@
 		9B147BF51C17E78C0054B944 /* SimpleWeather */ = {
 			isa = PBXGroup;
 			children = (
+				9B8669C71C3131EC001F45DE /* CitySource */,
+				9B0033C61C2408290085D343 /* UI */,
+				9B8669C11C30DEB7001F45DE /* HTTP */,
 				9B0033C91C24092D0085D343 /* AppDelegate */,
-				9B0033C61C2408290085D343 /* MainVC */,
 				9B0033891C1E5DDD0085D343 /* DBService */,
 				9B00338A1C1E5DF40085D343 /* DBHelper */,
-				9B6FA3821C1BBFB3000F8B56 /* Assets.xcassets */,
-				9B7854D41C1999880012620B /* AddNewCity */,
-				9B7854D31C1999650012620B /* LocalCityList */,
 				9B7854CD1C19139C0012620B /* Entity */,
 				9B147BF61C17E78C0054B944 /* Supporting Files */,
 			);
@@ -191,24 +198,35 @@
 			name = Entity;
 			sourceTree = "<group>";
 		};
-		9B7854D31C1999650012620B /* LocalCityList */ = {
+		9B8669C11C30DEB7001F45DE /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
-				9B7854CE1C1999540012620B /* SWLocalListViewController.h */,
-				9B7854CF1C1999540012620B /* SWLocalListViewController.m */,
-				9B7854D01C1999540012620B /* SWLocalListViewController.xib */,
+				9B8669C21C30DF10001F45DE /* SWHttp.h */,
+				9B8669C31C30DF10001F45DE /* SWHttp.m */,
 			);
-			name = LocalCityList;
+			name = HTTP;
 			sourceTree = "<group>";
 		};
-		9B7854D41C1999880012620B /* AddNewCity */ = {
+		9B8669C51C312F5D001F45DE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				9B7854BE1C17FBBB0012620B /* SWViewController.h */,
+				9B7854BF1C17FBBB0012620B /* SWViewController.m */,
 				9B7854C31C1808210012620B /* SWAddCityViewController.h */,
 				9B7854C41C1808210012620B /* SWAddCityViewController.m */,
-				9B7854C51C1808210012620B /* SWAddCityViewController.xib */,
+				9B7854CE1C1999540012620B /* SWLocalListViewController.h */,
+				9B7854CF1C1999540012620B /* SWLocalListViewController.m */,
 			);
-			name = AddNewCity;
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		9B8669C71C3131EC001F45DE /* CitySource */ = {
+			isa = PBXGroup;
+			children = (
+				9B8669C81C31328E001F45DE /* SWDataParser.h */,
+				9B8669C91C31328E001F45DE /* SWDataParser.m */,
+			);
+			name = CitySource;
 			sourceTree = "<group>";
 		};
 		FC5291E6D8490507A859F383 /* Frameworks */ = {
@@ -354,7 +372,9 @@
 				9B0033931C1E92FA0085D343 /* SWLocalLists.m in Sources */,
 				9B147BF81C17E78C0054B944 /* main.m in Sources */,
 				9B7854CC1C1913940012620B /* SWCityInfo.m in Sources */,
+				9B8669C41C30DF10001F45DE /* SWHttp.m in Sources */,
 				9B7854D11C1999540012620B /* SWLocalListViewController.m in Sources */,
+				9B8669CA1C31328E001F45DE /* SWDataParser.m in Sources */,
 				9B7854C61C1808210012620B /* SWAddCityViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
