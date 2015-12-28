@@ -90,7 +90,8 @@ static NSInteger const navigationHeight = 66;
     //设置导航栏
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(manageCityLists)];
     self.navigationItem.leftBarButtonItem = leftButton;
-    
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+
     //设置表格
     self.tableView = [[UITableView alloc] init];
     self.tableView.backgroundColor = [UIColor clearColor];
@@ -110,7 +111,7 @@ static NSInteger const navigationHeight = 66;
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refreshStateChange:) forControlEvents:UIControlEventValueChanged];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"下拉刷新"];
-    [self.tableView addSubview:refreshControl];
+    [_tableView addSubview:refreshControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -125,7 +126,7 @@ static NSInteger const navigationHeight = 66;
         SWAddCityViewController *addController = [[SWAddCityViewController alloc] init];
         addController.currentCity = ^(NSString *cityName, NSString *cityCode) {
             [SWHttp requestWithCityName:cityName cityCode:cityCode complete:^(NSString *responseData) {
-                [self setViewDataBy:responseData];
+                [self setViewData:responseData];
             }];
             
             //将增加的城市添加到收藏城市的数据库
@@ -138,7 +139,7 @@ static NSInteger const navigationHeight = 66;
         [self.navigationController pushViewController:addController animated:YES];
     } else {
         [SWHttp requestWithCityName:homeCity.cityName cityCode:homeCity.cityCode complete:^(NSString *responseData) {
-            [self setViewDataBy:responseData];
+            [self setViewData:responseData];
         }];
     }
 }
@@ -205,8 +206,7 @@ static NSInteger const navigationHeight = 66;
     [self.navigationController pushViewController:listController animated:YES];
 }
 
-
-- (void)setViewDataBy:(NSString *)cityWeatherData {
+- (void)setViewData:(NSString *)cityWeatherData {
     //转换成字典对象
     NSMutableDictionary *currentCityInfo = [self transformToDic:cityWeatherData];
     
@@ -224,9 +224,8 @@ static NSInteger const navigationHeight = 66;
         
         [_sevenDaysData removeObjectsInRange:NSMakeRange(0, 5)];
 
-        self.backgroundView.image = [UIImage imageNamed:_backgroundImages[self.weatherType.text]];
+        self.backgroundView.image = [UIImage imageNamed:_backgroundImages[_weatherType.text]];
         [self.navigationController.navigationBar setBackgroundImage:_backgroundView.image forBarMetrics:UIBarMetricsCompactPrompt];
-        self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
         
         [_tableView reloadData];
     });
@@ -246,7 +245,7 @@ static NSInteger const navigationHeight = 66;
     SWLocalLists *currentCity = [self readNSUserDefaults];
     
     [SWHttp requestWithCityName:currentCity.cityName cityCode:currentCity.cityCode complete:^(NSString *responseData) {
-        [self setViewDataBy:responseData];
+        [self setViewData:responseData];
     }];
     
     [control endRefreshing];

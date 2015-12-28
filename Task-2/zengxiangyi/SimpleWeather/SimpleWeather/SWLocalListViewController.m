@@ -73,7 +73,7 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
 #pragma mark - Table view data source and delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.localList count];
+    return [_localList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
