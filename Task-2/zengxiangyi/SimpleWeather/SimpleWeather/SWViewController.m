@@ -30,9 +30,10 @@ static NSString *const HOMECITYNAME = @"homeCityName";
 static NSString *const HOMECITYCODE = @"homeCityCode";
 
 static NSString *const cellIdentifier = @"CellIdentifier";
+static NSString *const nibNamed = @"SWTableViewCell";
 static NSInteger const navigationHeight = 66;
 
-@interface SWViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate, UINavigationControllerDelegate>
+@interface SWViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong) NSDictionary *cityList;
 @property (weak, nonatomic) IBOutlet UILabel *windDirection;
 @property (weak, nonatomic) IBOutlet UILabel *windSpeed;
@@ -127,11 +128,11 @@ static NSInteger const navigationHeight = 66;
                 [self setViewDataBy:responseData];
             }];
             
-            //将增加的城市添加到本地城市列表
-            [SWLocalListsDBService addCityName:cityName cityCode:cityCode];
-            
-            //设置为默认城市
-            [self saveUserDefaults:cityName andCityCode:cityCode];
+            //将增加的城市添加到收藏城市的数据库
+            [SWLocalListsDBService insertCityName:cityName cityCode:cityCode complete:^{
+                //设置为默认城市
+                [self saveUserDefaults:cityName andCityCode:cityCode];
+            }];
         };
         
         [self.navigationController pushViewController:addController animated:YES];
@@ -159,7 +160,7 @@ static NSInteger const navigationHeight = 66;
     SWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (!cell) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"SWTableViewCell" owner:self options:nil] lastObject];
+        cell = [[[NSBundle mainBundle] loadNibNamed:nibNamed owner:self options:nil] lastObject];
     }
     
     [cell configFortTable: _sevenDaysData[indexPath.row]];
@@ -178,6 +179,7 @@ static NSInteger const navigationHeight = 66;
 
 - (void)saveUserDefaults:(NSString *)cityName andCityCode:(NSString *)cityCode {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
     [userDefaults setObject:cityName forKey:HOMECITYNAME];
     [userDefaults setObject:cityCode forKey:HOMECITYCODE];
 }
@@ -192,17 +194,6 @@ static NSInteger const navigationHeight = 66;
 }
 
 #pragma mark - Private methods
-//刷新
--(void)refreshStateChange:(UIRefreshControl *)control
-{
-    SWLocalLists *currentCity = [self readNSUserDefaults];
-    
-    [SWHttp requestWithCityName:currentCity.cityName cityCode:currentCity.cityCode complete:^(NSString *responseData) {
-        [self setViewDataBy:responseData];
-    }];
-    
-    [control endRefreshing];
-}
 
 - (void)manageCityLists {
     SWLocalListViewController *listController = [[SWLocalListViewController alloc] init];
@@ -247,6 +238,18 @@ static NSInteger const navigationHeight = 66;
     NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     
     return [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+}
+
+//刷新
+-(void)refreshStateChange:(UIRefreshControl *)control
+{
+    SWLocalLists *currentCity = [self readNSUserDefaults];
+    
+    [SWHttp requestWithCityName:currentCity.cityName cityCode:currentCity.cityCode complete:^(NSString *responseData) {
+        [self setViewDataBy:responseData];
+    }];
+    
+    [control endRefreshing];
 }
 
 @end

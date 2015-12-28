@@ -20,7 +20,7 @@ static NSString *const DB_COLUMN_NAME_CITYPINYIN = @"cityPinyin";
     NSString *sql = @"SELECT * FROM ALLCITIES";
     NSMutableArray *dbResults= [[NSMutableArray alloc] init];
     
-    [SWDBHelper executeSelect:^(FMDatabase *db) {
+    [SWDBHelper executeOperation:^(FMDatabase *db) {
         FMResultSet *result = [db executeQuery:sql];
         while ([result next]) {
             NSString *provinceName = [result stringForColumn:DB_COLUMN_NAME_PROVINCENAME];
@@ -37,7 +37,7 @@ static NSString *const DB_COLUMN_NAME_CITYPINYIN = @"cityPinyin";
 
 + (void)insertprovinceName:(NSString *)provinceName cityName:(NSString *)cityName cityCode:(NSString *)cityCode cityPinyin:(NSString *)cityPinyin {
     NSString *sql = @"INSERT INTO ALLCITIES (PROVINCENAME, CITYNAME, CITYCODE, CITYPINYIN) VALUES (?, ?, ?, ?)";
-    [SWDBHelper executeSelect:^(FMDatabase *db) {
+    [SWDBHelper executeOperation:^(FMDatabase *db) {
         [db executeUpdate:sql, provinceName, cityName, cityCode, cityPinyin];
     }];
 }

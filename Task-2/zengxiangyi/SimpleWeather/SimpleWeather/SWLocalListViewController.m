@@ -107,25 +107,25 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
-        //在数据库中删除
-        [SWLocalListsDBService deleteLocalListByCityCide:item.cityCode];
-        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-
-        //如果本地城市列表为空的话，就进入添加城市页面
-        if (![self.localList count]) {
-            [userDefaults setObject:@"" forKey:HOMECITYNAME];
-            [userDefaults setObject:@"" forKey:HOMECITYCODE];
-            
-            [self addNewCity];
-        } else {
-            if ([_homeCity isEqualToString:item.cityName]) {
-                SWLocalLists *newHomeCity = _localList[0];
+        //在数据库中删除
+        [SWLocalListsDBService deleteLocalListByCityCide:item.cityCode complete:^{
+            //如果本地城市列表为空的话，就进入添加城市页面
+            if (![self.localList count]) {
+                [userDefaults setObject:@"" forKey:HOMECITYNAME];
+                [userDefaults setObject:@"" forKey:HOMECITYCODE];
                 
-                [userDefaults setObject:newHomeCity.cityName forKey:@"homeCityName"];
-                [userDefaults setObject:newHomeCity.cityCode forKey:@"homeCityCode"];
+                [self addNewCity];
+            } else {
+                if ([_homeCity isEqualToString:item.cityName]) {
+                    SWLocalLists *newHomeCity = _localList[0];
+                    self.homeCity = newHomeCity.cityName;
+                    
+                    [userDefaults setObject:newHomeCity.cityName forKey:@"homeCityName"];
+                    [userDefaults setObject:newHomeCity.cityCode forKey:@"homeCityCode"];
+                }
             }
-        }
+        }];
     }
 }
 
@@ -144,9 +144,9 @@ static NSString *const HOMECITYCODE = @"homeCityCode";
         
         [_localList addObject:newCityInfo];
         
-        [SWLocalListsDBService addCityName:cityName cityCode:cityCode];
-
-        [_tableView reloadData];
+        [SWLocalListsDBService insertCityName:cityName cityCode:cityCode complete:^{
+            [_tableView reloadData];
+        }];
     };
     
     [self.navigationController pushViewController:addCityController animated:YES];

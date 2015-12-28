@@ -40,8 +40,7 @@ static NSString *const DB_NAME = @"weather.sqlite";
     return swdbHelper;
 }
 
-//查询异步操作
-+ (void)executeSelect:(db_block)block {
++ (void)executeOperation:(db_block)block {
     SWDBHelper *dbHelper = [SWDBHelper privateDBHelper];
     
     [dbHelper.operationQueue addOperationWithBlock:^{
@@ -50,16 +49,6 @@ static NSString *const DB_NAME = @"weather.sqlite";
                 block(db);
             }
         }];
-    }];
-}
-
-//增加，删除，修改同步操作
-+ (void)executeUpdate:(db_block)block {
-    SWDBHelper *dbHelper = [SWDBHelper privateDBHelper];
-    [dbHelper.dbQueue inDatabase:^(FMDatabase *db) {
-        if(block) {
-            block(db);
-        }
     }];
 }
 
