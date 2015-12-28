@@ -11,7 +11,7 @@
 typedef void(^updateLists)(NSMutableArray *dbResults);
 
 @interface SWAllCitiesDBService : NSObject
-+ (void)getAllDataWithBlockcompletion:(updateLists)updateItemblock;
++ (void)getAllDataWithComplete:(updateLists)updateItemblock;
 + (void)insertprovinceName:(NSString *)provinceName
                   cityName:(NSString *)cityName
                   cityCode:(NSString *)cityCode

@@ -38,11 +38,12 @@ static NSString *const DATE = @"date";
     self.type.text = data[TYPE];
     self.date.text = data[DATE];
     
-    if (self.type.text) {
-        self.typeIcon.image = [UIImage imageNamed:weatherImages[self.type.text]];
+    if (_type.text) {
+        self.typeIcon.image = [UIImage imageNamed:weatherImages[_type.text]];
     }
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.2];
 }
+
 @end
 

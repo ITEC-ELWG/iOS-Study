@@ -10,7 +10,10 @@
 #import "SWAddCityViewController.h"
 #import "SWLocalLists.h"
 #import "SWLocalListsDBService.h"
+
 static NSString *const cellIdentifier = @"UITableViewCell";
+static NSString *const HOMECITYNAME = @"homeCityName";
+static NSString *const HOMECITYCODE = @"homeCityCode";
 
 @interface SWLocalListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -21,40 +24,53 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 
 @implementation SWLocalListViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(addNewCity)];
         self.localList = [[NSMutableArray alloc] init];
-        
-        [SWLocalListsDBService getAllDataWithBlockcompletion:^(NSMutableArray *dbResults) {
-            self.localList = dbResults;
-        }];
     }
     
     return self;
 }
 
+#pragma mark - View life cycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    
+    [SWLocalListsDBService getAllDataWithComplete:^(NSMutableArray *dbResults) {
+        self.localList = dbResults;
+    }];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(addNewCity)];
+    
     self.navigationItem.title = @"管理城市";
-    
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
     [self.navigationItem setHidesBackButton:YES animated:YES];
+
     self.backgroundView.image = [UIImage imageNamed:@"nightbg"];
+    
     [self.navigationController.navigationBar setBackgroundImage:_backgroundView.image forBarMetrics:UIBarMetricsCompactPrompt];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 }
+
+#pragma mark - Table view data source and delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.localList count];
@@ -66,17 +82,21 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     SWLocalLists *cellItem = _localList[indexPath.row];
+    
     cell.textLabel.text = cellItem.cityName;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.textColor = [UIColor whiteColor];
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SWLocalLists *selectCity = _localList[indexPath.row];
+    
     _currentCity(selectCity.cityName, selectCity.cityCode);
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -84,6 +104,7 @@ static NSString *const cellIdentifier = @"UITableViewCell";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         SWLocalLists *item = _localList[indexPath.row];
         [self.localList removeObjectIdenticalTo:item];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
         //在数据库中删除
@@ -93,19 +114,22 @@ static NSString *const cellIdentifier = @"UITableViewCell";
 
         //如果本地城市列表为空的话，就进入添加城市页面
         if (![self.localList count]) {
-            [userDefaults setObject:@"" forKey:@"homeCityName"];
-            [userDefaults setObject:@"" forKey:@"homeCityCode"];
+            [userDefaults setObject:@"" forKey:HOMECITYNAME];
+            [userDefaults setObject:@"" forKey:HOMECITYCODE];
+            
             [self addNewCity];
-        }
-        else {
+        } else {
             if ([_homeCity isEqualToString:item.cityName]) {
                 SWLocalLists *newHomeCity = _localList[0];
+                
                 [userDefaults setObject:newHomeCity.cityName forKey:@"homeCityName"];
                 [userDefaults setObject:newHomeCity.cityCode forKey:@"homeCityCode"];
             }
         }
     }
 }
+
+#pragma mark - Private methods
 
 //添加城市
 - (void)addNewCity {
@@ -117,11 +141,14 @@ static NSString *const cellIdentifier = @"UITableViewCell";
         SWLocalLists *newCityInfo = [[SWLocalLists alloc] init];
         newCityInfo.cityName = cityName;
         newCityInfo.cityCode = cityCode;
-        [self.localList addObject:newCityInfo];
+        
+        [_localList addObject:newCityInfo];
+        
         [SWLocalListsDBService addCityName:cityName cityCode:cityCode];
 
-        [self.tableView reloadData];
+        [_tableView reloadData];
     };
+    
     [self.navigationController pushViewController:addCityController animated:YES];
 }
 

@@ -29,7 +29,6 @@ static NSString *const DB_NAME = @"weather.sqlite";
         NSLog(@"%@", dbPath);
         swdbHelper.dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
         swdbHelper.operationQueue = [[NSOperationQueue alloc] init];
-        [swdbHelper.operationQueue setMaxConcurrentOperationCount:1];
         
         [swdbHelper.dbQueue inDatabase:^(FMDatabase *db) {
             for (NSString *createSql in [swdbHelper getCreateSql]) {

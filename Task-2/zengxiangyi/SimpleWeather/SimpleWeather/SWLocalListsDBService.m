@@ -17,7 +17,7 @@ static NSString *const DB_COLUMN_NAME_CITYCODE = @"cityCode";
 
 @implementation SWLocalListsDBService
 
-+ (void)getAllDataWithBlockcompletion:(updateLists)updateItemblock {
++ (void)getAllDataWithComplete:(updateLists)updateItemblock {
     NSString *sql = @"SELECT * FROM LOCALCITIES";
     NSMutableArray *dbResults= [[NSMutableArray alloc] init];
     

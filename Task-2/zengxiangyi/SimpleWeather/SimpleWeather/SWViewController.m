@@ -17,7 +17,6 @@
 #import "SWHttp.h"
 
 static NSString *const FILENAME = @"BaiduMap_cityCenter";
-static NSString *const HTTPARG = @"cityname=";
 
 static NSString *const RETDATA = @"retData";
 static NSString *const TODAY = @"today";
@@ -62,7 +61,7 @@ static NSInteger const navigationHeight = 66;
     self = [super init];
     if (self) {
         //应用首次运行建立全国城市信息的数据库
-        [SWAllCitiesDBService getAllDataWithBlockcompletion:^(NSMutableArray *dbResults) {
+        [SWAllCitiesDBService getAllDataWithComplete:^(NSMutableArray *dbResults) {
             if (![dbResults count]) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self initAllCitiesDb];
@@ -118,7 +117,7 @@ static NSInteger const navigationHeight = 66;
                               @"雾":@"fogbg"};
 
     //设置导航栏
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(manageCityList)];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(manageCityLists)];
     self.navigationItem.leftBarButtonItem = leftButton;
     
     //设置表格
@@ -155,7 +154,7 @@ static NSInteger const navigationHeight = 66;
         SWAddCityViewController *addController = [[SWAddCityViewController alloc] init];
         addController.currentCity = ^(NSString *cityName, NSString *cityCode) {
             [SWHttp requestWithCityName:cityName cityCode:cityCode complete:^(NSString *responseData) {
-                [self getWeatherDataByCityName:responseData];
+                [self setViewDataBy:responseData];
             }];
             
             //将增加的城市添加到本地城市列表
@@ -168,13 +167,14 @@ static NSInteger const navigationHeight = 66;
         [self.navigationController pushViewController:addController animated:YES];
     } else {
         [SWHttp requestWithCityName:homeCity.cityName cityCode:homeCity.cityCode complete:^(NSString *responseData) {
-            [self getWeatherDataByCityName:responseData];
+            [self setViewDataBy:responseData];
         }];
     }
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    
     CGRect bounds = self.view.bounds;
     self.tableView.frame = bounds;
 }
@@ -228,13 +228,13 @@ static NSInteger const navigationHeight = 66;
     SWLocalLists *currentCity = [self readNSUserDefaults];
     
     [SWHttp requestWithCityName:currentCity.cityName cityCode:currentCity.cityCode complete:^(NSString *responseData) {
-        [self getWeatherDataByCityName:responseData];
+        [self setViewDataBy:responseData];
     }];
     
     [control endRefreshing];
 }
 
-- (void)manageCityList {
+- (void)manageCityLists {
     SWLocalListViewController *listController = [[SWLocalListViewController alloc] init];
     listController.homeCity = _cityName.text;
     listController.currentCity = ^(NSString *cityName, NSString *cityCode) {
@@ -263,7 +263,7 @@ static NSInteger const navigationHeight = 66;
     return [mutableString stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
-- (void)getWeatherDataByCityName:(NSString *)cityWeatherData {
+- (void)setViewDataBy:(NSString *)cityWeatherData {
     //转换成字典对象
     NSMutableDictionary *currentCityInfo = [self transformToDic:cityWeatherData];
     
