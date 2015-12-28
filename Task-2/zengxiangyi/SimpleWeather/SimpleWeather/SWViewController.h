@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+
 typedef void (^TableViewCellConfigureBlock)(id cell, id item);
 
 @interface SWViewController : UIViewController
