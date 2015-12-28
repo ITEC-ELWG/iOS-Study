@@ -14,11 +14,9 @@
 #import "SWLocalLists.h"
 #import "SWLocalListsDBService.h"
 #import "SWAllCitiesDBService.h"
+#import "SWHttp.h"
 
-static NSString *const HTTPURL = @"http://apis.baidu.com/apistore/weatherservice/recentweathers";
 static NSString *const FILENAME = @"BaiduMap_cityCenter";
-static NSString *const APIKEY = @"apikey";
-static NSString *const APIKEYVALUE = @"d826b9bf5289e2de1a99f938ab11f9fe";
 static NSString *const HTTPARG = @"cityname=";
 
 static NSString *const RETDATA = @"retData";
@@ -156,8 +154,9 @@ static NSInteger const navigationHeight = 66;
     if ([homeCity.cityName isEqualToString:@""] || !homeCity.cityName) {
         SWAddCityViewController *addController = [[SWAddCityViewController alloc] init];
         addController.currentCity = ^(NSString *cityName, NSString *cityCode) {
-            NSString *httpArg = [self encodeHttpArg:cityName withCityCode:cityCode];
-            [self request:HTTPURL withHttpArg:httpArg];
+            [SWHttp requestWithCityName:cityName cityCode:cityCode complete:^(NSString *responseData) {
+                [self getWeatherDataByCityName:responseData];
+            }];
             
             //将增加的城市添加到本地城市列表
             [SWLocalListsDBService addCityName:cityName cityCode:cityCode];
@@ -168,8 +167,9 @@ static NSInteger const navigationHeight = 66;
         
         [self.navigationController pushViewController:addController animated:YES];
     } else {
-        NSString *httpArg = [self encodeHttpArg:homeCity.cityName withCityCode:homeCity.cityCode];
-        [self request:HTTPURL withHttpArg:httpArg];
+        [SWHttp requestWithCityName:homeCity.cityName cityCode:homeCity.cityCode complete:^(NSString *responseData) {
+            [self getWeatherDataByCityName:responseData];
+        }];
     }
 }
 
@@ -226,8 +226,10 @@ static NSInteger const navigationHeight = 66;
 -(void)refreshStateChange:(UIRefreshControl *)control
 {
     SWLocalLists *currentCity = [self readNSUserDefaults];
-    NSString *httpArg = [self encodeHttpArg:currentCity.cityName withCityCode:currentCity.cityCode];
-    [self request:HTTPURL withHttpArg:httpArg];
+    
+    [SWHttp requestWithCityName:currentCity.cityName cityCode:currentCity.cityCode complete:^(NSString *responseData) {
+        [self getWeatherDataByCityName:responseData];
+    }];
     
     [control endRefreshing];
 }
@@ -237,9 +239,6 @@ static NSInteger const navigationHeight = 66;
     listController.homeCity = _cityName.text;
     listController.currentCity = ^(NSString *cityName, NSString *cityCode) {
         [self saveUserDefaults:cityName andCityCode:cityCode];
-        
-        NSString *httpArg = [self encodeHttpArg:cityName withCityCode:cityCode];
-        [self request:HTTPURL withHttpArg:httpArg];
     };
     
     [self.navigationController pushViewController:listController animated:YES];
@@ -262,47 +261,6 @@ static NSInteger const navigationHeight = 66;
     
     //去掉拼音之间的空格，比如wu han转换为wuhan
     return [mutableString stringByReplacingOccurrencesOfString:@" " withString:@""];
-}
-
-
-#pragma mark - HTTP request
-//将待查询的城市和城市代码转换成Unicode格式
-- (NSString *)encodeHttpArg: (NSString *)httpArg
-         withCityCode:(NSString *)cityCode {
-    httpArg= [self encodeString:httpArg];
-    httpArg = [HTTPARG stringByAppendingString:httpArg];
-    httpArg = [httpArg stringByAppendingString:@"&cityid="];
-    httpArg = [httpArg stringByAppendingString:cityCode];
-    
-    return httpArg;
-}
-
-- (NSString *)encodeString:(NSString*)unencodedString{
-    NSString *encodedString = [unencodedString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    return encodedString;
-}
-
-- (void)request: (NSString *)httpUrl withHttpArg: (NSString *)HttpArg  {
-    __block NSString *responseString = nil;
-    NSString *urlStr = [[NSString alloc]initWithFormat: @"%@?%@", httpUrl, HttpArg];
-    NSURL *url = [NSURL URLWithString: urlStr];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request setHTTPMethod: @"GET"];
-    [request addValue:APIKEYVALUE forHTTPHeaderField: APIKEY];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
-                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                      if (error) {
-                                          responseString = nil;
-                                      } else {
-                                          responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                          [self getWeatherDataByCityName:responseString];
-                                      }
-                                  }];
-    
-    [task resume];
 }
 
 - (void)getWeatherDataByCityName:(NSString *)cityWeatherData {

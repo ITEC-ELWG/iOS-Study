@@ -25,6 +25,7 @@
 		9B7854CC1C1913940012620B /* SWCityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854CB1C1913940012620B /* SWCityInfo.m */; settings = {ASSET_TAGS = (); }; };
 		9B7854D11C1999540012620B /* SWLocalListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B7854CF1C1999540012620B /* SWLocalListViewController.m */; settings = {ASSET_TAGS = (); }; };
 		9B7854D21C1999540012620B /* SWLocalListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B7854D01C1999540012620B /* SWLocalListViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		9B8669C41C30DF10001F45DE /* SWHttp.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8669C31C30DF10001F45DE /* SWHttp.m */; settings = {ASSET_TAGS = (); }; };
 		A27C6F4431D7E284E46F559B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAF1C7F9902877AE459F98D /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,8 @@
 		9B7854CE1C1999540012620B /* SWLocalListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWLocalListViewController.h; sourceTree = "<group>"; };
 		9B7854CF1C1999540012620B /* SWLocalListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWLocalListViewController.m; sourceTree = "<group>"; };
 		9B7854D01C1999540012620B /* SWLocalListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWLocalListViewController.xib; sourceTree = "<group>"; };
+		9B8669C21C30DF10001F45DE /* SWHttp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWHttp.h; sourceTree = "<group>"; };
+		9B8669C31C30DF10001F45DE /* SWHttp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWHttp.m; sourceTree = "<group>"; };
 		E4F3F2B976F0744E49D7631F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -157,6 +160,7 @@
 		9B147BF51C17E78C0054B944 /* SimpleWeather */ = {
 			isa = PBXGroup;
 			children = (
+				9B8669C11C30DEB7001F45DE /* HTTP */,
 				9B0033C91C24092D0085D343 /* AppDelegate */,
 				9B0033C61C2408290085D343 /* MainVC */,
 				9B0033891C1E5DDD0085D343 /* DBService */,
@@ -209,6 +213,15 @@
 				9B7854C51C1808210012620B /* SWAddCityViewController.xib */,
 			);
 			name = AddNewCity;
+			sourceTree = "<group>";
+		};
+		9B8669C11C30DEB7001F45DE /* HTTP */ = {
+			isa = PBXGroup;
+			children = (
+				9B8669C21C30DF10001F45DE /* SWHttp.h */,
+				9B8669C31C30DF10001F45DE /* SWHttp.m */,
+			);
+			name = HTTP;
 			sourceTree = "<group>";
 		};
 		FC5291E6D8490507A859F383 /* Frameworks */ = {
@@ -354,6 +367,7 @@
 				9B0033931C1E92FA0085D343 /* SWLocalLists.m in Sources */,
 				9B147BF81C17E78C0054B944 /* main.m in Sources */,
 				9B7854CC1C1913940012620B /* SWCityInfo.m in Sources */,
+				9B8669C41C30DF10001F45DE /* SWHttp.m in Sources */,
 				9B7854D11C1999540012620B /* SWLocalListViewController.m in Sources */,
 				9B7854C61C1808210012620B /* SWAddCityViewController.m in Sources */,
 			);
